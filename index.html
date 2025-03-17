@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Vehículos</title>
+</head>
+<body>
+    <h1>Gestión de Vehículos</h1>
+    <div>
+        <h2>Marcas</h2>
+        <ul id="brands-list"></ul>
+    </div>
+    <div>
+        <h2>Modelos</h2>
+        <ul id="models-list"></ul>
+    </div>
+    <div>
+        <h2>Provincias</h2>
+        <ul id="provinces-list"></ul>
+    </div>
+    <div>
+        <h2>Datos</h2>
+        <ul id="data-list"></ul>
+    </div>
+    <script type="module">
+        import { getBrands, getModels, getProvinces, getData } from './services/vehicleRegistrationsService.js';
+
+        const brandsList = document.getElementById('brands-list');
+        const modelsList = document.getElementById('models-list');
+        const provincesList = document.getElementById('provinces-list');
+        const dataList = document.getElementById('data-list');
+
+        // Función para cargar marcas
+        async function loadBrands(id, name) {
+            try {
+                const brands = await getBrands(id, name);
+                brandsList.innerHTML = ''; // Limpiar la lista
+                brands.forEach(brand => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${brand.id}, Nombre: ${brand.name}`;
+                    brandsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error al cargar las marcas:', error);
+            }
+        }
+
+        // Función para cargar modelos
+        async function loadModels(id, name, brandId) {
+            try {
+                const models = await getModels(id, name, brandId);
+                modelsList.innerHTML = ''; // Limpiar la lista
+                models.forEach(model => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${model.id}, Nombre: ${model.name}, Brand ID: ${model.brandId}`;
+                    modelsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error al cargar los modelos:', error);
+            }
+        }
+
+        // Función para cargar provincias
+        async function loadProvinces(id, name) {
+            try {
+                const provinces = await getProvinces(id, name);
+                provincesList.innerHTML = ''; // Limpiar la lista
+                provinces.forEach(province => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${province.id}, Nombre: ${province.name}`;
+                    provincesList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error al cargar las provincias:', error);
+            }
+        }
+
+        // Función para cargar datos
+        async function loadData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
+            try {
+                const datas = await getData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type);
+                dataList.innerHTML = ''; // Limpiar la lista
+                datas.forEach(data => {
+                    const li = document.createElement('li');
+                    li.textContent = `Fecha: ${data.date}, Marca: ${data.brandId}, Modelo: ${data.modelId}, Provincia: ${data.provinceId}, Tipo: ${data.type}, Count: ${data.count}`;
+                    dataList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+            }
+        }
+
+        // Cargar datos al cargar la página
+        loadBrands('', 'renault');
+        loadModels('', 'scenic e', '');
+        loadProvinces('', 'MA');
+        loadData('', '', '', 1490, 7, '');
+    </script>
+</body>
+</html>
