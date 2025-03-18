@@ -6,6 +6,15 @@ import DataModel from '../models/dataModel.js';
 
 const BASE_URL = 'https://localhost:7230/VehicleRegistration';
 
+export async function getTypes(){
+    return [
+        { id: 1, name: "Combustion" },
+        { id: 2, name: "Híbrido" },
+        { id: 3, name: "Híbrido Enchufable" },
+        { id: 4, name: "100 Eléctrico" }
+    ];
+}
+
 // GetBrands
 export async function getBrands(id, name) {
     const url = new URL(`${BASE_URL}/GetBrands`);
@@ -19,7 +28,9 @@ export async function getBrands(id, name) {
         }
         const data = await response.json();
 
-        return data.map(item => new BrandModel(item.id, item.name));
+        return data
+            .map(item => new BrandModel(item.id, item.name))
+            .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener las marcas:', error);
         throw error;
@@ -40,7 +51,9 @@ export async function getModels(id, name, brandId) {
         }
         const data = await response.json();
 
-        return data.map(item => new ModelModel(item.id, item.name, item.brandId));
+        return data
+            .map(item => new ModelModel(item.id, item.name, item.brandId))
+            .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener los modelos:', error);
         throw error;
@@ -60,7 +73,9 @@ export async function getProvinces(id, name) {
         }
         const data = await response.json();
 
-        return data.map(item => new ProvinceModel(item.id, item.name));
+        return data
+            .map(item => new ProvinceModel(item.id, item.name))
+            .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener las provincias:', error);
         throw error;
