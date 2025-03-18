@@ -1,4 +1,5 @@
 // Importar el modelo
+import TypeModel from '../models/typesModel.js';
 import BrandModel from '../models/brandModel.js';
 import ModelModel from '../models/modelModel.js';
 import ProvinceModel from '../models/provinceModel.js';
@@ -6,13 +7,17 @@ import DataModel from '../models/dataModel.js';
 
 const BASE_URL = 'https://localhost:7230/VehicleRegistration';
 
-export async function getTypes(){
-    return [
+export async function getTypes(id, name){
+    const data = [
         { id: 1, name: "Combustion" },
         { id: 2, name: "Híbrido" },
         { id: 3, name: "Híbrido Enchufable" },
-        { id: 4, name: "100 Eléctrico" }
+        { id: 4, name: "100% Eléctrico" }
     ];
+
+    return data
+        .map(item => new TypeModel(item.id, item.name))
+        .sort((a, b) => a.name.localeCompare(b.id));
 }
 
 // GetBrands
@@ -104,4 +109,21 @@ export async function getData(registrationDateFrom, registrationDateTo, brandId,
         console.error('Error al obtener los datos de vehículos matriculados:', error);
         throw error;
     }
+}
+
+//CompleteData
+export async function completeData(datas, brands, models, provinces, types){
+    const brandMap = Object.fromEntries(brands.map(b => [b.id, b]));
+    const modelMap = Object.fromEntries(models.map(m => [m.id, m]));
+    const provinceMap = Object.fromEntries(provinces.map(p => [p.id, p]));
+    const typeMap = Object.fromEntries(types.map(t => [t.id, t]));
+
+    datas.forEach(d => {
+        d.brandName = brandMap[d.brandId]?.name || "Desconocido";
+        d.modelName = modelMap[d.modelId]?.name || "Desconocido";
+        d.provinceName = provinceMap[d.provinceId]?.name || "Desconocido";
+        d.typeName = typeMap[d.type]?.name || "Desconocido";
+    });
+
+    return datas;
 }

@@ -1,6 +1,8 @@
-import { getTypes, getBrands, getModels, getProvinces, getData } from "./services/vehicleRegistrationsService.js";
+import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
+import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
+import DataModel from '../models/dataModel.js';
 
-let types;
+let typeList;
 let brandList;
 let modelList;
 let provinceList;
@@ -8,14 +10,10 @@ let provinceList;
 let originalData;
 let filteredData;
 
-async function populateTypes(){
-    const result = await getTypes();
+async function populateTypes(list){
     const select = document.getElementById("cmbType");
 
-    // Limpia las opciones previas del combo, excepto la predeterminada
-    select.innerHTML = '<option value="">Tipo ...</option>';
-
-    result.forEach(r => {
+    list.forEach(r => {
         const option = document.createElement("option");
         option.value = r.id;
         option.textContent = r.name;
@@ -23,91 +21,96 @@ async function populateTypes(){
     });
 }
 
-async function populateBrands(id, name){
+async function populateBrands(list){
     const select = document.getElementById("cmbBrand");
 
-    try {
-        // Llamada a getBrands para obtener las marcas
-        const result = await getBrands(id, name);
-
-        // Rellenar el combo con los datos obtenidos
-        result.forEach(r => {
-            const option = document.createElement('option');
-            option.value = r.id;
-            option.textContent = r.name;
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error al rellenar el combo de marcas:', error);
-    }
+    list.forEach(r => {
+        const option = document.createElement('option');
+        option.value = r.id;
+        option.textContent = r.name;
+        select.appendChild(option);
+    });
 }
 
-async function populateModels(id, name, brandId){
+async function populateModels(list, brandId) {
     const select = document.getElementById("cmbModel");
+    
+    // Limpia el contenido del select antes de agregar nuevas opciones
+    select.innerHTML = '<option value="" selected>Marca ...</option>';
 
-    select.innerHTML = '<option value="">Modelo ...</option>';
+    // Filtra la lista con los modelos correspondientes
+    const result = await filterModels(list, brandId);
 
-    try {
-        // Llamada a getBrands para obtener las marcas
-        const result = await getModels(id, name, brandId);
-
-        // Rellenar el combo con los datos obtenidos
-        result.forEach(r => {
-            const option = document.createElement('option');
-            option.value = r.id;
-            option.textContent = r.name;
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error al rellenar el combo de modelos:', error);
-    }
+    // Agrega las nuevas opciones
+    result.forEach(r => {
+        const option = document.createElement('option');
+        option.value = r.id;
+        option.textContent = r.name;
+        select.appendChild(option);
+    });
 }
 
-async function populateProvinces(id, name){
+async function populateProvinces(list){
     const select = document.getElementById("cmbProvince");
 
-    try {
-        // Llamada a getBrands para obtener las marcas
-        const result = await getProvinces(id, name);
-
-        // Rellenar el combo con los datos obtenidos
-        result.forEach(r => {
-            const option = document.createElement('option');
-            option.value = r.id;
-            option.textContent = r.name;
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error al rellenar el combo de provincias:', error);
-    }
+    list.forEach(r => {
+        const option = document.createElement('option');
+        option.value = r.id;
+        option.textContent = r.name;
+        select.appendChild(option);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await populateTypes();
-    await populateBrands('', '');
-    await populateProvinces('', '');
 
+    // Get parameters
+    typeList = await getTypes('', '');
+    brandList = await getBrands('', '');
+    modelList = await getModels('', '', '');
+    provinceList = await getProvinces('', '');
     originalData = await getData('', '', '', '', '', '');
+    originalData = await completeData(originalData, brandList, modelList, provinceList, typeList);
+
+    await populateTypes(typeList);
+    await populateBrands(brandList);
+    await populateProvinces(provinceList);
+
+    filteredData = originalData.map(data => 
+        new DataModel(
+            data.date,
+            data.brandId,
+            data.brandName,
+            data.modelId,
+            data.modelName,
+            data.provinceId,
+            data.provinceName,
+            data.type,
+            data.typeName,
+            data.count
+        )
+    );
 });
 
 // Eventos
 document.getElementById("cmbBrand").addEventListener("change", async (event) => {
     const brandId = event.target.value;
-    await populateModels('', '', brandId);
 
+    await populateModels(modelList, brandId);
 });
 
 document.getElementById("btnFilter").addEventListener("click", async (event) => {
     event.preventDefault();
 
     // Obtén los valores seleccionados de los combos
-    const startDate = document.getElementById("startDate").value;
-    const endDate = document.getElementById("endDate").value;
+    let startDate = document.getElementById("startDate").value;
+    let endDate = document.getElementById("endDate").value;
+    if (startDate) startDate += '-01';
+    if (endDate) endDate += '-01';
 
     const type = document.getElementById("cmbType").value;
     const brandId = document.getElementById("cmbBrand").value;
     const modelId = document.getElementById("cmbModel").value;
     const provinceId = document.getElementById("cmbProvince").value;
 
-    await getData(startDate + '-01', startDate + '-01', brandId, modelId, provinceId, type);
+    filteredData = await filterData(originalData, startDate, endDate, brandId, modelId, provinceId, type);
 });
