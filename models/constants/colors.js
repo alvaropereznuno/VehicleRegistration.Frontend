@@ -9,7 +9,9 @@ const COLORS = {
         PURPLE: 'rgba(177, 0, 221, 0.5)',
         CYAN: 'rgba(0, 214, 214, 0.5)',
         PINK: 'rgba(214, 0, 168, 0.5)',
-        BLACK: 'rgba(0, 0, 0, 0.5)'
+        BLACK: 'rgba(0, 0, 0, 0.5)',
+        GRAY: 'rgba(136, 136, 136, 0.5)',
+        LIME: 'rgba(162, 190, 0, 0.5)'
     },
     BORDER: {
         RED: 'rgba(255, 99, 132, 1)',
@@ -20,7 +22,9 @@ const COLORS = {
         PURPLE: 'rgba(177, 0, 221, 1)',
         CYAN: 'rgba(0, 214, 214, 1)',
         PINK: 'rgba(214, 0, 168, 1)',
-        BLACK: 'rgba(0, 0, 0, 1)'
+        BLACK: 'rgba(0, 0, 0, 1)',
+        GRAY: 'rgba(136, 136, 136, 1)',
+        LIME: 'rgba(162, 190, 0, 1)'
     }
 };
 

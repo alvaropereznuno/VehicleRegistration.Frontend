@@ -14,43 +14,40 @@
     <script src="./services/vehicleRegistrationsService.js"></script>-->
 </head>
 <body>
-    <div class="container">
-        <h3 class="my-4">Matriculaciones de Vehículos</h3>
-    </div>
+    <header class="fixed-header">
+        <section class="container">
+            <form class="row g-3" aria-label="Filtros de búsqueda">
+                <div class="col-6 col-md-4 col-xl-2">
+                    <input type="month" class="form-control form-control-sm" id="startDate" name="startDate">
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <input type="month" class="form-control form-control-sm" id="endDate" name="endDate">
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <select class="form-select form-select-sm" id="cmbType" name="cmbType">
+                        <option value="" selected>Tipo ...</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <select class="form-select form-select-sm" id="cmbBrand" name="cmbBrand">
+                        <option value="" selected>Marca ...</option>
+                    </select>
+                </div>
+                <div class="col-8 col-md-6 col-xl-3">
+                    <select class="form-select form-select-sm" id="cmbModel" name="cmbModel">
+                        <option value="" selected>Modelo ...</option>
+                    </select>
+                </div>
+                <div class="col-4 col-md-2 col-xl-1">
+                    <select class="form-select form-select-sm" id="cmbProvince" name="cmbProvince">
+                        <option value="" selected>Provincia ...</option>
+                    </select>
+                </div>
+            </form>
+        </section>
+    </header>
 
-    <!-- BEGIN: Filters -->
-    <section class="container filters-section">
-        <form class="row g-3" aria-label="Filtros de búsqueda">
-            <div class="col-6 col-md-4 col-xl-2">
-                <input type="month" class="form-control form-control-sm" id="startDate" name="startDate">
-            </div>
-            <div class="col-6 col-md-4 col-xl-2">
-                <input type="month" class="form-control form-control-sm" id="endDate" name="endDate">
-            </div>
-            <div class="col-6 col-md-4 col-xl-2">
-                <select class="form-select form-select-sm" id="cmbType" name="cmbType">
-                    <option value="" selected>Tipo ...</option>
-                </select>
-            </div>
-            <div class="col-6 col-md-4 col-xl-2">
-                <select class="form-select form-select-sm" id="cmbBrand" name="cmbBrand">
-                    <option value="" selected>Marca ...</option>
-                </select>
-            </div>
-            <div class="col-8 col-md-6 col-xl-3">
-                <select class="form-select form-select-sm" id="cmbModel" name="cmbModel">
-                    <option value="" selected>Modelo ...</option>
-                </select>
-            </div>
-            <div class="col-4 col-md-2 col-xl-1">
-                <select class="form-select form-select-sm" id="cmbProvince" name="cmbProvince">
-                    <option value="" selected>Provincia ...</option>
-                </select>
-            </div>
-        </form>
-    </section>
-    
-    <!-- END: Filters -->
+    <div class="hidden-header"></div>
 
     <!-- BEGIN: DASHBOARD -->
     <div class="container">
@@ -66,19 +63,33 @@
                 </div>
             </div>
             
-            <div class="col-6 col-xl-6">
+            <div class="col-12 col-md-6 col-xl-6">
                 <div class="chart">
                     <canvas id="vehiclesTypes"></canvas>
                 </div>
             </div>
-            <div class="col-6 col-xl-6">
+            <div class="col12 col-md-6 col-xl-6">
                 <div class="chart">
                     <canvas id="vehiclesBrands"></canvas>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="chart">
+                    <canvas id="vehiclesModels"></canvas>
                 </div>
             </div>
         </div>
     </div>
     <!-- END: DASHBOARD -->
+
+    <div class="hidden-footer"></div>
+
+    <footer class="fixed-footer">
+        <div class="container text-center">
+            <p>Footer</p>
+        </div>
+    </footer>
 
     <script type="module" src="index.js"></script>
 </body>

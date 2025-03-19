@@ -1,6 +1,6 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
-import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands } from "./services/dashboardServices.js"
+import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js"
 
 import DataModel from '../models/dataModel.js';
 
@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
     vehiclesTypes.create(filteredData, document.getElementById('vehiclesTypes'));
     vehiclesBrands.create(filteredData, document.getElementById('vehiclesBrands'));
+    vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
 });
 
 // Eventos
@@ -141,4 +142,5 @@ async function updateFilters(){
     vehiclesSoldStackedType.update(filteredData);
     vehiclesTypes.update(filteredData);
     vehiclesBrands.update(filteredData);
+    vehiclesModels.update(filteredData);
 }

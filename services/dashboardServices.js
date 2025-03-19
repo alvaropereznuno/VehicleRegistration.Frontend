@@ -316,6 +316,86 @@ export const vehiclesBrands = {
     }
 }
 
+export const vehiclesModels = {
+    chart: null,
+    create: (dataList, ctx) => {
+        const config = {
+            type: 'bar',
+            data: vehiclesModels.groupData(dataList),
+            options: {
+              indexAxis: 'y',
+              // Elements options apply to all of the options unless overridden in a dataset
+              // In this case, we are setting the border of each horizontal bar to be 2px wide
+              elements: {
+                bar: {
+                  borderWidth: 2,
+                }
+              },
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right',
+                },
+                title: {
+                  display: true,
+                  text: 'Modelos de vehículos'
+                }
+              }
+            },
+          };
+    
+        vehiclesModels.chart = new Chart(ctx, config);
+    },
+    update: (dataList) => {
+        if (vehiclesModels.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesModels.chart.data = vehiclesModels.groupData(dataList);
+            vehiclesModels.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: (dataList) => {
+        // 1. Agrupar por modelName y calcular los totales
+        const modelGroups = {};
+        dataList.forEach(item => {
+            if (!modelGroups[item.modelName]) {
+                modelGroups[item.modelName] = { modelName: item.modelName, total: 0 };
+            }
+            modelGroups[item.modelName].total += item.count; // Sumar el valor total
+        });
+    
+        // 2. Seleccionar los 8 modelos con mayor valor total, ordenados de mayor a menor
+        const sortedModels = Object.values(modelGroups)
+            .sort((a, b) => b.total - a.total) // Ordenar por total descendente
+            .slice(0, 10); // Tomar los 10 primeros modelos
+    
+        // 3. Crear labels y datasets en el formato deseado
+        const labels = sortedModels.map(group => group.modelName); // Los nombres de los modelos
+        const data = sortedModels.map(group => group.total); // Los totales correspondientes
+    
+        const colors = labels.map((_, index) => {
+            const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK, COLORS.FILLED.GRAY, COLORS.FILLED.LIME];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores
+        });
+    
+        // 4. Retornar la estructura final
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Modelos más populares", // Texto personalizado
+                    data: data, // Totales por modelo
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }
+            ]
+        };
+    }
+}
+
 function formatDate(date){
     const d = new Date(date);
     return `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
