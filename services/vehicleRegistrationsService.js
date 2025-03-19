@@ -104,7 +104,7 @@ export async function getData(registrationDateFrom, registrationDateTo, brandId,
         }
         const data = await response.json();
 
-        return data.map(item => new DataModel(item.D, item.B, item.M, item.P, item.T, item.C));
+        return data.map(item => new DataModel(item.D, item.B, '', item.M, '', item.P, '', item.T, '', item.C));
     } catch (error) {
         console.error('Error al obtener los datos de vehículos matriculados:', error);
         throw error;

@@ -1,5 +1,7 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
+import { vehiclesSoldType, vehiclesSoldStackedType } from "./services/dashboardServices.js"
+
 import DataModel from '../models/dataModel.js';
 
 let typeList;
@@ -9,6 +11,8 @@ let provinceList;
 
 let originalData;
 let filteredData;
+
+let vehiclesSoldType_Chart;
 
 async function populateTypes(list){
     const select = document.getElementById("cmbType");
@@ -36,7 +40,7 @@ async function populateModels(list, brandId) {
     const select = document.getElementById("cmbModel");
     
     // Limpia el contenido del select antes de agregar nuevas opciones
-    select.innerHTML = '<option value="" selected>Marca ...</option>';
+    select.innerHTML = '<option value="" selected>Modelo ...</option>';
 
     // Filtra la lista con los modelos correspondientes
     const result = await filterModels(list, brandId);
@@ -89,18 +93,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             data.count
         )
     );
+
+    vehiclesSoldType.create(filteredData, document.getElementById('vehiclesSoldType'));
+    vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
 });
 
 // Eventos
+document.getElementById("startDate").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("endDate").addEventListener("endDate", async (event) => {
+    await updateFilters();
+});
+document.getElementById("cmbType").addEventListener("change", async (event) => {
+    await updateFilters();
+});
 document.getElementById("cmbBrand").addEventListener("change", async (event) => {
     const brandId = event.target.value;
 
     await populateModels(modelList, brandId);
+    await updateFilters();
+});
+document.getElementById("cmbModel").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("cmbProvince").addEventListener("change", async (event) => {
+    await updateFilters();
 });
 
-document.getElementById("btnFilter").addEventListener("click", async (event) => {
-    event.preventDefault();
-
+async function updateFilters(){
     // Obtén los valores seleccionados de los combos
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
@@ -113,4 +134,7 @@ document.getElementById("btnFilter").addEventListener("click", async (event) => 
     const provinceId = document.getElementById("cmbProvince").value;
 
     filteredData = await filterData(originalData, startDate, endDate, brandId, modelId, provinceId, type);
-});
+    
+    vehiclesSoldType.update(filteredData);
+    vehiclesSoldStackedType.update(filteredData);
+}

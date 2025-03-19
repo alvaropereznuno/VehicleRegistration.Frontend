@@ -1,14 +1,14 @@
 class DataModel {
-    constructor(date, brandId, modelId, provinceId, type, count){
+    constructor(date, brandId, brandName, modelId, modelName, provinceId, provinceName, type, typeName, count){
         this.date = date;
         this.brandId = brandId;
-        this.brandName = "";
+        this.brandName = brandName;
         this.modelId = modelId;
-        this.brandName = "";
+        this.modelName = modelName;
         this.provinceId = provinceId;
-        this.provinceName = "";
+        this.provinceName = provinceName;
         this.type = type;
-        this.typeName = "";
+        this.typeName = typeName;
         this.count = count;
     }
 }
