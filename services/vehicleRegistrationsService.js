@@ -5,7 +5,9 @@ import ModelModel from '../models/modelModel.js';
 import ProvinceModel from '../models/provinceModel.js';
 import DataModel from '../models/dataModel.js';
 
-const BASE_URL = 'https://localhost:7230/VehicleRegistration';
+// const BASE_URL = 'https://localhost:7230/VehicleRegistration';
+const BASE_URL = 'https://vehicleregistrationsapi-fhhpgkbtcafqgudp.spaincentral-01.azurewebsites.net/VehicleRegistration';
+
 
 export async function getTypes(id, name){
     const data = [
