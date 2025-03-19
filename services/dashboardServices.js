@@ -10,10 +10,11 @@ export const vehiclesSoldType = {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Vehículos vendidos por tipo'
+                        text: 'Vehículos matriculados por tipo'
                     },
                 },
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     x: { stacked: true, },
                     y: { stacked: true }
@@ -83,6 +84,7 @@ export const vehiclesSoldStackedType = {
             data: vehiclesSoldStackedType.groupData(dataList),
             options: {
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                 title: {
                   display: true,
@@ -158,6 +160,159 @@ export const vehiclesSoldStackedType = {
             labels: labels,
             datasets: datasets
         };
+    }
+}
+
+export const vehiclesTypes = {
+    chart: null,
+    create: (dataList, ctx) => {
+        const config = {
+            type: 'pie',
+            data: vehiclesTypes.groupData(dataList),
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tipos de vehículos'
+                    }
+                }
+            },
+        };
+    
+        vehiclesTypes.chart = new Chart(ctx, config);
+    },
+    update: (dataList) => {
+        if (vehiclesTypes.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesTypes.chart.data = vehiclesTypes.groupData(dataList);
+            vehiclesTypes.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: (dataList) => {
+        // 1. Agrupar por: typeName y contar los totales
+        const typeGroups = {};
+        dataList.forEach(item => {
+            if (!typeGroups[item.typeName]) {
+                typeGroups[item.typeName] = 0; // Inicializar contador
+            }
+            typeGroups[item.typeName] += item.count; // Sumar el valor actual
+        });
+    
+        // 2. Crear el array de labels (los nombres de los tipos)
+        const labels = Object.keys(typeGroups);
+    
+        // 3. Crear el array de datos (totales en el mismo orden que los labels)
+        const data = labels.map(typeName => typeGroups[typeName]);
+    
+        // 4. Crear el array de colores para cada tipo
+        const colors = labels.map((_, index) => {
+            const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores
+        });
+    
+        // 5. Retornar el objeto en el formato solicitado
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: '',
+                    data: data,
+                    backgroundColor: colors,
+                }
+            ]
+        };
+    }
+}
+
+export const vehiclesBrands = {
+    chart: null,
+    create: (dataList, ctx) => {
+        const config = {
+            type: 'doughnut',
+            data: vehiclesBrands.groupData(dataList),
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Marcas de vehículos'
+                    }
+                }
+            },
+        };
+    
+        vehiclesBrands.chart = new Chart(ctx, config);
+    },
+    update: (dataList) => {
+        if (vehiclesBrands.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesBrands.chart.data = vehiclesBrands.groupData(dataList);
+            vehiclesBrands.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: (dataList) => {
+        // 1. Agrupar por brandName y calcular los totales
+        const brandGroups = {};
+        dataList.forEach(item => {
+            if (!brandGroups[item.brandName]) {
+                brandGroups[item.brandName] = 0; // Inicializar contador
+            }
+            brandGroups[item.brandName] += item.count; // Sumar el valor actual
+        });
+    
+        // 2. Ordenar las marcas por total (de mayor a menor) y extraer las 6 principales
+        const sortedBrands = Object.keys(brandGroups).sort((a, b) => brandGroups[b] - brandGroups[a]);
+        const topBrands = sortedBrands.slice(0, 8); // Las 6 marcas principales
+        const otherBrands = sortedBrands.slice(8); // El resto de marcas
+    
+        // 3. Crear un nuevo agrupado para las 8 marcas principales y el "resto"
+        const aggregatedData = {};
+        topBrands.forEach(brand => {
+            aggregatedData[brand] = brandGroups[brand];
+        });
+    
+        // Agrupar el "resto" en una sola entrada
+        const otherTotal = otherBrands.reduce((sum, brand) => sum + brandGroups[brand], 0);
+        if (otherTotal > 0) {
+            aggregatedData["Resto"] = otherTotal;
+        }
+    
+        // 4. Crear el array de labels (8 marcas principales + "resto" si aplica)
+        const labels = Object.keys(aggregatedData);
+    
+        // 5. Crear el array de datos (totales en el mismo orden que los labels)
+        const data = labels.map(brand => aggregatedData[brand]);
+    
+        // 6. Crear el array de colores para cada marca
+        const colors = labels.map((_, index) => {
+            const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores si hay más de 6
+        });
+    
+        // 7. Retornar el objeto en el formato solicitado
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: '',
+                    data: data,
+                    backgroundColor: colors
+                }
+            ]
+        }
     }
 }
 

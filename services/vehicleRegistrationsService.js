@@ -12,7 +12,9 @@ export async function getTypes(id, name){
         { id: 1, name: "Combustion" },
         { id: 2, name: "Híbrido" },
         { id: 3, name: "Híbrido Enchufable" },
-        { id: 4, name: "100% Eléctrico" }
+        { id: 4, name: "100% Eléctrico" },
+        { id: 5, name: "Hidrógeno" },
+        { id: 99, name: "Otro" },
     ];
 
     return data
