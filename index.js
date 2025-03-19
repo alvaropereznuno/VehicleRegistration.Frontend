@@ -2,8 +2,6 @@ import { getTypes, getBrands, getModels, getProvinces, getData, completeData } f
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
 import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js"
 
-import DataModel from '../models/dataModel.js';
-
 let typeList;
 let brandList;
 let modelList;
