@@ -1,15 +1,7 @@
-// Importar el modelo
-import TypeModel from '../models/typesModel.js';
-import BrandModel from '../models/brandModel.js';
-import ModelModel from '../models/modelModel.js';
-import ProvinceModel from '../models/provinceModel.js';
-import DataModel from '../models/dataModel.js';
-
 // const BASE_URL = 'https://localhost:7230/VehicleRegistration';
 const BASE_URL = 'https://vehicleregistrationsapi-fhhpgkbtcafqgudp.spaincentral-01.azurewebsites.net/VehicleRegistration';
 
-
-export async function getTypes(id, name){
+async function getTypes(id, name){
     const data = [
         { id: 1, name: "Combustion" },
         { id: 2, name: "Híbrido" },
@@ -25,7 +17,7 @@ export async function getTypes(id, name){
 }
 
 // GetBrands
-export async function getBrands(id, name) {
+async function getBrands(id, name) {
     const url = new URL(`${BASE_URL}/GetBrands`);
     url.searchParams.append('Id', id);
     url.searchParams.append('Name', name);
@@ -47,7 +39,7 @@ export async function getBrands(id, name) {
 }
 
 // GetModels
-export async function getModels(id, name, brandId) {
+async function getModels(id, name, brandId) {
     const url = new URL(`${BASE_URL}/GetModels`);
     url.searchParams.append('Id', id);
     url.searchParams.append('Name', name);
@@ -70,7 +62,7 @@ export async function getModels(id, name, brandId) {
 }
 
 // GetProvinces
-export async function getProvinces(id, name) {
+async function getProvinces(id, name) {
     const url = new URL(`${BASE_URL}/GetProvinces`);
     url.searchParams.append('Id', id);
     url.searchParams.append('Name', name);
@@ -92,7 +84,7 @@ export async function getProvinces(id, name) {
 }
 
 //GetData
-export async function getData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
+async function getData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
     const url = new URL(`${BASE_URL}/GetData`);
     url.searchParams.append('RegistrationDateFrom', registrationDateFrom);
     url.searchParams.append('RegistrationDateTo', registrationDateTo);
@@ -116,7 +108,7 @@ export async function getData(registrationDateFrom, registrationDateTo, brandId,
 }
 
 //CompleteData
-export async function completeData(datas, brands, models, provinces, types){
+async function completeData(datas, brands, models, provinces, types){
     const brandMap = Object.fromEntries(brands.map(b => [b.id, b]));
     const modelMap = Object.fromEntries(models.map(m => [m.id, m]));
     const provinceMap = Object.fromEntries(provinces.map(p => [p.id, p]));

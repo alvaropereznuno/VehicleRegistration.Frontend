@@ -4,5 +4,3 @@ class TypeModel {
         this.name = name;
     }
 }
-
-export default TypeModel;

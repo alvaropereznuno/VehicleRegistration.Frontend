@@ -1,11 +1,11 @@
 //filterModels
-export async function filterModels(modelList, brandId) {
+async function filterModels(modelList, brandId) {
     const result = modelList.filter(m => m.brandId == brandId);
     return result;
 }
 
 //filterData
-export async function filterData(dataList, registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
+async function filterData(dataList, registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
     // Filtrar los datos y devolver un nuevo array
     const filteredDataList = dataList.filter(data => {
 

@@ -1,6 +1,4 @@
-import COLORS from "../models/constants/colors.js"
-
-export const vehiclesSoldType = {
+const vehiclesSoldType = {
     chart: null,
     create: (dataList, ctx) => {
         const config = {
@@ -76,7 +74,7 @@ export const vehiclesSoldType = {
     }
 }
 
-export const vehiclesSoldStackedType = {
+const vehiclesSoldStackedType = {
     chart: null,
     create: (dataList, ctx) => {
         const config = {
@@ -163,7 +161,7 @@ export const vehiclesSoldStackedType = {
     }
 }
 
-export const vehiclesTypes = {
+const vehiclesTypes = {
     chart: null,
     create: (dataList, ctx) => {
         const config = {
@@ -231,7 +229,7 @@ export const vehiclesTypes = {
     }
 }
 
-export const vehiclesBrands = {
+const vehiclesBrands = {
     chart: null,
     create: (dataList, ctx) => {
         const config = {
@@ -316,7 +314,7 @@ export const vehiclesBrands = {
     }
 }
 
-export const vehiclesModels = {
+const vehiclesModels = {
     chart: null,
     create: (dataList, ctx) => {
         const config = {

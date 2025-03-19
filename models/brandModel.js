@@ -4,5 +4,3 @@ class BrandModel {
         this.name = name;
     }
 }
-
-export default BrandModel;

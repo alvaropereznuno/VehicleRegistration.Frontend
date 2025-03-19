@@ -5,5 +5,3 @@ class ModelModel {
         this.brandId = brandId;
     }
 }
-
-export default ModelModel;

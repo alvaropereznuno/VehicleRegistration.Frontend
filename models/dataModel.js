@@ -12,5 +12,3 @@ class DataModel {
         this.count = count;
     }
 }
-
-export default DataModel;

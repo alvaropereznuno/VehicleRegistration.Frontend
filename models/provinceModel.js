@@ -4,5 +4,3 @@ class ProvinceModel {
         this.name = name;
     }
 }
-
-export default ProvinceModel;

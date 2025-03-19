@@ -27,5 +27,3 @@ const COLORS = {
         LIME: 'rgba(162, 190, 0, 1)'
     }
 };
-
-export default COLORS;
