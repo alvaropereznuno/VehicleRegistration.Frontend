@@ -72,13 +72,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadingScreen.style.display = "flex";
 
     // Realizar peticiones al servidor
-    const typeList = await getTypes('', '');
-    const brandList = await getBrands('', '');
-    const modelList = await getModels('', '', '');
-    const provinceList = await getProvinces('', '');
+    typeList = await getTypes('', '');
+    brandList = await getBrands('', '');
+    modelList = await getModels('', '', '');
+    provinceList = await getProvinces('', '');
 
     // Get OriginalData
-    let originalData = await getIndexedData();
+    originalData = await getIndexedData();
 
     if (!originalData) {
         console.log('Datos no encontrados en IndexedDB, realizando las peticiones...');
