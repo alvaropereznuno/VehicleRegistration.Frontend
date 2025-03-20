@@ -67,6 +67,10 @@ async function populateProvinces(list){
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    // Muestra el velo de carga
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.style.display = "flex";
+
     // Realizar peticiones al servidor
     const typeList = await getTypes('', '');
     const brandList = await getBrands('', '');
@@ -86,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         await setIndexedData(originalData);
         console.log('Datos almacenados en IndexedDB.');
     } else {
-        console.log('Datos obtenidos desde IndexedDB:', originalData);
+        console.log('Datos obtenidos desde IndexedDB.');
     }
 
     await populateTypes(typeList);
@@ -113,6 +117,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     vehiclesTypes.create(filteredData, document.getElementById('vehiclesTypes'));
     vehiclesBrands.create(filteredData, document.getElementById('vehiclesBrands'));
     vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
+
+    // Oculta el velo de carga
+    loadingScreen.style.display = "none";
 });
 
 // Eventos

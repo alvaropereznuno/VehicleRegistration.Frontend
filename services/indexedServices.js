@@ -31,8 +31,15 @@ export async function getIndexedData() {
         const request = store.get('originalData');
 
         request.onsuccess = () => {
-            let result = request.result.map(item => new DataModel(item.date, item.brandId, item.brandName, item.modelId, item.modelName, item.provinceId, item.provinceName, item.type, item.typeName, item.count));
-            resolve(result || null);
+            if (request.result != undefined)
+            {
+                let result = request.result.map(item => new DataModel(item.date, item.brandId, item.brandName, item.modelId, item.modelName, item.provinceId, item.provinceName, item.type, item.typeName, item.count));
+                resolve(result || null);
+            }
+            else
+            {
+                resolve(null);
+            }
         };
         request.onerror = () => {
             reject(request.error);
