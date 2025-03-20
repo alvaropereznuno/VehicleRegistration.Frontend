@@ -108,7 +108,7 @@ async function getData(registrationDateFrom, registrationDateTo, brandId, modelI
 }
 
 //CompleteData
-async function completeData(datas, brands, models, provinces, types){
+export async function completeData(datas, brands, models, provinces, types){
     const brandMap = Object.fromEntries(brands.map(b => [b.id, b]));
     const modelMap = Object.fromEntries(models.map(m => [m.id, m]));
     const provinceMap = Object.fromEntries(provinces.map(p => [p.id, p]));
