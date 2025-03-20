@@ -1,7 +1,7 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
-import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js"
-
+import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js";
+import { getIndexedData, setIndexedData } from './services/indexedServices.js';
 import DataModel from '../models/dataModel.js';
 
 let typeList;
@@ -67,13 +67,27 @@ async function populateProvinces(list){
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // Get parameters
-    typeList = await getTypes('', '');
-    brandList = await getBrands('', '');
-    modelList = await getModels('', '', '');
-    provinceList = await getProvinces('', '');
-    originalData = await getData('', '', '', '', '', '');
-    originalData = await completeData(originalData, brandList, modelList, provinceList, typeList);
+    // Realizar peticiones al servidor
+    const typeList = await getTypes('', '');
+    const brandList = await getBrands('', '');
+    const modelList = await getModels('', '', '');
+    const provinceList = await getProvinces('', '');
+
+    // Get OriginalData
+    let originalData = await getIndexedData();
+
+    if (!originalData) {
+        console.log('Datos no encontrados en IndexedDB, realizando las peticiones...');
+        
+        originalData = await getData('', '', '', '', '', '');
+        originalData = await completeData(originalData, brandList, modelList, provinceList, typeList);
+
+        // Guardar en IndexedDB para futuras consultas
+        await setIndexedData(originalData);
+        console.log('Datos almacenados en IndexedDB.');
+    } else {
+        console.log('Datos obtenidos desde IndexedDB:', originalData);
+    }
 
     await populateTypes(typeList);
     await populateBrands(brandList);
