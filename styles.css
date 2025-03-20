@@ -40,18 +40,45 @@ h3 {
 
 .filters-section {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    margin-top: 20px;
+    font-size: small;
+    font-family: 'Poppins', sans-serif;;
+}
+
+.form-control {
     font-family: 'Poppins', sans-serif;
-    color: rgb(51, 51, 51);
+    color: rgb(50, 50, 50);
+    font-size:smaller;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
+    border-bottom: 2px solid #e3e6ea;
+}
+
+.form-control:focus {
+    font-family: 'Poppins', sans-serif;
+    color: rgb(50, 50, 50);
+    font-size:smaller;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
+    border-bottom: 2px solid #e3e6ea;
+}
+
+.form-select {
+    font-family: 'Poppins', sans-serif;
+    color: rgb(50, 50, 50);
+    font-size:smaller;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
+    border-bottom: 2px solid #e3e6ea;
+}
+
+.form-select:focus {
+    font-family: 'Poppins', sans-serif;
+    color: rgb(50, 50, 50);
+    font-size:smaller;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
+    border-bottom: 2px solid #e3e6ea;
 }
 
 /* NUEVO HEADER FIJO */
 .hidden-header {
-    height: 60px;
+    height: 70px;
 }
 
 .fixed-header {

@@ -216,6 +216,11 @@ export const vehiclesTypes = {
             const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE];
             return colorOptions[index % colorOptions.length]; // Ciclar colores
         });
+
+        const bordersColors = labels.map((_, index) => {
+            const colorOptions = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores
+        });
     
         // 5. Retornar el objeto en el formato solicitado
         return {
@@ -225,6 +230,8 @@ export const vehiclesTypes = {
                     label: '',
                     data: data,
                     backgroundColor: colors,
+                    borderColor: bordersColors,
+                    borderWidth: 1
                 }
             ]
         };
@@ -301,6 +308,11 @@ export const vehiclesBrands = {
             const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK];
             return colorOptions[index % colorOptions.length]; // Ciclar colores si hay más de 6
         });
+
+        const bordersColors = labels.map((_, index) => {
+            const colorOptions = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores
+        });
     
         // 7. Retornar el objeto en el formato solicitado
         return {
@@ -309,7 +321,9 @@ export const vehiclesBrands = {
                 {
                     label: '',
                     data: data,
-                    backgroundColor: colors
+                    backgroundColor: colors,
+                    borderColor: bordersColors,
+                    borderWidth: 1
                 }
             ]
         }
@@ -339,7 +353,7 @@ export const vehiclesModels = {
                 },
                 title: {
                   display: true,
-                  text: 'Modelos de vehículos'
+                  text: 'Modelos más populares'
                 }
               }
             },
@@ -379,16 +393,21 @@ export const vehiclesModels = {
             const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK, COLORS.FILLED.GRAY, COLORS.FILLED.LIME];
             return colorOptions[index % colorOptions.length]; // Ciclar colores
         });
+
+        const bordersColors = labels.map((_, index) => {
+            const colorOptions = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK, COLORS.FILLED.GRAY, COLORS.FILLED.LIME];
+            return colorOptions[index % colorOptions.length]; // Ciclar colores
+        });
     
         // 4. Retornar la estructura final
         return {
             labels: labels,
             datasets: [
                 {
-                    label: "Modelos más populares", // Texto personalizado
+                    label: '', // Texto personalizado
                     data: data, // Totales por modelo
                     backgroundColor: colors,
-                    borderColor: colors,
+                    borderColor: bordersColors,
                     borderWidth: 1
                 }
             ]
