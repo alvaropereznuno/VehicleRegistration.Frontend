@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.getElementById("startDate").addEventListener("change", async (event) => {
     await updateFilters();
 });
-document.getElementById("endDate").addEventListener("endDate", async (event) => {
+document.getElementById("endDate").addEventListener("change", async (event) => {
     await updateFilters();
 });
 document.getElementById("cmbType").addEventListener("change", async (event) => {

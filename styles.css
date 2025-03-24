@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f9f9f9;
+    background-color: #8facd7;
     margin: 0;
     padding: 0;
     color: #333;
@@ -39,7 +39,6 @@ h3 {
 }
 
 .filters-section {
-    background: white;
     font-size: small;
     font-family: 'Poppins', sans-serif;;
 }
@@ -85,10 +84,10 @@ h3 {
     position: fixed;
     top: 0;
     width: 100%;
-    background: white;
+    background: #30425d;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #e3e6ea;
+    border-bottom: 2px solid #1f2b3d;
     padding: 10px 0;
 }
 

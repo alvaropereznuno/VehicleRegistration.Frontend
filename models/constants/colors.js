@@ -1,30 +1,30 @@
 // colors.js
 const COLORS = {
     FILLED: {
-        RED: 'rgba(255, 99, 132, 0.5)',
-        BLUE: 'rgba(54, 162, 235, 0.5)',
-        GREEN: 'rgba(75, 192, 192, 0.5)',
-        YELLOW: 'rgba(255, 206, 86, 0.5)',
-        ORANGE: 'rgba(221, 125, 0, 0.5)',
-        PURPLE: 'rgba(177, 0, 221, 0.5)',
-        CYAN: 'rgba(0, 214, 214, 0.5)',
-        PINK: 'rgba(214, 0, 168, 0.5)',
-        BLACK: 'rgba(0, 0, 0, 0.5)',
-        GRAY: 'rgba(136, 136, 136, 0.5)',
-        LIME: 'rgba(162, 190, 0, 0.5)'
+        RED: 'rgba(255, 59, 59, 0.7)',
+        BLUE: 'rgba(54, 122, 235, 0.7)',
+        GREEN: 'rgba(25, 192, 92, 0.7)',
+        YELLOW: 'rgba(255, 186, 36, 0.7)',
+        ORANGE: 'rgba(221, 85, 0, 0.7)',
+        PURPLE: 'rgba(137, 0, 181, 0.7)',
+        CYAN: 'rgba(0, 174, 174, 0.7)',
+        PINK: 'rgba(204, 0, 148, 0.7)',
+        BLACK: 'rgba(30, 30, 30, 0.7)',
+        GRAY: 'rgba(96, 96, 96, 0.7)',
+        LIME: 'rgba(132, 170, 0, 0.7)'
     },
     BORDER: {
-        RED: 'rgba(255, 99, 132, 1)',
-        BLUE: 'rgba(54, 162, 235, 1)',
-        GREEN: 'rgba(75, 192, 192, 1)',
-        YELLOW: 'rgba(255, 206, 86, 1)',
-        ORANGE: 'rgb(221, 125, 0, 1)',
-        PURPLE: 'rgba(177, 0, 221, 1)',
-        CYAN: 'rgba(0, 214, 214, 1)',
-        PINK: 'rgba(214, 0, 168, 1)',
-        BLACK: 'rgba(0, 0, 0, 1)',
-        GRAY: 'rgba(136, 136, 136, 1)',
-        LIME: 'rgba(162, 190, 0, 1)'
+        RED: 'rgba(255, 59, 59, 1)',
+        BLUE: 'rgba(54, 122, 235, 1)',
+        GREEN: 'rgba(25, 192, 92, 1)',
+        YELLOW: 'rgba(255, 186, 36, 1)',
+        ORANGE: 'rgba(221, 85, 0, 1)',
+        PURPLE: 'rgba(137, 0, 181, 1)',
+        CYAN: 'rgba(0, 174, 174, 1)',
+        PINK: 'rgba(204, 0, 148, 1)',
+        BLACK: 'rgba(30, 30, 30, 1)',
+        GRAY: 'rgba(96, 96, 96, 1)',
+        LIME: 'rgba(132, 170, 0, 1)'
     }
 };
 
