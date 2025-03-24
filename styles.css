@@ -38,6 +38,36 @@ h3 {
     height: 40vh;
 }
 
+@media (min-width: 1400px) {
+    .chart-xl {
+        height: 70vh;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .chart-xl {
+        height: 60vh;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .chart-xl {
+        height: 50vh;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .chart-container .chart {
+        height: 40vh;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .chart-container .chart {
+        height: 30vh;
+    }
+}
+
 .filters-section {
     font-size: small;
     font-family: 'Poppins', sans-serif;;

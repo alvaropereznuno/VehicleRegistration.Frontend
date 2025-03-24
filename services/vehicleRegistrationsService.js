@@ -4,6 +4,7 @@ import BrandModel from '../models/brandModel.js';
 import ModelModel from '../models/modelModel.js';
 import ProvinceModel from '../models/provinceModel.js';
 import DataModel from '../models/dataModel.js';
+import PROVINCES from '../models/constants/provinces.js';
 
 const BASE_URL = 'https://localhost:7230/Vehicle';
 // const BASE_URL = 'https://vehicleregistrationsapi-fhhpgkbtcafqgudp.spaincentral-01.azurewebsites.net/VehicleRegistration';
@@ -71,58 +72,7 @@ export async function getModels(id, name, brandId) {
 
 // GetProvinces
 export async function getProvinces(id, name) {
-    const data = [
-        { code: "B", name: "Barcelona" },
-        { code: "BA", name: "Badajoz" },
-        { code: "BI", name: "Bizcaia" },
-        { code: "BU", name: "Burgos" },
-        { code: "C", name: "A Coruña" },
-        { code: "CA", name: "Cádiz" },
-        { code: "CC", name: "Cáceres" },
-        { code: "CE", name: "Ceuta" },
-        { code: "CO", name: "Córdoba" },
-        { code: "CR", name: "Ciudad Real" },
-        { code: "CS", name: "Castellón/Castelló" },
-        { code: "CU", name: "Cuenca" },
-        { code: "DS", name: "Desconocido" },
-        { code: "EX", name: "Extranjero" },
-        { code: "GC", name: "Las Palmas" },
-        { code: "GI", name: "Girona" },
-        { code: "GR", name: "Granada" },
-        { code: "GU", name: "Guadalajara" },
-        { code: "H", name: "Huelva" },
-        { code: "HU", name: "Huesca" },
-        { code: "J", name: "Jaén" },
-        { code: "L", name: "Lleida" },
-        { code: "LE", name: "León" },
-        { code: "LO", name: "La Rioja" },
-        { code: "LU", name: "Lugo" },
-        { code: "M", name: "Madrid" },
-        { code: "MA", name: "Málaga" },
-        { code: "ML", name: "Melilla" },
-        { code: "MU", name: "Murcia" },
-        { code: "NA", name: "Navarra" },
-        { code: "O", name: "Asturias" },
-        { code: "OU", name: "Ourense" },
-        { code: "P", name: "Palencia" },
-        { code: "IB", name: "Illes Balears" },
-        { code: "PO", name: "Pontevedra" },
-        { code: "S", name: "Cantabria" },
-        { code: "SA", name: "Salamanca" },
-        { code: "SE", name: "Sevilla" },
-        { code: "SG", name: "Segovia" },
-        { code: "SO", name: "Soria" },
-        { code: "SS", name: "Gipuzkoa" },
-        { code: "T", name: "Tarragona" },
-        { code: "TE", name: "Teruel" },
-        { code: "TF", name: "Santa Cruz de Tenerife" },
-        { code: "TO", name: "Toledo" },
-        { code: "V", name: "Valencia/València" },
-        { code: "VA", name: "Valladolid" },
-        { code: "VI", name: "Araba/Álava" },
-        { code: "Z", name: "Zamora" },
-        { code: "ZA", name: "Zaragoza" }
-    ];
+    const data = PROVINCES;
 
     return data
         .map(item => new ProvinceModel(item.code, item.name))

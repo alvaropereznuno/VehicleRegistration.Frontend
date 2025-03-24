@@ -1,4 +1,5 @@
 import COLORS from "../models/constants/colors.js"
+import PROVINCES from "../models/constants/provinces.js"
 
 export const vehiclesSoldType = {
     chart: null,
@@ -524,6 +525,86 @@ export const vehiclesStackedModels = {
             datasets: datasets
         };
     }    
+}
+
+export const vehiclesMap = {
+    chart: null,
+    create: async (dataList, ctx) => {
+        const config = {
+            type: 'choropleth',
+            data: await vehiclesMap.groupData(dataList),
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        }
+                    }
+                },
+                scales: {
+                    projection: {
+                        axis: 'x',
+                        projection: ChartGeo.geoMercator(),
+                        scale: 1000
+                    }
+                }
+            }
+        };
+    
+        vehiclesMap.chart = new Chart(ctx, config);
+    },
+    update: async (dataList) => {
+        if (vehiclesMap.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesMap.chart.data = await vehiclesMap.groupData(dataList);
+            vehiclesMap.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: async (dataList) => {
+        const spainMap = await fetch('/models/constants/esp.json').then(r => {
+            return r.json();
+        }).catch(e =>
+            console.log(e));
+
+        const groupByProvinces = dataList.reduce((result, item) => {
+            if (result[item.provinceName]) {
+                result[item.provinceName] += item.count;
+            } else {
+                result[item.provinceName] = item.count;
+            }
+            return result;
+        }, {});
+
+        const labels = spainMap.features.map(m => m.properties.name);
+        const datasets = [
+            {
+                outline: spainMap,
+                data: spainMap.features.map((d) => {
+                    const value = groupByProvinces[d.properties.name] || 0;
+                    return {
+                        feature: d,
+                        value: value,
+                    };
+                })
+            },
+        ]
+
+        return {
+            labels: labels,
+            datasets: datasets,
+        };
+    }
 }
 
 function formatDate(date){

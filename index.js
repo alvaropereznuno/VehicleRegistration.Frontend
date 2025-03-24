@@ -1,6 +1,6 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
-import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesBrands, vehiclesStackedBrands, vehiclesModels, vehiclesStackedModels } from "./services/dashboardServices.js";
+import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesBrands, vehiclesStackedBrands, vehiclesModels, vehiclesStackedModels, vehiclesMap } from "./services/dashboardServices.js";
 import { getIndexedData, setIndexedData } from './services/indexedServices.js';
 import DataModel from '../models/dataModel.js';
 
@@ -11,8 +11,6 @@ let provinceList;
 
 let originalData;
 let filteredData;
-
-let vehiclesSoldType_Chart;
 
 async function populateTypes(list){
     const select = document.getElementById("cmbType");
@@ -118,6 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     vehiclesStackedBrands.create(filteredData, document.getElementById('vehiclesStackedBrands'));
     vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
     vehiclesStackedModels.create(filteredData, document.getElementById('vehiclesStackedModels'));
+    vehiclesMap.create(filteredData, document.getElementById('vehiclesMap'));
 
     // Oculta el velo de carga
     loadingScreen.style.display = "none";
@@ -166,4 +165,5 @@ async function updateFilters(){
     vehiclesStackedBrands.update(filteredData);
     vehiclesModels.update(filteredData);
     vehiclesStackedModels.update(filteredData);
+    vehiclesMap.update(filteredData);
 }
