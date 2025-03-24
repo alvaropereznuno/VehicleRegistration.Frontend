@@ -1,6 +1,6 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
-import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js";
+import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesBrands, vehiclesStackedBrands, vehiclesModels, vehiclesStackedModels } from "./services/dashboardServices.js";
 import { getIndexedData, setIndexedData } from './services/indexedServices.js';
 import DataModel from '../models/dataModel.js';
 
@@ -114,9 +114,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     vehiclesSoldType.create(filteredData, document.getElementById('vehiclesSoldType'));
     vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
-    vehiclesTypes.create(filteredData, document.getElementById('vehiclesTypes'));
     vehiclesBrands.create(filteredData, document.getElementById('vehiclesBrands'));
+    vehiclesStackedBrands.create(filteredData, document.getElementById('vehiclesStackedBrands'));
     vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
+    vehiclesStackedModels.create(filteredData, document.getElementById('vehiclesStackedModels'));
 
     // Oculta el velo de carga
     loadingScreen.style.display = "none";
@@ -161,7 +162,8 @@ async function updateFilters(){
     
     vehiclesSoldType.update(filteredData);
     vehiclesSoldStackedType.update(filteredData);
-    vehiclesTypes.update(filteredData);
     vehiclesBrands.update(filteredData);
+    vehiclesStackedBrands.update(filteredData);
     vehiclesModels.update(filteredData);
+    vehiclesStackedModels.update(filteredData);
 }
