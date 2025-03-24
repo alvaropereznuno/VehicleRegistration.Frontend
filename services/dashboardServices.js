@@ -10,7 +10,7 @@ export const vehiclesSoldType = {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Vehículos matriculados por tipo'
+                        text: 'Matriculaciones por tipo'
                     },
                 },
                 responsive: true,
@@ -178,7 +178,7 @@ export const vehiclesBrands = {
                     },
                     title: {
                         display: true,
-                        text: 'Marcas de vehículos'
+                        text: 'Matriculaciones por marcas'
                     }
                 }
             },
@@ -371,7 +371,7 @@ export const vehiclesModels = {
                 },
                 title: {
                   display: true,
-                  text: 'Modelos más populares'
+                  text: 'Matriculaciones por modelos (Top populares)'
                 }
               }
             },
@@ -445,7 +445,7 @@ export const vehiclesStackedModels = {
                 plugins: {
                 title: {
                     display: true,
-                    text: (ctx) => 'Matriculaciones acumuladas por marca'
+                    text: (ctx) => 'Matriculaciones acumuladas por modelo (Top populares)'
                 },
                 tooltip: { mode: 'index' },
                 },
