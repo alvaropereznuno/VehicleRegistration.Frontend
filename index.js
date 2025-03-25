@@ -64,51 +64,11 @@ async function populateProvinces(list){
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     // Muestra el velo de carga
     const loadingScreen = document.getElementById("loadingScreen");
     loadingScreen.style.display = "flex";
 
-    // Realizar peticiones al servidor
-    typeList = await getTypes('', '');
-    brandList = await getBrands('', '');
-    modelList = await getModels('', '', '');
-    provinceList = await getProvinces('', '');
-
-    // Get OriginalData
-    originalData = await getIndexedData();
-
-    if (!originalData) {
-        console.log('Datos no encontrados en IndexedDB, realizando las peticiones...');
-        
-        originalData = await getData('', '', '', '', '', '');
-        originalData = await completeData(originalData, brandList, modelList, provinceList, typeList);
-
-        // Guardar en IndexedDB para futuras consultas
-        await setIndexedData(originalData);
-        console.log('Datos almacenados en IndexedDB.');
-    } else {
-        console.log('Datos obtenidos desde IndexedDB.');
-    }
-
-    await populateTypes(typeList);
-    await populateBrands(brandList);
-    await populateProvinces(provinceList);
-
-    filteredData = originalData.map(data => 
-        new DataModel(
-            data.date,
-            data.brandId,
-            data.brandName,
-            data.modelId,
-            data.modelName,
-            data.provinceId,
-            data.provinceName,
-            data.type,
-            data.typeName,
-            data.count
-        )
-    );
+    await loadDashboard();
 
     vehiclesSoldType.create(filteredData, document.getElementById('vehiclesSoldType'));
     vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
@@ -144,6 +104,59 @@ document.getElementById("cmbModel").addEventListener("change", async (event) => 
 document.getElementById("cmbProvince").addEventListener("change", async (event) => {
     await updateFilters();
 });
+document.getElementById("btnRefreshDashboard").addEventListener("click", async (event) => {
+    // Muestra el velo de carga
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.style.display = "flex";
+
+    await loadDashboard(true);
+
+    // Oculta el velo de carga
+    loadingScreen.style.display = "none";
+});
+
+async function loadDashboard(force = false){
+    // Realizar peticiones al servidor
+    typeList = await getTypes('', '');
+    brandList = await getBrands('', '');
+    modelList = await getModels('', '', '');
+    provinceList = await getProvinces('', '');
+
+    // Get OriginalData
+    originalData = await getIndexedData();
+
+    if (force || !originalData) {
+        console.log('Datos no encontrados en IndexedDB, realizando las peticiones...');
+        
+        originalData = await getData('', '', '', '', '', '');
+        originalData = await completeData(originalData, brandList, modelList, provinceList, typeList);
+
+        // Guardar en IndexedDB para futuras consultas
+        await setIndexedData(originalData);
+        console.log('Datos almacenados en IndexedDB.');
+    } else {
+        console.log('Datos obtenidos desde IndexedDB.');
+    }
+
+    await populateTypes(typeList);
+    await populateBrands(brandList);
+    await populateProvinces(provinceList);
+
+    filteredData = originalData.map(data => 
+        new DataModel(
+            data.date,
+            data.brandId,
+            data.brandName,
+            data.modelId,
+            data.modelName,
+            data.provinceId,
+            data.provinceName,
+            data.type,
+            data.typeName,
+            data.count
+        )
+    );
+}
 
 async function updateFilters(){
     // Obtén los valores seleccionados de los combos

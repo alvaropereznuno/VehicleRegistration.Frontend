@@ -229,3 +229,12 @@ h3 {
         transform: scale(1);
     }
 }
+
+.refreshDashboard {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1rem;
+    color: #30425d;
+    cursor: pointer;
+}
