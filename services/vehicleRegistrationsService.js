@@ -4,9 +4,10 @@ import BrandModel from '../models/brandModel.js';
 import ModelModel from '../models/modelModel.js';
 import ProvinceModel from '../models/provinceModel.js';
 import DataModel from '../models/dataModel.js';
+import PROVINCES from '../models/constants/provinces.js';
 
-// const BASE_URL = 'https://localhost:7230/VehicleRegistration';
-const BASE_URL = 'https://vehicleregistrationsapi-fhhpgkbtcafqgudp.spaincentral-01.azurewebsites.net/VehicleRegistration';
+// const BASE_URL = 'https://localhost:7230/Vehicle';
+const BASE_URL = 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/Vehicle';
 
 
 export async function getTypes(id, name){
@@ -38,7 +39,7 @@ export async function getBrands(id, name) {
         const data = await response.json();
 
         return data
-            .map(item => new BrandModel(item.id, item.name))
+            .map(item => new BrandModel(item.I, item.D))
             .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener las marcas:', error);
@@ -61,7 +62,7 @@ export async function getModels(id, name, brandId) {
         const data = await response.json();
 
         return data
-            .map(item => new ModelModel(item.id, item.name, item.brandId))
+            .map(item => new ModelModel(item.I, item.D, item.R))
             .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener los modelos:', error);
@@ -71,34 +72,22 @@ export async function getModels(id, name, brandId) {
 
 // GetProvinces
 export async function getProvinces(id, name) {
-    const url = new URL(`${BASE_URL}/GetProvinces`);
-    url.searchParams.append('Id', id);
-    url.searchParams.append('Name', name);
+    const data = PROVINCES;
 
-    try {
-        const response = await fetch(url.toString());
-        if (!response.ok) {
-            throw new Error(`Error en la solicitud: ${response.statusText}`);
-        }
-        const data = await response.json();
+    return data
+        .map(item => new ProvinceModel(item.code, item.name))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-        return data
-            .map(item => new ProvinceModel(item.id, item.name))
-            .sort((a, b) => a.name.localeCompare(b.name));
-    } catch (error) {
-        console.error('Error al obtener las provincias:', error);
-        throw error;
-    }
 }
 
 //GetData
-export async function getData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceId, type) {
-    const url = new URL(`${BASE_URL}/GetData`);
+export async function getData(registrationDateFrom, registrationDateTo, brandId, modelId, provinceCode, type) {
+    const url = new URL(`${BASE_URL}/GetVehicles`);
     url.searchParams.append('RegistrationDateFrom', registrationDateFrom);
     url.searchParams.append('RegistrationDateTo', registrationDateTo);
     url.searchParams.append('BrandId', brandId);
     url.searchParams.append('ModelId', modelId);
-    url.searchParams.append('ProvinceId', provinceId);
+    url.searchParams.append('ProvinceCode', provinceCode);
     url.searchParams.append('Type', type);
 
     try {

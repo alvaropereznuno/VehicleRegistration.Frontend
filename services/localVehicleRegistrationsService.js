@@ -10,8 +10,8 @@ export async function filterData(dataList, registrationDateFrom, registrationDat
     const filteredDataList = dataList.filter(data => {
 
         // Validar cada condición, ignorando filtros vacíos
-        const matchDateFrom = registrationDateFrom && registrationDateFrom !== '' ? data.date >= registrationDateFrom : true;
-        const matchDateTo = registrationDateTo && registrationDateTo !== '' ? data.date <= registrationDateTo : true;
+        const matchDateFrom = registrationDateFrom && registrationDateFrom !== '' ? new Date(data.date).setHours(0, 0, 0, 0) >= new Date(registrationDateFrom).setHours(0, 0, 0, 0) : true;
+        const matchDateTo = registrationDateTo && registrationDateTo !== '' ? new Date(data.date).setHours(0, 0, 0, 0) <= new Date(registrationDateTo).setHours(0, 0, 0, 0) : true;
         const matchesBrand = brandId && brandId !== '' ? data.brandId == brandId : true;
         const matchesModel = modelId && modelId !== '' ? data.modelId == modelId : true;
         const matchesProvince = provinceId && provinceId !== '' ? data.provinceId == provinceId : true;

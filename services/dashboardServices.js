@@ -1,4 +1,5 @@
 import COLORS from "../models/constants/colors.js"
+import PROVINCES from "../models/constants/provinces.js"
 
 export const vehiclesSoldType = {
     chart: null,
@@ -10,7 +11,7 @@ export const vehiclesSoldType = {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Vehículos matriculados por tipo'
+                        text: 'Matriculaciones por tipo'
                     },
                 },
                 responsive: true,
@@ -104,7 +105,7 @@ export const vehiclesSoldStackedType = {
             }
           };
     
-          vehiclesSoldStackedType.chart = new Chart(ctx, config);
+        vehiclesSoldStackedType.chart = new Chart(ctx, config);
     },
     update: (dataList) => {
         if (vehiclesSoldStackedType.chart) {
@@ -163,81 +164,6 @@ export const vehiclesSoldStackedType = {
     }
 }
 
-export const vehiclesTypes = {
-    chart: null,
-    create: (dataList, ctx) => {
-        const config = {
-            type: 'pie',
-            data: vehiclesTypes.groupData(dataList),
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Tipos de vehículos'
-                    }
-                }
-            },
-        };
-    
-        vehiclesTypes.chart = new Chart(ctx, config);
-    },
-    update: (dataList) => {
-        if (vehiclesTypes.chart) {
-            // Actualiza la data del Chart usando el método update
-            vehiclesTypes.chart.data = vehiclesTypes.groupData(dataList);
-            vehiclesTypes.chart.update();
-        } else {
-            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-        }
-    },
-    groupData: (dataList) => {
-        // 1. Agrupar por: typeName y contar los totales
-        const typeGroups = {};
-        dataList.forEach(item => {
-            if (!typeGroups[item.typeName]) {
-                typeGroups[item.typeName] = 0; // Inicializar contador
-            }
-            typeGroups[item.typeName] += item.count; // Sumar el valor actual
-        });
-    
-        // 2. Crear el array de labels (los nombres de los tipos)
-        const labels = Object.keys(typeGroups);
-    
-        // 3. Crear el array de datos (totales en el mismo orden que los labels)
-        const data = labels.map(typeName => typeGroups[typeName]);
-    
-        // 4. Crear el array de colores para cada tipo
-        const colors = labels.map((_, index) => {
-            const colorOptions = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE];
-            return colorOptions[index % colorOptions.length]; // Ciclar colores
-        });
-
-        const bordersColors = labels.map((_, index) => {
-            const colorOptions = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE];
-            return colorOptions[index % colorOptions.length]; // Ciclar colores
-        });
-    
-        // 5. Retornar el objeto en el formato solicitado
-        return {
-            labels: labels,
-            datasets: [
-                {
-                    label: '',
-                    data: data,
-                    backgroundColor: colors,
-                    borderColor: bordersColors,
-                    borderWidth: 1
-                }
-            ]
-        };
-    }
-}
-
 export const vehiclesBrands = {
     chart: null,
     create: (dataList, ctx) => {
@@ -253,7 +179,7 @@ export const vehiclesBrands = {
                     },
                     title: {
                         display: true,
-                        text: 'Marcas de vehículos'
+                        text: 'Matriculaciones por marcas'
                     }
                 }
             },
@@ -330,6 +256,99 @@ export const vehiclesBrands = {
     }
 }
 
+export const vehiclesStackedBrands = {
+    chart: null,
+    create: (dataList, ctx) => {
+        const config = {
+            type: 'line',
+            data: vehiclesStackedBrands.groupData(dataList),
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                title: {
+                    display: true,
+                    text: (ctx) => 'Matriculaciones acumuladas por marca'
+                },
+                tooltip: { mode: 'index' },
+                },
+                interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+                },
+                scales: {
+                    x: { stacked: false, },
+                    y: { stacked: false }
+                }
+            }
+            };
+    
+            vehiclesStackedBrands.chart = new Chart(ctx, config);
+    },
+    update: (dataList) => {
+        if (vehiclesStackedBrands.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesStackedBrands.chart.data = vehiclesStackedBrands.groupData(dataList);
+            vehiclesStackedBrands.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: (dataList) => {
+        // 1. Extraer todas las fechas únicas en el formato mm/yyyy
+        const labels = [...new Set(dataList.map(item => formatDate(item.date)))]
+            .sort((a, b) => {
+                const [monthA, yearA] = a.split('/').map(Number);
+                const [monthB, yearB] = b.split('/').map(Number);
+                return yearA - yearB || monthA - monthB;
+            });
+    
+        // 2. Agrupar por brandName e inicializar datos acumulativos
+        const typeGroups = {};
+        dataList.forEach(item => {
+            if (!typeGroups[item.brandName]) {
+                typeGroups[item.brandName] = { brandName: item.brandName, data: {}, total: 0 };
+            }
+    
+            const formattedDate = formatDate(item.date);
+            const count = item.count || 0;
+            typeGroups[item.brandName].data[formattedDate] = (typeGroups[item.brandName].data[formattedDate] || 0) + count;
+            typeGroups[item.brandName].total += count; // Acumular el total para este brandName
+        });
+    
+        // 3. Ordenar los grupos por el total acumulado y seleccionar los 8 primeros
+        const topTypeGroups = Object.values(typeGroups)
+            .sort((a, b) => b.total - a.total) // Ordenar de mayor a menor por el total acumulado
+            .slice(0, 8); // Seleccionar los primeros 8
+    
+        // 4. Crear datasets en el formato deseado
+        const colors = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK];
+        const borderColors = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE, COLORS.BORDER.PURPLE, COLORS.BORDER.CYAN, COLORS.BORDER.PINK, COLORS.BORDER.BLACK];
+    
+        const datasets = topTypeGroups.map((group, index) => {
+            let cumulativeSum = 0; // Variable para llevar el acumulado
+    
+            return {
+                label: group.brandName,
+                data: labels.map(label => {
+                    cumulativeSum += group.data[label] || 0; // Sumar acumulativamente
+                    return cumulativeSum;
+                }),
+                backgroundColor: colors[index % colors.length],
+                borderColor: borderColors[index % borderColors.length],
+                borderWidth: 1
+            };
+        });
+    
+        // 5. Retornar la estructura final
+        return {
+            labels: labels,
+            datasets: datasets
+        };
+    }    
+}
+
 export const vehiclesModels = {
     chart: null,
     create: (dataList, ctx) => {
@@ -349,11 +368,11 @@ export const vehiclesModels = {
               maintainAspectRatio: false,
               plugins: {
                 legend: {
-                  position: 'right',
+                  display: false,
                 },
                 title: {
                   display: true,
-                  text: 'Modelos más populares'
+                  text: 'Matriculaciones por modelos (Top populares)'
                 }
               }
             },
@@ -383,7 +402,7 @@ export const vehiclesModels = {
         // 2. Seleccionar los 8 modelos con mayor valor total, ordenados de mayor a menor
         const sortedModels = Object.values(modelGroups)
             .sort((a, b) => b.total - a.total) // Ordenar por total descendente
-            .slice(0, 10); // Tomar los 10 primeros modelos
+            .slice(0, 12); // Tomar los 12 primeros modelos
     
         // 3. Crear labels y datasets en el formato deseado
         const labels = sortedModels.map(group => group.modelName); // Los nombres de los modelos
@@ -411,6 +430,179 @@ export const vehiclesModels = {
                     borderWidth: 1
                 }
             ]
+        };
+    }
+}
+
+export const vehiclesStackedModels = {
+    chart: null,
+    create: (dataList, ctx) => {
+        const config = {
+            type: 'line',
+            data: vehiclesStackedModels.groupData(dataList),
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                title: {
+                    display: true,
+                    text: (ctx) => 'Matriculaciones acumuladas por modelo (Top populares)'
+                },
+                tooltip: { mode: 'index' },
+                },
+                interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+                },
+                scales: {
+                    x: { stacked: false, },
+                    y: { stacked: false }
+                }
+            }
+            };
+    
+            vehiclesStackedModels.chart = new Chart(ctx, config);
+    },
+    update: (dataList) => {
+        if (vehiclesStackedModels.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesStackedModels.chart.data = vehiclesStackedModels.groupData(dataList);
+            vehiclesStackedModels.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: (dataList) => {
+        // 1. Extraer todas las fechas únicas en el formato mm/yyyy
+        const labels = [...new Set(dataList.map(item => formatDate(item.date)))]
+            .sort((a, b) => {
+                const [monthA, yearA] = a.split('/').map(Number);
+                const [monthB, yearB] = b.split('/').map(Number);
+                return yearA - yearB || monthA - monthB;
+            });
+    
+        // 2. Agrupar por modelName e inicializar datos acumulativos
+        const typeGroups = {};
+        dataList.forEach(item => {
+            if (!typeGroups[item.modelName]) {
+                typeGroups[item.modelName] = { modelName: item.modelName, data: {}, total: 0 };
+            }
+    
+            const formattedDate = formatDate(item.date);
+            const count = item.count || 0;
+            typeGroups[item.modelName].data[formattedDate] = (typeGroups[item.modelName].data[formattedDate] || 0) + count;
+            typeGroups[item.modelName].total += count; // Acumular el total para este modelName
+        });
+    
+        // 3. Ordenar los grupos por el total acumulado y seleccionar los 8 primeros
+        const topTypeGroups = Object.values(typeGroups)
+            .sort((a, b) => b.total - a.total) // Ordenar de mayor a menor por el total acumulado
+            .slice(0, 8); // Seleccionar los primeros 8
+    
+        // 4. Crear datasets en el formato deseado
+        const colors = [COLORS.FILLED.RED, COLORS.FILLED.BLUE, COLORS.FILLED.YELLOW, COLORS.FILLED.GREEN, COLORS.FILLED.ORANGE, COLORS.FILLED.PURPLE, COLORS.FILLED.CYAN, COLORS.FILLED.PINK, COLORS.FILLED.BLACK];
+        const borderColors = [COLORS.BORDER.RED, COLORS.BORDER.BLUE, COLORS.BORDER.YELLOW, COLORS.BORDER.GREEN, COLORS.BORDER.ORANGE, COLORS.BORDER.PURPLE, COLORS.BORDER.CYAN, COLORS.BORDER.PINK, COLORS.BORDER.BLACK];
+    
+        const datasets = topTypeGroups.map((group, index) => {
+            let cumulativeSum = 0; // Variable para llevar el acumulado
+    
+            return {
+                label: group.modelName,
+                data: labels.map(label => {
+                    cumulativeSum += group.data[label] || 0; // Sumar acumulativamente
+                    return cumulativeSum;
+                }),
+                backgroundColor: colors[index % colors.length],
+                borderColor: borderColors[index % borderColors.length],
+                borderWidth: 1
+            };
+        });
+    
+        // 5. Retornar la estructura final
+        return {
+            labels: labels,
+            datasets: datasets
+        };
+    }    
+}
+
+export const vehiclesMap = {
+    chart: null,
+    create: async (dataList, ctx) => {
+        const config = {
+            type: 'choropleth',
+            data: await vehiclesMap.groupData(dataList),
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        }
+                    }
+                },
+                scales: {
+                    projection: {
+                        axis: 'x',
+                        projection: ChartGeo.geoMercator(),
+                        scale: 1000
+                    }
+                }
+            }
+        };
+    
+        vehiclesMap.chart = new Chart(ctx, config);
+    },
+    update: async (dataList) => {
+        if (vehiclesMap.chart) {
+            // Actualiza la data del Chart usando el método update
+            vehiclesMap.chart.data = await vehiclesMap.groupData(dataList);
+            vehiclesMap.chart.update();
+        } else {
+            console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+        }
+    },
+    groupData: async (dataList) => {
+        const spainMap = await fetch('/models/constants/esp.json').then(r => {
+            return r.json();
+        }).catch(e =>
+            console.log(e));
+
+        const groupByProvinces = dataList.reduce((result, item) => {
+            if (result[item.provinceName]) {
+                result[item.provinceName] += item.count;
+            } else {
+                result[item.provinceName] = item.count;
+            }
+            return result;
+        }, {});
+
+        const labels = spainMap.features.map(m => m.properties.name);
+        const datasets = [
+            {
+                outline: spainMap,
+                data: spainMap.features.map((d) => {
+                    const value = groupByProvinces[d.properties.name] || 0;
+                    return {
+                        feature: d,
+                        value: value,
+                    };
+                })
+            },
+        ]
+
+        return {
+            labels: labels,
+            datasets: datasets,
         };
     }
 }

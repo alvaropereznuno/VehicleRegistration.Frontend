@@ -1,6 +1,6 @@
 import { getTypes, getBrands, getModels, getProvinces, getData, completeData } from "./services/vehicleRegistrationsService.js";
 import { filterModels, filterData } from "./services/localVehicleRegistrationsService.js";
-import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesTypes, vehiclesBrands, vehiclesModels } from "./services/dashboardServices.js";
+import { vehiclesSoldType, vehiclesSoldStackedType, vehiclesBrands, vehiclesStackedBrands, vehiclesModels, vehiclesStackedModels, vehiclesMap } from "./services/dashboardServices.js";
 import { getIndexedData, setIndexedData } from './services/indexedServices.js';
 import DataModel from '../models/dataModel.js';
 
@@ -11,8 +11,6 @@ let provinceList;
 
 let originalData;
 let filteredData;
-
-let vehiclesSoldType_Chart;
 
 async function populateTypes(list){
     const select = document.getElementById("cmbType");
@@ -66,11 +64,58 @@ async function populateProvinces(list){
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     // Muestra el velo de carga
     const loadingScreen = document.getElementById("loadingScreen");
     loadingScreen.style.display = "flex";
 
+    await loadDashboard();
+
+    vehiclesSoldType.create(filteredData, document.getElementById('vehiclesSoldType'));
+    vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
+    vehiclesBrands.create(filteredData, document.getElementById('vehiclesBrands'));
+    vehiclesStackedBrands.create(filteredData, document.getElementById('vehiclesStackedBrands'));
+    vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
+    vehiclesStackedModels.create(filteredData, document.getElementById('vehiclesStackedModels'));
+    vehiclesMap.create(filteredData, document.getElementById('vehiclesMap'));
+
+    // Oculta el velo de carga
+    loadingScreen.style.display = "none";
+});
+
+// Eventos
+document.getElementById("startDate").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("endDate").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("cmbType").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("cmbBrand").addEventListener("change", async (event) => {
+    const brandId = event.target.value;
+
+    await populateModels(modelList, brandId);
+    await updateFilters();
+});
+document.getElementById("cmbModel").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("cmbProvince").addEventListener("change", async (event) => {
+    await updateFilters();
+});
+document.getElementById("btnRefreshDashboard").addEventListener("click", async (event) => {
+    // Muestra el velo de carga
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.style.display = "flex";
+
+    await loadDashboard(true);
+
+    // Oculta el velo de carga
+    loadingScreen.style.display = "none";
+});
+
+async function loadDashboard(force = false){
     // Realizar peticiones al servidor
     typeList = await getTypes('', '');
     brandList = await getBrands('', '');
@@ -80,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Get OriginalData
     originalData = await getIndexedData();
 
-    if (!originalData) {
+    if (force || !originalData) {
         console.log('Datos no encontrados en IndexedDB, realizando las peticiones...');
         
         originalData = await getData('', '', '', '', '', '');
@@ -111,39 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             data.count
         )
     );
-
-    vehiclesSoldType.create(filteredData, document.getElementById('vehiclesSoldType'));
-    vehiclesSoldStackedType.create(filteredData, document.getElementById('vehiclesSoldStackedType'));
-    vehiclesTypes.create(filteredData, document.getElementById('vehiclesTypes'));
-    vehiclesBrands.create(filteredData, document.getElementById('vehiclesBrands'));
-    vehiclesModels.create(filteredData, document.getElementById('vehiclesModels'));
-
-    // Oculta el velo de carga
-    loadingScreen.style.display = "none";
-});
-
-// Eventos
-document.getElementById("startDate").addEventListener("change", async (event) => {
-    await updateFilters();
-});
-document.getElementById("endDate").addEventListener("endDate", async (event) => {
-    await updateFilters();
-});
-document.getElementById("cmbType").addEventListener("change", async (event) => {
-    await updateFilters();
-});
-document.getElementById("cmbBrand").addEventListener("change", async (event) => {
-    const brandId = event.target.value;
-
-    await populateModels(modelList, brandId);
-    await updateFilters();
-});
-document.getElementById("cmbModel").addEventListener("change", async (event) => {
-    await updateFilters();
-});
-document.getElementById("cmbProvince").addEventListener("change", async (event) => {
-    await updateFilters();
-});
+}
 
 async function updateFilters(){
     // Obtén los valores seleccionados de los combos
@@ -161,7 +174,9 @@ async function updateFilters(){
     
     vehiclesSoldType.update(filteredData);
     vehiclesSoldStackedType.update(filteredData);
-    vehiclesTypes.update(filteredData);
     vehiclesBrands.update(filteredData);
+    vehiclesStackedBrands.update(filteredData);
     vehiclesModels.update(filteredData);
+    vehiclesStackedModels.update(filteredData);
+    vehiclesMap.update(filteredData);
 }
