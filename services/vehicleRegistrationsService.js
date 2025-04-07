@@ -62,7 +62,7 @@ export async function getModels(id, name, brandId) {
         const data = await response.json();
 
         return data
-            .map(item => new ModelModel(item.I, item.D, item.R))
+            .map(item => new ModelModel(item.I, item.D, item.R, item.XB))
             .sort((a, b) => a.name.localeCompare(b.name));
     } catch (error) {
         console.error('Error al obtener los modelos:', error);

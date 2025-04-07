@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.getElementById("btnSearch").addEventListener("click", async (event) => {
     const model = document.getElementById("txtModel").value;
     
-    const models = await synonyms.search(model);
+    const models = await synonyms.searchModels(model);
 
     tbSynonyms.updateConfig({
         data: models.map(m => [m.id, m.name, brands.find(b => b.id === m.brandId).name + ' (' + m.brandId + ')']),
@@ -96,6 +96,7 @@ document.getElementById("btnSynonymsSave").addEventListener("click", async (even
 
     document.getElementById("txtFather").value = '';
     document.getElementById("txtSynonyms").value = '';
+    btnSynonymsSave.disabled = true;
 
     // Oculta el velo de carga
     loadingScreen.style.display = "none";
