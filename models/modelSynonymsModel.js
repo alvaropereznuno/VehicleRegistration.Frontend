@@ -1,7 +1,7 @@
 class ModelSynonymsModel {
     constructor(id, idList){
-        this.id = id;
-        this.idList = idList;
+        this.FI = id;
+        this.S = idList;
     }
 }
 
