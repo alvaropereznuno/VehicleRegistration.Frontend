@@ -44,12 +44,15 @@ export async function setOptimization() {
 
 // SetModelSynonyms
 export async function setModelSynonyms(modelSynonyms) {
-    const url = new URL(`${BASE_URL}/SetOptimization`);
+    const url = new URL(`${BASE_URL}/SetModelSynonyms`);
 
     try {
         const response = await fetch(url.toString(), {
             method: 'POST',
-            body: modelSynonyms
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(modelSynonyms)
         });
 
         if (!response.ok) {

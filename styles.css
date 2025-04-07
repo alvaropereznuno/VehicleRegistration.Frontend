@@ -46,6 +46,10 @@ h3 {
     margin-bottom: 20px;
 }
 
+.tablegrid {
+    font-size: 12px;
+}
+
 @media (min-width: 1400px) {
     .chart-xl {
         height: 70vh;
