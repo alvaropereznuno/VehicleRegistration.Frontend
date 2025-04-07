@@ -32,14 +32,14 @@
                             <div class="col-12 mb-2">
                                 <form>
                                     <div class="row">
-                                        <div class="col-12 col-md-5">
-                                            <input class="form-control" id="txtBrand" placeholder="Marca...">
-                                        </div>
-                                        <div class="col-12 col-md-5">
+                                        <div class="col-6 col-md-8">
                                             <input class="form-control" id="txtModel" placeholder="Modelo...">
                                         </div>
-                                        <div class="col-12 col-md-2">
-                                            <button id="btnSearch" type="button" class="btn btn-primary btn-sm col-12">Buscar</button>
+                                        <div class="col-3 col-md-2">
+                                            <button id="btnSearch" type="button" class="btn btn-primary btn-sm col-12" disabled>Buscar</button>
+                                        </div>
+                                        <div class="col-3 col-md-2">
+                                            <button id="btnSave" type="button" class="btn btn-primary btn-sm col-12" disabled>Guardar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -60,10 +60,10 @@
                                 <h5>Carga de matriculaciones</h5>
                             </div>
                             <div class="col-12 col-md-8 col-xl-10">
-                                <input class="form-control form-control-sm" id="formFileSm" type="file">
+                                <input class="form-control form-control-sm" id="frmFileLoad" type="file" accept=".zip">
                             </div>
                             <div class="col-12 col-md-4 col-xl-2">
-                                <button type="button" class="btn btn-primary btn-sm col-12">Cargar</button>
+                                <button id="btnLoad" type="button" class="btn btn-primary btn-sm col-12" disabled>Cargar</button>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                                 <h5>Opciones</h5>
                             </div>
                             <div class="col-12 col-md-4">
-                                <button type="button" class="btn btn-primary btn-sm col-12">Optimizar</button>
+                                <button id="btnOptimize" type="button" class="btn btn-primary btn-sm col-12">Optimizar</button>
                             </div>
                         </div>
                     </div>
@@ -88,6 +88,13 @@
         </div>
     </div>
     <!-- END: DASHBOARD -->
+
+    <div id="loadingScreen">
+        <div class="loading">
+            <div class="spinner"></div>
+            <h4>Cargando</h4>
+        </div>
+    </div>
      
     <script type="module" src="registration.js"></script>
 </body>
