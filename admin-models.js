@@ -25,7 +25,7 @@ document.getElementById("btnSearch").addEventListener("click", async (event) => 
     const models = await synonyms.searchModels(model);
 
     tbSynonyms.updateConfig({
-        data: models.map(m => [m.id, m.name, brands.find(b => m.relae b.id === m.brandId).name + ' (' + m.brandId + ')']),
+        data: models.map(m => [m.id, m.name, brands.find(b => b.id === m.brandId).name + ' (' + m.brandId + ')']),
     }).forceRender();
 });
 

@@ -1,8 +1,8 @@
 class ModelModel {
-    constructor(id, name, brandId){
+    constructor(id, name, brandId, relatedBrandId){
         this.id = id;
         this.name = name;
-        this.brandId = brandId;
+        this.brandId = relatedBrandId == 0 ? 0 : brandId;
     }
 }
 
