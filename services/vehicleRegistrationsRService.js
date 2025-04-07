@@ -1,8 +1,8 @@
 // Importar el modelo
 import SetModelSynonyms from '../models/modelSynonymsModel.js';
 
-const BASE_URL = 'https://localhost:7230/Registration';
-// const BASE_URL = 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/Registration';
+// const BASE_URL = 'https://localhost:7230/Registration';
+const BASE_URL = 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/Registration';
 
 // SaveRegistrations
 export async function saveRegistrations(file) {
