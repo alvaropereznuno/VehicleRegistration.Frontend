@@ -6,8 +6,8 @@ import ProvinceModel from '../models/provinceModel.js';
 import DataModel from '../models/dataModel.js';
 import PROVINCES from '../models/constants/provinces.js';
 
-const BASE_URL = 'https://localhost:7230/Vehicle';
-// const BASE_URL = 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/Vehicle';
+// const BASE_URL = 'https://localhost:7230/Vehicle';
+const BASE_URL = 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/Vehicle';
 
 
 export async function getTypes(id, name){
