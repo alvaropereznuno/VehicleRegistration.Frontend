@@ -38,6 +38,14 @@ h3 {
     height: 40vh;
 }
 
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
 @media (min-width: 1400px) {
     .chart-xl {
         height: 70vh;
