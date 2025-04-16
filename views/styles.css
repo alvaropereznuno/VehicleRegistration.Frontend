@@ -5,12 +5,16 @@
     --COLOR-ACCENT-DARK: #030303;
     --COLOR-SEPARATOR: #d8d7d4;
     --BORDER-RADIUS: 4px;
+}
 
 body {
     font-family: "Quicksand", sans-serif;
     color: var(--COLOR-ACCENT-DARK);
     background-color: var(--COLOR-SECONDARY);
     margin: 0;
+}
+
+.content {
     padding: 20px;
 }
 

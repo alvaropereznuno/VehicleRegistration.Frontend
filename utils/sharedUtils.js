@@ -1,5 +1,6 @@
 import DICT from '../configurations/dict.js';
 import VehiclesService from '../services/vehiclesService.js';
+import { getIndexedData, setIndexedData } from '../utils/indexedUtils.js';
 
 const SharedUtils = {
     data: {
@@ -9,7 +10,16 @@ const SharedUtils = {
     },
     loadBrands: async function () {
         try {
-            const data = await VehiclesService.getBrands();
+            let data = await getIndexedData('brandList');
+
+            if (data != null) {
+                console.log("Recuperación de brandList desde IndexedDB.");
+            } else {
+                console.log("Recuperación de brandList desde Servicio.");
+                data = await VehiclesService.getBrands();
+                setIndexedData('brandList', data);
+            }
+            
             this.data.brandList = data;
         } catch (error) {
             console.error("Error fetching brands:", error);
@@ -18,7 +28,16 @@ const SharedUtils = {
     },
     loadModels: async function () {
         try {
-            const data = await VehiclesService.getModels();
+            let data = await getIndexedData('modelList');
+
+            if (data != null) {
+                console.log("Recuperación de modelList desde IndexedDB.");
+            } else {
+                console.log("Recuperación de modelList desde Servicio.");
+                data = await VehiclesService.getModels();
+                setIndexedData('modelList', data);
+            }
+            
             this.data.modelList = data;
         } catch (error) {
             console.error("Error fetching models:", error);
@@ -27,7 +46,16 @@ const SharedUtils = {
     },
     loadRegistrations: async function (registrationDateFrom, registrationDateTo = null) {
         try {
-            const data = await VehiclesService.getRegistrations(registrationDateFrom);
+            let data = await getIndexedData('registrationList');
+
+            if (data != null) {
+                console.log("Recuperación de registrationList desde IndexedDB.");
+            } else {
+                console.log("Recuperación de registrationList desde Servicio.");
+                data = await VehiclesService.getRegistrations(registrationDateFrom);
+                setIndexedData('registrationList', data);
+            }
+            
             this.data.registrationList = data;
         } catch (error) {
             console.error("Error fetching registrations:", error);

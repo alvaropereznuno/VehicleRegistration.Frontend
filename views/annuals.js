@@ -6,26 +6,24 @@ import SharedUtils from '../utils/sharedUtils.js';
     await ranking.initialize();
 });*/
 
-const ranking = {
+const annuals = {
     initialize: async function (){
-
-        // Get OriginalData
         await Promise.all([
             SharedUtils.loadModels(),
             SharedUtils.loadBrands(),
             SharedUtils.loadRegistrations('2025-03-01')
         ]);
 
-        ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationList, $('#topBrands'));
-        ChartUtils.ranking.topModels.create(SharedUtils.data.registrationList, $('#topModels'));
+        ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationList, $('#topBrands2'));
+        ChartUtils.ranking.topModels.create(SharedUtils.data.registrationList, $('#topModels2'));
 
-        const topResultsContainer = document.getElementById('topResults');
+        const topResultsContainer = document.getElementById('topResults2');
         if (topResultsContainer) {
             GridUtils.ranking.topResults.create(SharedUtils.data.registrationList, topResultsContainer);
         } else {
-            console.error("El contenedor 'topResults' no existe en el DOM.");
+            console.error("El contenedor 'topResults2' no existe en el DOM.");
         }
     }
 }
 
-window.ranking = ranking;
+window.annuals = annuals;
