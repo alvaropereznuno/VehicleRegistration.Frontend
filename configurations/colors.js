@@ -1,5 +1,14 @@
 // colors.js
+
 const COLORS = {
+    THEME: {
+        SOLID: {
+            ACCENT: 'rgb(18, 52, 88)',
+        },
+        ALPHA: {
+            ACCENT: 'rgba(18, 52, 88, 0.7)',
+        }
+    },
     FILLED: {
         RED: 'rgba(255, 59, 59, 0.7)',
         BLUE: 'rgba(54, 122, 235, 0.7)',

@@ -1,7 +1,8 @@
+// BrandModel.js
 class BrandModel {
-    constructor(id, name){
-        this.id = id;
-        this.name = name;
+    constructor(id, description){
+        this.id = id;  // [I]
+        this.description = description; // [D]
     }
 }
 

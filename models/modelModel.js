@@ -1,8 +1,9 @@
+// ModelModel.js
 class ModelModel {
-    constructor(id, name, brandId, relatedBrandId){
-        this.id = id;
-        this.name = name;
-        this.brandId = relatedBrandId == 0 ? 0 : brandId;
+    constructor(id, description, brandId){
+        this.id = id; // [I]
+        this.description = description; // [D]
+        this.brandId = brandId; // [R]
     }
 }
 

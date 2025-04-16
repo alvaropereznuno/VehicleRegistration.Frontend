@@ -1,0 +1,63 @@
+:root {
+    --COLOR-PRIMARY: #F1EFEC;
+    --COLOR-SECONDARY: #D4C9BE;
+    --COLOR-ACCENT: #123458;
+    --COLOR-ACCENT-DARK: #030303;
+    --COLOR-SEPARATOR: #d8d7d4;
+    --BORDER-RADIUS: 4px;
+
+body {
+    font-family: "Quicksand", sans-serif;
+    color: var(--COLOR-ACCENT-DARK);
+    background-color: var(--COLOR-SECONDARY);
+    margin: 0;
+    padding: 20px;
+}
+
+.tarjet{
+    background-color: var(--COLOR-PRIMARY);
+    border-radius: var(--BORDER-RADIUS);
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.chart-container{
+    height: 600px;
+}
+
+.grid {
+    font-size: 14px;
+}
+
+.grid .gridjs-container {
+    padding: 0px;
+}
+
+.grid .gridjs-wrapper {
+    border-radius: var(--BORDER-RADIUS) var(--BORDER-RADIUS) 0 0;
+}
+
+.grid th.gridjs-th {
+    color: var(--COLOR-PRIMARY);
+    background-color: var(--COLOR-ACCENT);
+    padding: 10px 15px;
+}
+
+.grid td.gridjs-td {
+    background-color: var(--COLOR-PRIMARY);
+    border: 1px solid var(--COLOR-SEPARATOR);
+    padding: 5px 15px;
+}
+
+.grid .gridjs-footer {
+    background-color: var(--COLOR-PRIMARY);
+    border-radius: 0 0 var(--BORDER-RADIUS) var(--BORDER-RADIUS);
+}
+
+.grid .gridjs-pagination .gridjs-pages button {
+    background-color: var(--COLOR-PRIMARY);
+}
+
+.grid input.gridjs-input {
+    background-color: var(--COLOR-PRIMARY);
+}
