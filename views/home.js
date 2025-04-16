@@ -10,7 +10,7 @@ const home = {
         await Promise.all([
             SharedUtils.loadModels(),
             SharedUtils.loadBrands(),
-            SharedUtils.loadRegistrations('2025-03-01')
+            SharedUtils.loadRegistrations('2020-01-01')
         ]);
     },
     loadPage: function (page, jsFile = null) {

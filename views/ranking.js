@@ -13,7 +13,7 @@ const ranking = {
         await Promise.all([
             SharedUtils.loadModels(),
             SharedUtils.loadBrands(),
-            SharedUtils.loadRegistrations('2025-03-01')
+            SharedUtils.loadRegistrations('2020-01-01')
         ]);
 
         ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationList, $('#topBrands'));
