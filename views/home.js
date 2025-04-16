@@ -21,7 +21,6 @@ const home = {
         // Eliminar el script actual si existe
         if (this.currentScript) {
             this.currentScript.remove();
-            console.log(`El script ${this.currentScript.src} ha sido destruido.`);
         }
 
         // Cargar la nueva página
@@ -41,11 +40,11 @@ const home = {
                     script.src = jsFile;
                     script.onload = () => {
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
-                        if (typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
+                        if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
                             ranking.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
-                        if (typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
+                        if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
                             annuals.initialize();
                         }
                     };
