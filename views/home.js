@@ -7,11 +7,19 @@ $(document).ready(async () => {
 const home = {
     currentScript: null,
     initialize: async function () {
+        home.loadingScreen(true);
+
         await Promise.all([
             SharedUtils.loadModels(),
             SharedUtils.loadBrands(),
             SharedUtils.loadRegistrations('2020-01-01')
         ]);
+
+        $('#btnRefresh').click(async () => {
+            await this.events.btnRefreshDashboard_click();
+        });
+
+        this.loadingScreen(false);
     },
     loadPage: function (page, jsFile = null) {
         // Eliminar el contenido HTML actual
@@ -57,7 +65,29 @@ const home = {
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
             });
+    },
+    events: {
+        btnRefreshDashboard_click: async function () {
+            home.loadingScreen(true);
+        
+            await Promise.all([
+                SharedUtils.loadModels(),
+                SharedUtils.loadBrands(),
+                SharedUtils.loadRegistrations('2020-01-01')
+            ]);
+        
+            home.loadingScreen(false);
+        }
+    },
+    loadingScreen: function(visible){
+        const loadingScreen = $("#loading")[0];
+        if (visible) {
+            loadingScreen.style.display = "flex";
+        } else {
+            loadingScreen.style.display = "none";
+        }
     }
+    
 }
 
 window.loadPage = home.loadPage.bind(home);

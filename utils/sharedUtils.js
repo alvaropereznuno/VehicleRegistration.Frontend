@@ -12,10 +12,7 @@ const SharedUtils = {
         try {
             let data = await getIndexedData('brandList');
 
-            if (data != null) {
-                console.log("Recuperación de brandList desde IndexedDB.");
-            } else {
-                console.log("Recuperación de brandList desde Servicio.");
+            if (data == null) {
                 data = await VehiclesService.getBrands();
                 setIndexedData('brandList', data);
             }
@@ -30,10 +27,7 @@ const SharedUtils = {
         try {
             let data = await getIndexedData('modelList');
 
-            if (data != null) {
-                console.log("Recuperación de modelList desde IndexedDB.");
-            } else {
-                console.log("Recuperación de modelList desde Servicio.");
+            if (data == null) {
                 data = await VehiclesService.getModels();
                 setIndexedData('modelList', data);
             }
@@ -48,10 +42,7 @@ const SharedUtils = {
         try {
             let data = await getIndexedData('registrationList');
 
-            if (data != null) {
-                console.log("Recuperación de registrationList desde IndexedDB.");
-            } else {
-                console.log("Recuperación de registrationList desde Servicio.");
+            if (data == null) {
                 data = await VehiclesService.getRegistrations(registrationDateFrom);
                 setIndexedData('registrationList', data);
             }
