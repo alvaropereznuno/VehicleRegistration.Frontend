@@ -27,8 +27,8 @@ body {
     height: 600px;
 }
 
-#loadingScreen {
-    display: none;
+.loading {
+    display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -36,10 +36,19 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* Transparente */
+    background-color: var(--COLOR-TRANSPARENT); /* Transparente */
     z-index: 9999; /* Asegura que esté sobre otros elementos */
     font-size: 1.5rem;
-    color: #333; /* Cambia el color del texto si es necesario */
+    color: var(--COLOR-ACCENT_DARK); /* Cambia el color del texto si es necesario */
+}
+
+.refresh {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1rem;
+    color: var(--COLOR-PRIMARY);;
+    cursor: pointer;
 }
 
 /* START: Chart.js styles */
