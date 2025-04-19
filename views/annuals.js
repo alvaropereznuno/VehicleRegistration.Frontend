@@ -8,9 +8,14 @@ import SharedUtils from '../utils/sharedUtils.js';
 
 const annuals = {
     initialize: async function (){
-        await ChartUtils.annuals.annualSellings.create(SharedUtils.data.registrationList, $('#annuals'));
+        ChartUtils.annuals.annualSellings.create(SharedUtils.data.registrationFilteredList, $('#annuals'));
 
-        await GridUtils.annuals.annualSellings.create(SharedUtils.data.registrationList, document.getElementById('annualsResults'));
+        GridUtils.annuals.annualSellings.create(SharedUtils.data.registrationFilteredList, document.getElementById('annualsResults'));
+
+        window.addEventListener("globalDataUpdated", () => {
+            ChartUtils.annuals.annualSellings.update(SharedUtils.data.registrationFilteredList);
+            GridUtils.annuals.annualSellings.update(SharedUtils.data.registrationFilteredList);
+        });
     }
 }
 
