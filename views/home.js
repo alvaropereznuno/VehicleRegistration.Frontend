@@ -9,6 +9,7 @@ const home = {
     currentScript: null,
     initialize: async function () {
         home.loadingScreen(true);
+        $("#filterSection").hide();
 
         await Promise.all([
             SharedUtils.loadModels(),
@@ -63,6 +64,8 @@ const home = {
                     // Guardar referencia al script cargado
                     this.currentScript = script;
                 }
+
+                $("#btnFilter").removeClass("d-none");
             })
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
@@ -91,7 +94,8 @@ const home = {
     },
     toggleFilterSection: function() {
         const filterSection = $("#filterSection");
-        filterSection.toggleClass("d-none");
+        $("#filterSection").slideToggle(300);
+
     }
 };
 

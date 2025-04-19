@@ -46,7 +46,7 @@
                         </li>
                     </ul>
                     <!-- Contenedor para posicionar correctamente el icono de filtros -->
-                    <div class="d-flex ms-auto" onclick="toggleFilterSection()" style="cursor: pointer;">
+                    <div id="btnFilter" class="d-flex ms-auto d-none" onclick="toggleFilterSection()" style="cursor: pointer;">
                         <div class="bi bi-funnel"> Filtrar</div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
     </header>
 
     <!-- Contenedor del filtro (inicialmente oculto) -->
-    <div id="filterSection" class="container-fluid bg-light p-3 d-none">
+    <div id="filterSection" class="container-fluid bg-light p-3">
         <div class="row g-3">
             <!-- Fecha Desde -->
             <div class="col-6 col-md-3 col-xl-2 mb-3">
