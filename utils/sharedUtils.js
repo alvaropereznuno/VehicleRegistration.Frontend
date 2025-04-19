@@ -7,12 +7,13 @@ const SharedUtils = {
         brandList: [],
         modelList: [],
         registrationList: [],
+        registrationFilteredList: []
     },
-    loadBrands: async function () {
+    loadBrands: async function (force = false) {
         try {
             let data = await getIndexedData('brandList');
 
-            if (data == null) {
+            if (force || data == null) {
                 data = await VehiclesService.getBrands();
                 setIndexedData('brandList', data);
             }
@@ -23,11 +24,11 @@ const SharedUtils = {
             return [];
         }
     },
-    loadModels: async function () {
+    loadModels: async function (force = false) {
         try {
             let data = await getIndexedData('modelList');
 
-            if (data == null) {
+            if (force || data == null) {
                 data = await VehiclesService.getModels();
                 setIndexedData('modelList', data);
             }
@@ -38,11 +39,11 @@ const SharedUtils = {
             return [];
         }
     },
-    loadRegistrations: async function (registrationDateFrom, registrationDateTo = null) {
+    loadRegistrations: async function (registrationDateFrom, registrationDateTo = null, force = false) {
         try {
             let data = await getIndexedData('registrationList');
 
-            if (data == null) {
+            if (force || data == null) {
                 data = await VehiclesService.getRegistrations(registrationDateFrom);
                 setIndexedData('registrationList', data);
             }
@@ -83,6 +84,40 @@ const SharedUtils = {
     getVehicleTypeDescription: function (vehicleTypeId) {
         const vehicleType = DICT.VEHICLE_TYPES.find(vehicleType => vehicleType.id == vehicleTypeId);
         return vehicleType ? vehicleType.description : null;
+    },
+    filterRegistrations: function (registrationList, registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, vehicleTypeIdList = null, provinceIdList = null) {
+        let filteredModelIds = modelIdList || [];
+        if (brandIdList) {
+            filteredModelIds = modelList
+                .filter(model => brandIdList.includes(model.brandId))
+                .map(model => model.id);
+        }
+
+        return registrationList.filter(registration => {
+            return (
+                (registrationDateFrom === null || registration.registrationDate >= registrationDateFrom) &&
+                (registrationDateTo === null || registration.registrationDate <= registrationDateTo) &&
+                (filteredModelIds.length === 0 || filteredModelIds.includes(registration.modelId)) &&
+                (motorTypeIdList === null || motorTypeIdList.includes(registration.motorTypeId)) &&
+                (vehicleTypeIdList === null || vehicleTypeIdList.includes(registration.vehicleTypeId)) &&
+                (provinceIdList === null || provinceIdList.includes(registration.provinceId))
+            );
+        });
+    },
+    filterBrands: function (registrationList, modelList) {
+        return [...new Set(
+            registrationList
+                .map(registration => 
+                    modelList.find(model => model.id === registration.modelId)?.brandId
+                )
+                .filter(brandId => brandId !== undefined)
+        )];
+    },
+    
+    filterModels: function (registrationList) {
+        return [...new Set(
+            registrationList.map(registration => registration.modelId)
+        )];
     }
 }
 
