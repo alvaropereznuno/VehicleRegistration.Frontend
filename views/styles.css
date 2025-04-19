@@ -91,3 +91,61 @@ body {
     background-color: var(--COLOR-PRIMARY);
 }
 /* END: Chart.js styles */
+
+/* */
+.choices .choices__inner {
+    background-color: transparent;
+    padding: 7.5px 7.5px 3.75px;
+    border: 1px solid var(--COLOR-SEPARATOR);
+    border-radius: var(--BORDER-RADIUS);
+}
+
+.choices__list--multiple .choices__item {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: var(--BORDER-RADIUS);
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 3.75px;
+    margin-bottom: 3.75px;
+    background-color: var(--COLOR-ACCENT);
+    border: 1px solid var(--COLOR-ACCENT-DARK);
+    color: var(--COLOR-PRIMARY);
+    word-break: break-all;
+    box-sizing: border-box;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted, .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+    background-color: var(--COLOR-PRIMARY);
+}
+
+.datefilter {
+    height: 47.95px;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid var(--COLOR-SEPARATOR);
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: none;
+  box-shadow: none;
+  outline: 0 none;
+  background-color: transparent;
+  border: 1px solid var(--COLOR-SEPARATOR);
+}
