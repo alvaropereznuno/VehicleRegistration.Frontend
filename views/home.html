@@ -2,17 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    
+
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet">
-    <link href="theme.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="styles.css">
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -20,7 +22,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels" defer></script>
     <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <script src="home.js" type="module" defer></script>
+
+    
+
 </head>
 <body>
     <header>
@@ -31,18 +37,76 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="loadPage('ranking.html','ranking.js')">Ranking</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="loadPage('annuals.html', 'annuals.js')">Anuales</a>
-                    </li>
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadPage('ranking.html','ranking.js')">Ranking</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadPage('annuals.html', 'annuals.js')">Anuales</a>
+                        </li>
                     </ul>
+                    <!-- Contenedor para posicionar correctamente el icono de filtros -->
+                    <div class="d-flex ms-auto" onclick="toggleFilterSection()" style="cursor: pointer;">
+                        <div class="bi bi-funnel"> Filtrar</div>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- Contenedor del filtro (inicialmente oculto) -->
+    <div id="filterSection" class="container-fluid bg-light p-3 d-none">
+        <div class="row g-3">
+            <!-- Fecha Desde -->
+            <div class="col-6 col-lg-3">
+                <label for="dateFrom" class="form-label">Fecha Desde</label>
+                <input type="month" class="form-control" id="dateFrom">
+            </div>
+    
+            <!-- Fecha Hasta -->
+            <div class="col-6 col-lg-3 mb-3">
+                <label for="dateTo" class="form-label">Fecha Hasta</label>
+                <input type="month" class="form-control" id="dateTo">
+            </div>
+        </div>
+        <div class="row g-3">
+            <!-- Marcas -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="brands" multiple>
+                </select>
+            </div>
+
+            <!-- Modelos -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="models" multiple>
+                </select>
+            </div>
+
+            <!-- Tipos de Motor -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="motorTypes" multiple>
+                </select>
+            </div>
+
+            <!-- Tipos de Vehículos -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="vehicleTypes" multiple>
+                </select>
+            </div>
+
+            <!-- Comunidades autónomas -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="communities" multiple>
+                </select>
+            </div>
+
+            <!-- Provincias -->
+            <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+                <select id="provinces" multiple>
+                </select>
+            </div>
+        </div>
+    </div>
 
     <div id="content" class="content">
         <!-- Aquí se cargará el contenido dinámico -->
