@@ -173,6 +173,15 @@ const filters = {
 
         document.getElementById("brands").addEventListener("change", this.updateModels);
         document.getElementById("communities").addEventListener("change", this.updateProvinces);
+        
+        document.getElementById("brands").addEventListener("change", this.filterRegistrations);
+        document.getElementById("models").addEventListener("change", this.filterRegistrations);
+        document.getElementById("motorTypes").addEventListener("change", this.filterRegistrations);
+        document.getElementById("vehicleTypes").addEventListener("change", this.filterRegistrations);
+        document.getElementById("communities").addEventListener("change", this.filterRegistrations);
+        document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
+        document.getElementById("dateFrom").addEventListener("change", this.filterRegistrations);
+        document.getElementById("dateTo").addEventListener("change", this.filterRegistrations);
 
         this.populateFilters();
     },
@@ -206,21 +215,40 @@ const filters = {
     updateProvinces: function() {
         const selectedCommunities = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
 
-        // Filtrar provincias según las comunidades seleccionadas
-        const filteredProvinces = DICT.PROVINCES.filter(province => selectedCommunities.includes(province.communityId));
+        let filteredProvinces = DICT.PROVINCES;
+        if (selectedCommunities.length > 0)
+            filteredProvinces = Array.from(filteredProvinces).filter(province => selectedCommunities.includes(province.communityId));
 
-        // Limpiar y actualizar provincias en el combobox
         filters.populateChoice(filters.choiceProvinces, filteredProvinces);
     },
     updateModels: function() {
         const selectedBrands = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));
 
-        // Filtrar provincias según las marcas
-        const filteredModels = SharedUtils.data.modelList.filter(model => selectedBrands.includes(model.brandId));
+        let filteredModels = SharedUtils.data.modelList;
+        if (selectedBrands.length > 0)
+            filteredModels = Array.from(filteredModels).filter(model => selectedBrands.includes(model.brandId));
 
-        // Limpiar y actualizar provincias en el combobox
         filters.populateChoice(filters.choiceModels, filteredModels);
     },
+    filterRegistrations: function(){
+        const [yearFrom, monthFrom] = document.getElementById("dateFrom").value.split("-").map(Number);
+        const registrationDateFrom = new Date(yearFrom, monthFrom - 1, 1);
+        const [yearTo, monthTo] = document.getElementById("dateTo").value.split("-").map(Number);
+        const registrationDateTo = new Date(yearTo, monthTo - 1, 1);
+        const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
+        let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
+        const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
+        const vehicleTypeIdList = Array.from(document.getElementById("vehicleTypes").selectedOptions).map(option => parseInt(option.value));
+        const communityIdList = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
+        let provinceIdList = Array.from(document.getElementById("provinces").selectedOptions).map(option => parseInt(option.value));
+
+        if (modelIdList.length === 0 && brandIdList.length > 0)
+            modelIdList = Array.from(SharedUtils.data.modelList).filter(model => brandIdList.includes(model.brandId)).map(m => m.id);
+        if (provinceIdList.length === 0 && communityIdList.length > 0)
+            provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
+
+        SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, vehicleTypeIdList, provinceIdList);
+    }
 }
 
 window.loadPage = home.loadPage.bind(home);
