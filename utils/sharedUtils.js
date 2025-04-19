@@ -49,6 +49,7 @@ const SharedUtils = {
             }
             
             this.data.registrationList = data;
+            this.data.registrationFilteredList = data;
         } catch (error) {
             console.error("Error fetching registrations:", error);
             return [];
@@ -85,24 +86,20 @@ const SharedUtils = {
         const vehicleType = DICT.VEHICLE_TYPES.find(vehicleType => vehicleType.id == vehicleTypeId);
         return vehicleType ? vehicleType.description : null;
     },
-    filterRegistrations: function (registrationList, registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, vehicleTypeIdList = null, provinceIdList = null) {
-        let filteredModelIds = modelIdList || [];
-        if (brandIdList) {
-            filteredModelIds = modelList
-                .filter(model => brandIdList.includes(model.brandId))
-                .map(model => model.id);
-        }
-
-        return registrationList.filter(registration => {
+    filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, vehicleTypeIdList = null, provinceIdList = null) {
+        this.data.registrationFilteredList = this.data.registrationList.filter(registration => {
             return (
-                (registrationDateFrom === null || registration.registrationDate >= registrationDateFrom) &&
-                (registrationDateTo === null || registration.registrationDate <= registrationDateTo) &&
-                (filteredModelIds.length === 0 || filteredModelIds.includes(registration.modelId)) &&
-                (motorTypeIdList === null || motorTypeIdList.includes(registration.motorTypeId)) &&
-                (vehicleTypeIdList === null || vehicleTypeIdList.includes(registration.vehicleTypeId)) &&
-                (provinceIdList === null || provinceIdList.includes(registration.provinceId))
+                (isNaN(registrationDateFrom) || registrationDateFrom === null || new Date(registration.registrationDate) >= registrationDateFrom) &&
+                (isNaN(registrationDateTo) || registrationDateTo === null || new Date(registration.registrationDate) <= registrationDateTo) &&
+                (modelIdList.length === 0 || modelIdList.includes(registration.modelId)) &&
+                (motorTypeIdList.length === 0 || motorTypeIdList.includes(registration.motorTypeId)) &&
+                (vehicleTypeIdList.length === 0 || vehicleTypeIdList.includes(registration.vehicleTypeId)) &&
+                (provinceIdList.length === 0 || provinceIdList.includes(registration.provinceId))
             );
         });
+
+        const event = new CustomEvent("globalDataUpdated");
+        window.dispatchEvent(event);
     },
     filterBrands: function (registrationList, modelList) {
         return [...new Set(

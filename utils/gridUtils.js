@@ -7,7 +7,7 @@ const ChartUtils = {
             create: (registrationList, ctx) => {
                 let methods = ChartUtils.ranking.topResults;
 
-                new gridjs.Grid(methods.groupData(registrationList))
+                methods.grid = new gridjs.Grid(methods.groupData(registrationList))
                     .render(ctx);
             },
             update: (registrationList) => {
@@ -58,7 +58,7 @@ const ChartUtils = {
             create: (registrationList, ctx) => {
                 let methods = ChartUtils.annuals.annualSellings;
 
-                new gridjs.Grid(methods.groupData(registrationList))
+                methods.grid = new gridjs.Grid(methods.groupData(registrationList))
                     .render(ctx);
             },
             update: (registrationList) => {
