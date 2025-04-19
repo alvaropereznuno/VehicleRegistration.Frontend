@@ -49,6 +49,7 @@ const SharedUtils = {
             }
             
             this.data.registrationList = data;
+            this.data.registrationFilteredList = data;
         } catch (error) {
             console.error("Error fetching registrations:", error);
             return [];
@@ -86,23 +87,19 @@ const SharedUtils = {
         return vehicleType ? vehicleType.description : null;
     },
     filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, vehicleTypeIdList = null, provinceIdList = null) {
-        let filteredModelIds = modelIdList || [];
-        if (brandIdList) {
-            filteredModelIds = modelIdList
-                .filter(model => brandIdList.includes(model.brandId))
-                .map(model => model.id);
-        }
         this.data.registrationFilteredList = this.data.registrationList.filter(registration => {
             return (
                 (isNaN(registrationDateFrom) || registrationDateFrom === null || new Date(registration.registrationDate) >= registrationDateFrom) &&
                 (isNaN(registrationDateTo) || registrationDateTo === null || new Date(registration.registrationDate) <= registrationDateTo) &&
-                (filteredModelIds.length === 0 || filteredModelIds.includes(registration.modelId)) &&
+                (modelIdList.length === 0 || modelIdList.includes(registration.modelId)) &&
                 (motorTypeIdList.length === 0 || motorTypeIdList.includes(registration.motorTypeId)) &&
                 (vehicleTypeIdList.length === 0 || vehicleTypeIdList.includes(registration.vehicleTypeId)) &&
                 (provinceIdList.length === 0 || provinceIdList.includes(registration.provinceId))
             );
         });
-        return this.data.registrationFilteredList;
+
+        const event = new CustomEvent("globalDataUpdated");
+        window.dispatchEvent(event);
     },
     filterBrands: function (registrationList, modelList) {
         return [...new Set(
