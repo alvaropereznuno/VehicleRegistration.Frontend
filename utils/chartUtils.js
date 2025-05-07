@@ -241,6 +241,300 @@ const ChartUtils = {
                     })
                 };
             }
+        },
+        annualSellingsDiff: {
+            chart: null,
+            create: (registrationList, ctx) => {
+                let methods = ChartUtils.annuals.annualSellingsDiff;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+            },
+            update: (registrationList) => {
+                let methods = ChartUtils.annuals.annualSellingsDiff;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+            },
+            groupData: (registrationList) => {
+                // 1. Agrupar los registros por fecha, y sumar las matriculaciones.
+                const groupedData = registrationList.reduce((acc, curr) => {
+                    acc[curr.registrationDate] = (acc[curr.registrationDate] || 0) + curr.count;
+                    return acc;
+                }
+                , {});
+
+                // 2. Crear un dataset para cada año, con sus respectivos meses y matriculaciones en orden ascendente por mes.
+                const datasets = Object.entries(groupedData).reduce((acc, curr) => {
+                    const year = new Date(curr[0]).getFullYear();
+                    const month = new Date(curr[0]).getMonth();
+
+                    if (!acc[year]) {
+                        acc[year] = { 
+                            data: [],
+                            borderWidth: 3, 
+                        };
+                    };
+                    acc[year].data[month] = curr[1]; // Sumar matriculaciones al mes correspondiente
+
+                    return acc;
+                }, {});
+
+                // 2.2. Por cada mes del año, calcula la diferencia respecto al mismo mes del año anterior, creando un nuevo dataset, ignorando el primer año.
+                const datasetsDiff = Object.entries(datasets).reduce((acc, curr) => {
+                    const year = curr[0];
+                    const data = curr[1].data;
+                    acc[year] = { data: [] };
+                    for (let i = 0; i < data.length; i++) {
+                        acc[year].data[i] = data[i] - (datasets[year - 1]?.data[i] || 0);
+                    }
+                    return acc;
+                }, {});
+                
+                // 2.3 . Elimina el primer año de los datasetsDiff.
+                delete datasetsDiff[Object.keys(datasets)[0]];
+
+                // 3. Retorna el objeto de datos para el gráfico.
+                var alphaIncremental = (1 - 0.4) / (Object.keys(datasets).length - 1);
+                return {
+                    labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                    datasets: Object.entries(datasetsDiff).map((item, index) => {
+                        return {
+                            label: item[0],
+                            data: item[1].data,
+                            backgroundColor: Colors.accent(0.4 + alphaIncremental*(index+1)),
+                            borderColor: Colors.accent(0.1 + alphaIncremental*(index+1)),
+                            borderWidth: 3,
+                        };
+                    })
+                };
+            }
+        },
+        annualSellingsAcc: {
+            chart: null,
+            create: (registrationList, ctx) => {
+                let methods = ChartUtils.annuals.annualSellingsAcc;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Ventas anuales'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+            },
+            update: (registrationList) => {
+                let methods = ChartUtils.annuals.annualSellingsAcc;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+            },
+            groupData: (registrationList) => {
+                // 1. Agrupar los registros por fecha, y sumar las matriculaciones.
+                const groupedData = registrationList.reduce((acc, curr) => {
+                    acc[curr.registrationDate] = (acc[curr.registrationDate] || 0) + curr.count;
+                    return acc;
+                }
+                , {});
+
+                // 2. Crear un dataset para cada año, con sus respectivos meses y matriculaciones en orden ascendente por mes.
+                const datasets = Object.entries(groupedData).reduce((acc, curr) => {
+                    const year = new Date(curr[0]).getFullYear();
+                    const month = new Date(curr[0]).getMonth();
+
+                    if (!acc[year]) {
+                        acc[year] = { 
+                            data: [],
+                            borderWidth: 3, 
+                        };
+                    };
+                    acc[year].data[month] = curr[1]; // Sumar matriculaciones al mes correspondiente
+
+                    return acc;
+                }, {});
+
+                // 2.1. Por cada mes del año, sumar las matriculaciones de los meses anteriores.
+                Object.entries(datasets).forEach((item) => {
+                    const year = item[0];
+                    const data = item[1].data;
+                    for (let i = 1; i < data.length; i++) {
+                        data[i] += data[i - 1] || 0;
+                    }
+                });
+
+                // 3. Retorna el objeto de datos para el gráfico.
+                var alphaIncremental = (1 - 0.4) / (Object.keys(datasets).length - 1);
+                return {
+                    labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                    datasets: Object.entries(datasets).map((item, index) => {
+                        return {
+                            label: item[0],
+                            data: item[1].data,
+                            backgroundColor: Colors.accent(0.4 + alphaIncremental*index),
+                            borderColor: Colors.accent(0.1 + alphaIncremental*index),
+                            borderWidth: 3,
+                        };
+                    })
+                };
+            }
+        },
+        annualSellingsAccDiff: {
+            chart: null,
+            create: (registrationList, ctx) => {
+                let methods = ChartUtils.annuals.annualSellingsAccDiff;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+            },
+            update: (registrationList) => {
+                let methods = ChartUtils.annuals.annualSellingsAccDiff;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+            },
+            groupData: (registrationList) => {
+                // 1. Agrupar los registros por fecha, y sumar las matriculaciones.
+                const groupedData = registrationList.reduce((acc, curr) => {
+                    acc[curr.registrationDate] = (acc[curr.registrationDate] || 0) + curr.count;
+                    return acc;
+                }
+                , {});
+
+                // 2. Crear un dataset para cada año, con sus respectivos meses y matriculaciones en orden ascendente por mes.
+                const datasets = Object.entries(groupedData).reduce((acc, curr) => {
+                    const year = new Date(curr[0]).getFullYear();
+                    const month = new Date(curr[0]).getMonth();
+
+                    if (!acc[year]) {
+                        acc[year] = { 
+                            data: [],
+                            borderWidth: 3, 
+                        };
+                    };
+                    acc[year].data[month] = curr[1]; // Sumar matriculaciones al mes correspondiente
+
+                    return acc;
+                }, {});
+
+                // 2.1. Por cada mes del año, sumar las matriculaciones de los meses anteriores.
+                Object.entries(datasets).forEach((item) => {
+                    const year = item[0];
+                    const data = item[1].data;
+                    for (let i = 1; i < data.length; i++) {
+                        data[i] += data[i - 1] || 0;
+                    }
+                });
+
+                // 2.2. Por cada mes del año, calcula la diferencia respecto al mismo mes del año anterior, creando un nuevo dataset, ignorando el primer año.
+                const datasetsDiff = Object.entries(datasets).reduce((acc, curr) => {
+                    const year = curr[0];
+                    const data = curr[1].data;
+                    acc[year] = { data: [] };
+                    for (let i = 0; i < data.length; i++) {
+                        acc[year].data[i] = data[i] - (datasets[year - 1]?.data[i] || 0);
+                    }
+                    return acc;
+                }, {});
+
+                // 2.3 . Elimina el primer año de los datasetsDiff.
+                delete datasetsDiff[Object.keys(datasets)[0]];
+
+                // 3. Retorna el objeto de datos para el gráfico.
+                var alphaIncremental = (1 - 0.4) / (Object.keys(datasets).length - 1);
+                return {
+                    labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                    datasets: Object.entries(datasetsDiff).map((item, index) => {
+                        return {
+                            label: item[0],
+                            data: item[1].data,
+                            backgroundColor: Colors.accent(0.4 + alphaIncremental*(index+1)),
+                            borderColor: Colors.accent(0.1 + alphaIncremental*(index+1)),
+                            borderWidth: 3,
+                        };
+                    })
+                };
+            }
         }
     }
 }
