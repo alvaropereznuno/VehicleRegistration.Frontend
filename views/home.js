@@ -58,6 +58,10 @@ const home = {
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
                             annuals.initialize();
                         }
+                        // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
+                        if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
+                            propulsion.initialize();
+                        }
                     };
                     document.body.appendChild(script);
 
