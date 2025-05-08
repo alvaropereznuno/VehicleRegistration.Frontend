@@ -82,18 +82,18 @@ const SharedUtils = {
         const motorType = DICT.MOTOR_TYPES.find(motorType => motorType.id == motorTypeId);
         return motorType ? motorType.description : null;
     },
-    getVehicleTypeDescription: function (vehicleTypeId) {
-        const vehicleType = DICT.VEHICLE_TYPES.find(vehicleType => vehicleType.id == vehicleTypeId);
-        return vehicleType ? vehicleType.description : null;
+    getServiceTypeDescription: function (serviceTypeId) {
+        const serviceType = DICT.SERVICE_TYPES.find(serviceType => serviceType.id == serviceTypeId);
+        return serviceType ? serviceType.description : null;
     },
-    filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, vehicleTypeIdList = null, provinceIdList = null) {
+    filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, serviceTypeIdList = null, provinceIdList = null) {
         this.data.registrationFilteredList = this.data.registrationList.filter(registration => {
             return (
                 (isNaN(registrationDateFrom) || registrationDateFrom === null || new Date(registration.registrationDate) >= registrationDateFrom) &&
                 (isNaN(registrationDateTo) || registrationDateTo === null || new Date(registration.registrationDate) <= registrationDateTo) &&
                 (modelIdList.length === 0 || modelIdList.includes(registration.modelId)) &&
                 (motorTypeIdList.length === 0 || motorTypeIdList.includes(registration.motorTypeId)) &&
-                (vehicleTypeIdList.length === 0 || vehicleTypeIdList.includes(registration.vehicleTypeId)) &&
+                (serviceTypeIdList.length === 0 || serviceTypeIdList.includes(registration.serviceTypeId)) &&
                 (provinceIdList.length === 0 || provinceIdList.includes(registration.provinceId))
             );
         });

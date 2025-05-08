@@ -3,20 +3,24 @@
 const DICT = {
     // Motor types
     MOTOR_TYPES: [
-        { id: 1,    code: "C",      description: "Combustión" },
-        { id: 2,    code: "HEV",    description: "Híbrido" },
-        { id: 3,    code: "PHEV",   description: "Híbrido Enchufable" },
-        { id: 4,    code: "BEV",    description: "100% Eléctrico" },
-        { id: 5,    code: "FCEV",   description: "Hidrógeno" }
+        { id: 1,    description: "Gasolina" },
+        { id: 2,    description: "Diesel" },
+        { id: 3,    description: "Gas" },
+        { id: 4,    description: "Híbrido" },
+        { id: 5,    description: "Híbrido Enchufable" },
+        { id: 6,    description: "Eléctrico 100%" },
+        { id: 7,    description: "Hidrógeno" },
+        { id: 8,    description: "Otros" }
     ],
 
-    // Vehicle types
-    VEHICLE_TYPES: [
-        { id: 1,    code: "20",     description: "Furgoneta" },
-        { id: 2,    code: "21",     description: "Furgoneta Mixta" },
-        { id: 3,    code: "25",     description: "Todo Terreno" },
-        { id: 4,    code: "40",     description: "Turismo" },
-        { id: 5,    code: "60",     description: "Coche de inválido" }
+    // Service types
+    SERVICE_TYPES: [
+        { id: 1,    description: "Particular" },
+        { id: 2,    description: "Taxi" },
+        { id: 3,    description: "Autoescuela" },
+        { id: 4,    description: "Alquiler / Flota" },
+        { id: 5,    description: "Servicios Públicos" },
+        { id: 6,    description: "Otros" }
     ],
 
     // Communities
