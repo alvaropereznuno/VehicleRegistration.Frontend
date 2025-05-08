@@ -40,7 +40,7 @@ const VehiclesService = {
             .then(data => data.map(item => new ModelModel(item.I, item.D, item.R)));
     },
 
-    getRegistrations: async function (registrationDateFrom, registrationDateTo = null, brandIdList = null, modelIdList = null, provinceId = null, communityId = null, motorTypeId = null, vehicleTypeId = null)
+    getRegistrations: async function (registrationDateFrom, registrationDateTo = null, brandIdList = null, modelIdList = null, provinceId = null, communityId = null, motorTypeId = null, serviceTypeId = null)
     {
         const url = new URL(`${VehiclesService.url}/GetRegistrations`);
         url.searchParams.append('RegistrationDateFrom', registrationDateFrom);
@@ -50,7 +50,7 @@ const VehiclesService = {
         if (provinceId != null) url.searchParams.append('ProvinceId', provinceId);
         if (communityId != null) url.searchParams.append('CommunityId', communityId);
         if (motorTypeId != null) url.searchParams.append('MotorTypeId', motorTypeId);
-        if (vehicleTypeId != null) url.searchParams.append('VehicleTypeId', vehicleTypeId);
+        if (serviceTypeId != null) url.searchParams.append('ServiceTypeId', serviceTypeId);
 
         return fetch(url)
             .then(response => {
@@ -59,7 +59,7 @@ const VehiclesService = {
                 }
                 return response.json();
             })
-            .then(data => data.map(item => new RegistrationModel(item.M, item.TM, item.TV, item.PR, item.DT, item.C)));
+            .then(data => data.map(item => new RegistrationModel(item.M, item.TM, item.TS, item.PR, item.DT, item.C)));
     }
 };
 
