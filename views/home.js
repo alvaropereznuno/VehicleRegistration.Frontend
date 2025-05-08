@@ -103,7 +103,7 @@ const filters = {
     choiceBrands: null,
     choiceModels: null,
     choiceMotorTypes: null,
-    choiceVehicleTypes: null,
+    choiceServiceTypes: null,
     choiceCommunities: null,
     choiceProvinces: null,
 
@@ -142,14 +142,14 @@ const filters = {
             itemSelectText: 'Selecciona',
         });
         // Filtro de Tipos de vehículo
-        this.choiceVehicleTypes = new Choices("#vehicleTypes", {
+        this.choiceServiceTypes = new Choices("#serviceTypes", {
             removeItemButton: true,
             searchEnabled: false,
             placeholder: true,
-            placeholderValue: "Tipos de vehículo ...",
+            placeholderValue: "Tipos de servicio ...",
             loadingText: 'Cargando ...',
-            noResultsText: 'No se han encontrado tipos de vehículos',
-            noChoicesText: 'No hay tipos de vehículos a elegir',
+            noResultsText: 'No se han encontrado tipos de servicios',
+            noChoicesText: 'No hay tipos de servicios a elegir',
             itemSelectText: 'Selecciona',
         });
         // Filtro de Comunidades Autónomas
@@ -181,7 +181,7 @@ const filters = {
         document.getElementById("brands").addEventListener("change", this.filterRegistrations);
         document.getElementById("models").addEventListener("change", this.filterRegistrations);
         document.getElementById("motorTypes").addEventListener("change", this.filterRegistrations);
-        document.getElementById("vehicleTypes").addEventListener("change", this.filterRegistrations);
+        document.getElementById("serviceTypes").addEventListener("change", this.filterRegistrations);
         document.getElementById("communities").addEventListener("change", this.filterRegistrations);
         document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
         document.getElementById("dateFrom").addEventListener("change", this.filterRegistrations);
@@ -193,7 +193,7 @@ const filters = {
         this.populateChoice(this.choiceBrands, SharedUtils.data.brandList);
         this.populateChoice(this.choiceModels, SharedUtils.data.modelList);
         this.populateChoice(this.choiceMotorTypes, DICT.MOTOR_TYPES);
-        this.populateChoice(this.choiceVehicleTypes, DICT.VEHICLE_TYPES);
+        this.populateChoice(this.choiceServiceTypes, DICT.SERVICE_TYPES);
         this.populateChoice(this.choiceCommunities, DICT.COMMUNITIES);
         this.populateChoice(this.choiceProvinces, DICT.PROVINCES);
     },
@@ -242,7 +242,7 @@ const filters = {
         const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
         let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
         const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
-        const vehicleTypeIdList = Array.from(document.getElementById("vehicleTypes").selectedOptions).map(option => parseInt(option.value));
+        const serviceTypeIdList = Array.from(document.getElementById("serviceTypes").selectedOptions).map(option => parseInt(option.value));
         const communityIdList = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
         let provinceIdList = Array.from(document.getElementById("provinces").selectedOptions).map(option => parseInt(option.value));
 
@@ -251,7 +251,7 @@ const filters = {
         if (provinceIdList.length === 0 && communityIdList.length > 0)
             provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
 
-        SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, vehicleTypeIdList, provinceIdList);
+        SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);
     }
 }
 
