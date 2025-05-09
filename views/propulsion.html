@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ránking de matriculaciones</title>
+
+    <link href="styles.css" rel="stylesheet">
+    <script src="propulsion.js" type="module" defer></script>
+</head>
+<body>
+
+</body>
+    <div>
+        <h3 class="text-center">Matriculaciones por tipos de motor</h3>
+        
+        <div class="row mt-2">
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h5>Acumulado de matriculaciones</h5>
+                    <div class="chart-container-medium">
+                        <canvas id="motorTypesAcc"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h5>Acumulado de matriculaciones (%)</h5>
+                    <div class="chart-container-medium">
+                        <canvas id="motorTypesAcc100"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h5>Reparto por tipos de propulsión</h5>
+                    <div class="chart-container-medium">
+                        <canvas id="motorTypesPie"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h5>Diferenciales anuales por propulsión</h5>
+                    <div class="chart-container-medium">
+                        <canvas id="motorTypesAnnualDiff"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="grid">
+                    <div id="topResults"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
