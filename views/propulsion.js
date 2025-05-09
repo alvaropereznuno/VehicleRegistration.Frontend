@@ -4,17 +4,17 @@ import SharedUtils from '../utils/sharedUtils.js';
 
 const propulsion = {
     initialize: async function (){
-        // ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationFilteredList, $('#topBrands'));
-        // ChartUtils.ranking.topModels.create(SharedUtils.data.registrationFilteredList, $('#topModels'));
+        ChartUtils.propulsion.motorTypesAcc.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAcc'));
+        ChartUtils.propulsion.motorTypesPie.create(SharedUtils.data.registrationFilteredList, $('#motorTypesPie'));
 
         // GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'));
 
-        // window.addEventListener("globalDataUpdated", () => {
-        //     ChartUtils.ranking.topBrands.update(SharedUtils.data.registrationFilteredList);
-        //     ChartUtils.ranking.topModels.update(SharedUtils.data.registrationFilteredList);
-    // 
-        //     GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList);
-        // });
+        window.addEventListener("globalDataUpdated", () => {
+             ChartUtils.propulsion.motorTypesAcc.update(SharedUtils.data.registrationFilteredList);
+             ChartUtils.propulsion.motorTypesPie.update(SharedUtils.data.registrationFilteredList);
+     
+             // GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList);
+         });
     }
 }
 

@@ -9,8 +9,8 @@ const DICT = {
         { id: 4,    description: "Híbrido" },
         { id: 5,    description: "Híbrido Enchufable" },
         { id: 6,    description: "Eléctrico 100%" },
-        { id: 7,    description: "Hidrógeno" },
-        { id: 8,    description: "Otros" }
+        // { id: 7,    description: "Hidrógeno" },
+        // { id: 8,    description: "Otros" }
     ],
 
     // Service types
