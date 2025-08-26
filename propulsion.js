@@ -1,6 +1,6 @@
-import ChartUtils from '../utils/chartUtils.js';
-import GridUtils from '../utils/gridUtils.js';
-import SharedUtils from '../utils/sharedUtils.js';
+import ChartUtils from './utils/chartUtils.js';
+import GridUtils from './utils/gridUtils.js';
+import SharedUtils from './utils/sharedUtils.js';
 
 const propulsion = {
     initialize: async function (){

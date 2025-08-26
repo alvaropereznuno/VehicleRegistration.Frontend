@@ -2,123 +2,126 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matriculaciones de Vehículos</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <link rel="stylesheet" href="styles/theme.css">
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels" defer></script>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
+    <script src="index.js" type="module" defer></script>
 
-    <link href="./models/others/esp.json">
-    <link href="styles.css" rel="stylesheet">
+    
+
 </head>
 <body>
-    <header class="fixed-header">
-        <section class="container filters-section">
-            <form class="row g-3" aria-label="Filtros de búsqueda">
-                <div class="col-4 col-md-2 col-xl-2">
-                    <input type="month" class="form-control form-control-sm" id="startDate" name="startDate">
+    <header>
+        <nav class="navbar navbar-expand-md bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Metricars</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadPage('ranking.html','ranking.js')">Ranking</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadPage('annuals.html', 'annuals.js')">Anuales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadPage('propulsion.html','propulsion.js')">Tipos de motor</a>
+                        </li>
+                    </ul>
+                    <!-- Contenedor para posicionar correctamente el icono de filtros -->
+                    <div id="btnFilter" class="d-flex ms-auto d-none" onclick="toggleFilterSection()" style="cursor: pointer;">
+                        <div class="bi bi-funnel"> Filtrar</div>
+                    </div>
                 </div>
-                <div class="col-4 col-md-2 col-xl-2">
-                    <input type="month" class="form-control form-control-sm" id="endDate" name="endDate">
-                </div>
-                <div class="col-4 col-md-2 col-xl-2">
-                    <select class="form-select form-select-sm" id="cmbType" name="cmbType">
-                        <option value="" selected>Tipo ...</option>
-                    </select>
-                </div>
-                <div class="col-4 col-md-2 col-xl-2">
-                    <select class="form-select form-select-sm" id="cmbBrand" name="cmbBrand">
-                        <option value="" selected>Marca ...</option>
-                    </select>
-                </div>
-                <div class="col-6 col-md-3 col-xl-3">
-                    <select class="form-select form-select-sm" id="cmbModel" name="cmbModel">
-                        <option value="" selected>Modelo ...</option>
-                    </select>
-                </div>
-                <div class="col-2 col-md-1 col-xl-1">
-                    <select class="form-select form-select-sm" id="cmbProvince" name="cmbProvince">
-                        <option value="" selected>Provincia ...</option>
-                    </select>
-                </div>
-            </form>
-        </section>
+            </div>
+        </nav>
     </header>
 
-    <div class="hidden-header"></div>
-
-    <!-- BEGIN: DASHBOARD -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesSoldType"></canvas>
-                </div>
+    <!-- Contenedor del filtro (inicialmente oculto) -->
+    <div id="filterSection" class="container-fluid bg-light p-3">
+        <div class="row g-3">
+            <!-- Fecha Desde -->
+            <div class="col-6 col-md-3 col-xl-2 mb-3">
+                <label for="dateFrom" class="form-label">Fecha Desde</label>
+                <input type="month" class="datefilter form-control" id="dateFrom">
             </div>
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesSoldStackedType"></canvas>
-                </div>
+    
+            <!-- Fecha Hasta -->
+            <div class="col-6 col-md-3 col-xl-2 mb-3">
+                <label for="dateTo" class="form-label">Fecha Hasta</label>
+                <input type="month" class="datefilter form-control" id="dateTo">
             </div>
-
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesBrands"></canvas>
-                </div>
-            </div>
-
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesStackedBrands"></canvas>
-                </div>
+        </div>
+        <div class="row g-3">
+            <!-- Marcas -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="brands" multiple>
+                </select>
             </div>
 
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesModels"></canvas>
-                </div>
+            <!-- Modelos -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="models" multiple>
+                </select>
             </div>
 
-            <div class="col-12 col-xl-6">
-                <div class="chart">
-                    <canvas id="vehiclesStackedModels"></canvas>
-                </div>
+            <!-- Tipos de Motor -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="motorTypes" multiple>
+                </select>
             </div>
 
-            <div class="col-12">
-                <div class="chart chart-xl">
-                    <canvas id="vehiclesMap"></canvas>
-                </div>
+            <!-- Tipos de Vehículos -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="serviceTypes" multiple>
+                </select>
+            </div>
+
+            <!-- Comunidades autónomas -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="communities" multiple>
+                </select>
+            </div>
+
+            <!-- Provincias -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="provinces" multiple>
+                </select>
             </div>
         </div>
     </div>
-    <!-- END: DASHBOARD -->
 
-    <!--<div class="hidden-footer"></div>
-
-    <footer class="fixed-footer">
-        <div class="container text-center">
-            <p>Footer</p>
-        </div>
-    </footer>-->
-
-    <div class="refreshDashboard">
-        <i id="btnRefreshDashboard" class="fas fa-sync-alt"></i>
+    <div id="content" class="content">
+        <!-- Aquí se cargará el contenido dinámico -->
+        <p>Bienvenido a la página principal. Haz clic en los botones de navegación para ver más contenido.</p>
     </div>
 
-    <div id="loadingScreen">
-        <div class="loading">
-            <div class="spinner"></div>
-            <h4>Cargando</h4>
-        </div>
+    <div class="refresh">
+        <i id="btnRefresh" class="fas fa-sync-alt"></i>
     </div>
-
-    <script type="module" src="index.js"></script>
+    <div id=loading class="loading">
+        <div class="spinner"></div>
+        <h4>Cargando</h4>
+    </div>
 </body>
-
 </html>
-
-
