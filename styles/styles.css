@@ -148,6 +148,15 @@ body {
     background-color: var(--COLOR-PRIMARY);
 }
 
+.filterSection {
+    background-color: var(--COLOR-PRIMARY);
+    --bs-bg-opacity: 1;
+}
+
+.filterSection .choices__input {
+    background-color: transparent;
+}
+
 .datefilter {
     height: 47.95px;
     border-radius: 4px;
