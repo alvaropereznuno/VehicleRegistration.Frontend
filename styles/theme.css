@@ -1,19 +1,20 @@
 :root {
-    --COLOR-PRIMARY: #F1EFEC;
-    --COLOR-SECONDARY: #D4C9BE;
-    --COLOR-ACCENT: #123458;
-    --COLOR-ACCENT-DARK: #030303;
-    --COLOR-SEPARATOR: #d8d7d4;
-    --COLOR-TRANSPARENT: rgba(255, 255, 255, 0.8);
+    --COLOR-PRIMARY: #FFF8F0;           /* Fondo cálido, suave y luminoso */
+    --COLOR-SECONDARY: #e4e4e4;         /* Secciones con tono melocotón claro */
+    --COLOR-ACCENT: #ff4800;            /* Naranja vibrante para botones y gráficos activos */
+    --COLOR-ACCENT-DARK: #000873;       /* Azul profundo para texto y encabezados */
+    --COLOR-SEPARATOR: #ffceb7;         /* Líneas suaves con calidez */
+    --COLOR-TRANSPARENT: rgba(255, 255, 255, 0.9); /* Overlays limpios */
 
     --BORDER-RADIUS: 4px;
 
-    --COLOR-TYPE-1: #123458;
-    --COLOR-TYPE-2: #68363B;
-    --COLOR-TYPE-3: #3B5D50;
-    --COLOR-TYPE-4: #A08A53;
-    --COLOR-TYPE-5: #5D486E;
-    --COLOR-TYPE-6: #8C5B3B;
-    --COLOR-TYPE-7: #2D5D74;
-    --COLOR-TYPE-8: #886B74;
+    --COLOR-TYPE-1: #FF4800;     /*  Naranja  principal, coherente  con  tu color  de  acento */
+    --COLOR-TYPE-2:  #FFB300;     /* Amarillo  cálido,  vibrante y  legible  sobre fondo  claro  */
+    --COLOR-TYPE-3:  #00A6ED;     /*  Azul claro,  fresco  y tecnológico  */
+    --COLOR-TYPE-4: #008C72;     /*  Verde  azulado, moderno  y  elegante */
+    --COLOR-TYPE-5:  #D94F70;     /* Rosa  coral,  cálido y  llamativo  */
+    --COLOR-TYPE-6:  #6C4D9F;     /*  Violeta medio,  sofisticado  y contrastante  */
+    --COLOR-TYPE-7: #A05F2C;     /*  Marrón  tostado, cálido  y  con carácter  */
+    --COLOR-TYPE-8: #4C4C4C;     /*  Gris  oscuro para  categorías  neutras o  sin  destacar */
+
 }
