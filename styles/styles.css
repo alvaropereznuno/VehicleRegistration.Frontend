@@ -9,6 +9,28 @@ body {
     padding: 20px;
 }
 
+.headerSection {
+    background-color: var(--COLOR-ACCENT);
+}
+
+.headerSection .navbar-brand {
+    font-weight: bold;
+    color: var(--COLOR-PRIMARY);
+}
+
+.headerSection .nav-link {
+    color: var(--COLOR-PRIMARY);
+}
+
+.headerSection .bi-funnel {
+    font-weight: bold;
+    color: var(--COLOR-PRIMARY);
+}
+
+.headerSection .navbar-toggler {
+    border-radius: var(--BORDER-RADIUS);
+}
+
 .tarjet{
     background-color: var(--COLOR-PRIMARY);
     border-radius: var(--BORDER-RADIUS);
