@@ -1,9 +1,9 @@
 :root {
-    --COLOR-PRIMARY: #FFF8F0;           /* Fondo cálido, suave y luminoso */
-    --COLOR-SECONDARY: #e4e4e4;         /* Secciones con tono melocotón claro */
-    --COLOR-ACCENT: #ff4800;            /* Naranja vibrante para botones y gráficos activos */
-    --COLOR-ACCENT-DARK: #000873;       /* Azul profundo para texto y encabezados */
-    --COLOR-SEPARATOR: #ffceb7;         /* Líneas suaves con calidez */
+    --COLOR-PRIMARY: #ececec;           /* Fondo cálido, suave y luminoso */
+    --COLOR-SECONDARY: #bbbbbb;         /* Secciones con tono melocotón claro */
+    --COLOR-ACCENT: #410066;            /* Naranja vibrante para botones y gráficos activos */
+    --COLOR-ACCENT-DARK: #1f0872;       /* Azul profundo para texto y encabezados */
+    --COLOR-SEPARATOR: #d7bfe4;         /* Líneas suaves con calidez */
     --COLOR-TRANSPARENT: rgba(255, 255, 255, 0.9); /* Overlays limpios */
 
     --BORDER-RADIUS: 4px;
