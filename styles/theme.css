@@ -1,10 +1,10 @@
 :root {
-    --COLOR-PRIMARY: #101820;       /* Fondo negro azulado */
-    --COLOR-SECONDARY: #1C2A35;     /* Azul gris medio */
-    --COLOR-ACCENT: #00F5D4;        /* Turquesa neón intenso */
-    --COLOR-ACCENT-DARK: #00C2A8;   /* Versión más oscura para contraste */
-    --COLOR-SEPARATOR: #2C3E50;
-    --COLOR-TRANSPARENT: rgba(16, 24, 32, 0.9);
+    --COLOR-PRIMARY: #F1EFEC;
+    --COLOR-SECONDARY: #D4C9BE;
+    --COLOR-ACCENT: #123458;
+    --COLOR-ACCENT-DARK: #030303;
+    --COLOR-SEPARATOR: #d8d7d4;
+    --COLOR-TRANSPARENT: rgba(255, 255, 255, 0.8);
 
     --BORDER-RADIUS: 4px;
 
