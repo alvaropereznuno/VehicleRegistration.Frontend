@@ -110,7 +110,6 @@ const SharedUtils = {
                 .filter(brandId => brandId !== undefined)
         )];
     },
-    
     filterModels: function (registrationList) {
         return [...new Set(
             registrationList.map(registration => registration.modelId)
