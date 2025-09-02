@@ -55,8 +55,17 @@ const SharedUtils = {
             return [];
         }
     },
-    getModelDescription: function (modelId) {
+
+
+
+    getModelDescription: function (modelId, withBrand = false) {
         const model = this.data.modelList.find(model => model.id == modelId);
+
+        if (model != null && withBrand){
+            const brandds = this.getBrandDescription(modelId);
+            return model.description.toLowerCase().includes(brandds.toLowerCase()) ? model.description : `${brandds} ${model.description}`;
+        }
+
         return model ? model.description : null;
     },
     getBrandId: function (modelId) {
@@ -67,6 +76,10 @@ const SharedUtils = {
     getBrandDescription: function (modelId) {
         const model = this.data.modelList.find(model => model.id == modelId);
         const brand = this.data.brandList.find(brand => brand.id == model.brandId);
+        return brand ? brand.description : null;
+    },
+    getBrandDescription2: function (brandId) {
+        const brand = this.data.brandList.find(brand => brand.id == brandId);
         return brand ? brand.description : null;
     },
     getProvinceDescription: function (provinceId) {
@@ -86,6 +99,7 @@ const SharedUtils = {
         const serviceType = DICT.SERVICE_TYPES.find(serviceType => serviceType.id == serviceTypeId);
         return serviceType ? serviceType.description : null;
     },
+
     filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, serviceTypeIdList = null, provinceIdList = null) {
         this.data.registrationFilteredList = this.data.registrationList.filter(registration => {
             return (

@@ -52,8 +52,7 @@ const ChartUtils = {
                 // 1. Agrupar RegistrationList por Marca y obtener sumatorios y se ordenan de mayor a menor cantidad.
                 const groupedData = Object.entries(
                     registrationList.reduce((acc, curr) => {
-                        const brandId = SharedUtils.getBrandDescription(curr.modelId);
-                        acc[brandId] = (acc[brandId] || 0) + curr.count;
+                        acc[curr.brandId] = (acc[curr.brandId] || 0) + curr.count;
                         return acc;
                     }, {})
                 ).sort((a, b) => b[1] - a[1]);
@@ -64,7 +63,7 @@ const ChartUtils = {
                 // 3. Crear el objeto de datos para el gráfico.
                 var alphaIncremental = (1 - 0.4) / (tops - 1);
 
-                const labels = topBrands.map(item => item[0]); 
+                const labels = topBrands.map(item => SharedUtils.getBrandDescription2(item[0])); 
                 const data = topBrands.map(item => item[1]);
                 const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
                 const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
@@ -141,7 +140,7 @@ const ChartUtils = {
                 // 3. Crear el objeto de datos para el gráfico.
                 var alphaIncremental = (1 - 0.4) / (tops - 1);
 
-                const labels = topModels.map(item => SharedUtils.getBrandDescription(item[0]) + " " +  SharedUtils.getModelDescription(item[0])); 
+                const labels = topModels.map(item => SharedUtils.getModelDescription(item[0], true)); 
                 const data = topModels.map(item => item[1]);
                 const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
                 const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
