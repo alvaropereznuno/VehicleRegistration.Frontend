@@ -5,12 +5,14 @@ import SharedUtils from './utils/sharedUtils.js';
 const propulsion = {
     initialize: async function (){
         ChartUtils.propulsion.motorTypesAcc.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAcc'));
+        ChartUtils.propulsion.motorTypesAcc100.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAcc100'));
         ChartUtils.propulsion.motorTypesPie.create(SharedUtils.data.registrationFilteredList, $('#motorTypesPie'));
 
         // GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'));
 
         window.addEventListener("globalDataUpdated", () => {
              ChartUtils.propulsion.motorTypesAcc.update(SharedUtils.data.registrationFilteredList);
+             ChartUtils.propulsion.motorTypesAcc100.update(SharedUtils.data.registrationFilteredList);
              ChartUtils.propulsion.motorTypesPie.update(SharedUtils.data.registrationFilteredList);
      
              // GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList);
