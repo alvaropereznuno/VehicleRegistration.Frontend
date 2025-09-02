@@ -57,20 +57,28 @@ const Colors = {
     getPropulsionColor: function (motorTypeId, alpha = 1) {
         switch (motorTypeId) {
             case '1':
+            case 'Gasolina':
                 return this.type_1(alpha);
             case '2':
+            case 'Diesel':
                 return this.type_2(alpha);
             case '3':
+            case 'Gas':
                 return this.type_3(alpha);
             case '4':
+            case 'Híbrido':
                 return this.type_4(alpha);
             case '5':
+            case 'Híbrido Enchufable':
                 return this.type_5(alpha);
             case '6':
+            case 'Eléctrico 100%':
                 return this.type_6(alpha);
             case '7':
+            case '':
                 return this.type_7(alpha);
             case '8':
+            case '':
                 return this.type_8(alpha);
             default:
                 return this.primary(alpha); // Default color if type is not recognized

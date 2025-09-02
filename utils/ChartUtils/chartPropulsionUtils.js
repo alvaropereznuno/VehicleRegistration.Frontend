@@ -235,6 +235,233 @@ const Propulsion = {
 
             return data;
         }
+    },
+    motorTypesAnnualDiff: {
+        chart: null,
+        create: (registrationList, ctx) => {
+            let methods = Propulsion.motorTypesAnnualDiff;
+            const config = {
+                type: 'bar',
+                data: methods.groupData(registrationList),
+                options: {
+                    indexAxis: 'x',
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: true,
+                        },
+                        title: {
+                            display: false,
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            color: '#7d7d7d',
+                            font: { size: 12 },
+                            // formatter: (value) => value.toLocaleString()
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels] // Registra el plugin
+            };
+        
+            methods.chart = new Chart(ctx, config);
+        },
+        update: (registrationList) => {
+            let methods = Propulsion.motorTypesAnnualDiff;
+            if (methods.chart) {
+                // Actualiza la data del Chart usando el método update
+                methods.chart.data = methods.groupData(registrationList);
+                methods.chart.update();
+            } else {
+                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+            }
+        },
+        groupData: (registrationList) => {
+            const data = Propulsion.data;
+
+            // 1. Obtenemos los datos “normales” ya procesados
+            const baseData = JSON.parse(JSON.stringify(data.dataNor));
+
+            // 2. Inicializamos estructura para totales anuales por motor
+            const annualGrouped = {};
+
+            // 3. Recorremos las fechas y acumulamos por año
+            for (let i = 0; i < baseData.labels.length; i++) {
+                const monthLabel = baseData.labels[i]; // "YYYY-MM"
+                const year = monthLabel.slice(0, 4);
+
+                baseData.datasets.forEach(ds => {
+                    const motorLabel = ds.label;
+                    const value = ds.data[i];
+
+                    if (!annualGrouped[motorLabel]) annualGrouped[motorLabel] = {};
+                    if (!annualGrouped[motorLabel][year]) annualGrouped[motorLabel][year] = 0;
+
+                    const prevMonthValue = ds.data[i - 1] || 0;
+                    const delta = value - prevMonthValue; // solo matriculaciones de este mes
+                    annualGrouped[motorLabel][year] += delta;
+                });
+            }
+
+            // 4. Obtenemos todos los años y motores
+            const motorLabels = Object.keys(annualGrouped);
+            const allYears = [...new Set(baseData.labels.map(l => l.slice(0, 4)))].sort();
+
+            // 5. Construimos datasets, un dataset por año
+            
+            const datasets = allYears.map(year => ({
+                label: year,
+                data: motorLabels.map(motor => annualGrouped[motor][year] || 0),
+                backgroundColor: Colors.accent(1), // Colors.getPropulsionColor(year, 0.7),
+                borderColor: Colors.accent(0.7),
+                borderWidth: 3,
+                fill: true
+            }));
+
+            // Se colorean adecuadamente
+            var alphaIncremental = allYears.length > 1 ? (1 - 0.4) / (allYears.length - 1) : 1;
+
+            datasets.forEach((dataset, index) => {
+                let alpha = alphaIncremental * (allYears.length - 1 - index); // degradado por año
+                dataset.backgroundColor = motorLabels.map(motor => Colors.getPropulsionColor(motor, 1 - alpha));
+                dataset.borderColor = motorLabels.map(motor => Colors.getPropulsionColor(motor, 0.7 - alpha));
+            });
+
+            // 6. Construimos objeto final para Chart.js
+            data.dataAnnual = {
+                labels: motorLabels, // eje X: tipos de motor
+                datasets
+            };
+
+            return data.dataAnnual;
+        }
+    },
+    motorTypesAnnualDiff100: {
+        chart: null,
+        create: (registrationList, ctx) => {
+            let methods = Propulsion.motorTypesAnnualDiff100;
+            const config = {
+                type: 'bar',
+                data: methods.groupData(registrationList),
+                options: {
+                    indexAxis: 'x',
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: true,
+                        },
+                        title: {
+                            display: false,
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            color: '#7d7d7d',
+                            font: { size: 12 },
+                            // formatter: (value) => value.toLocaleString()
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels] // Registra el plugin
+            };
+        
+            methods.chart = new Chart(ctx, config);
+        },
+        update: (registrationList) => {
+            let methods = Propulsion.motorTypesAnnualDiff100;
+            if (methods.chart) {
+                // Actualiza la data del Chart usando el método update
+                methods.chart.data = methods.groupData(registrationList);
+                methods.chart.update();
+            } else {
+                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+            }
+        },
+        groupData: (registrationList) => {
+            const data = Propulsion.data;
+
+            // 1. Obtenemos los datos “normales” ya procesados
+            const baseData = JSON.parse(JSON.stringify(data.dataNor));
+
+            // 2. Inicializamos estructura para totales anuales por motor
+            const annualGrouped = {};
+
+            // 3. Recorremos las fechas y acumulamos por año
+            for (let i = 0; i < baseData.labels.length; i++) {
+                const monthLabel = baseData.labels[i]; // "YYYY-MM"
+                const year = monthLabel.slice(0, 4);
+
+                baseData.datasets.forEach(ds => {
+                    const motorLabel = ds.label;
+                    const value = ds.data[i];
+
+                    if (!annualGrouped[motorLabel]) annualGrouped[motorLabel] = {};
+                    if (!annualGrouped[motorLabel][year]) annualGrouped[motorLabel][year] = 0;
+
+                    const prevMonthValue = ds.data[i - 1] || 0;
+                    const delta = value - prevMonthValue; // solo matriculaciones de este mes
+                    annualGrouped[motorLabel][year] += delta;
+                });
+            }
+
+            // 4. Obtenemos todos los años y motores
+            const motorLabels = Object.keys(annualGrouped);
+            const allYears = [...new Set(baseData.labels.map(l => l.slice(0, 4)))].sort();
+
+            // 5. Calculamos los porcentajes anuales y ajustamos a 100%
+            const percentGrouped = {};
+            allYears.forEach(year => {
+                let yearTotal = 0;
+                motorLabels.forEach(motor => {
+                    yearTotal += annualGrouped[motor][year] || 0;
+                });
+
+                // Primer cálculo en porcentaje (decimal)
+                motorLabels.forEach(motor => {
+                    if (!percentGrouped[motor]) percentGrouped[motor] = {};
+                    percentGrouped[motor][year] = yearTotal > 0 ? (annualGrouped[motor][year] || 0) * 100 / yearTotal : 0;
+                });
+
+                // Ajuste fino para que la suma sea exactamente 100
+                let sumPercent = motorLabels.reduce((sum, motor) => sum + percentGrouped[motor][year], 0);
+                let diff = 100 - sumPercent;
+
+                if (diff !== 0) {
+                    // Ajustamos el motor con mayor porcentaje
+                    let maxMotor = motorLabels.reduce((a, b) =>
+                        (percentGrouped[a][year] > percentGrouped[b][year] ? a : b)
+                    );
+                    percentGrouped[maxMotor][year] += diff;
+                }
+            });
+
+            // 6. Construimos datasets para Chart.js con degradado por año
+            const datasets = allYears.map((year, index) => {
+                let alpha = allYears.length > 1 ? (1 - 0.4) / (allYears.length - 1) * (allYears.length - 1 - index) : 1;
+                return {
+                    label: year,
+                    data: motorLabels.map(motor => percentGrouped[motor][year]),
+                    backgroundColor: motorLabels.map(motor => Colors.getPropulsionColor(motor, 1 - alpha)),
+                    borderColor: motorLabels.map(motor => Colors.getPropulsionColor(motor, 0.7 - alpha)),
+                    borderWidth: 3,
+                    fill: true
+                };
+            });
+
+            // 7. Construimos objeto final para Chart.js
+            data.dataAnnualPercent = {
+                labels: motorLabels,
+                datasets
+            };
+
+            return data.dataAnnualPercent;
+        }
+
     }
 }
 
