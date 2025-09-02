@@ -6,7 +6,11 @@ body {
 }
 
 .content {
-    padding: 20px;
+    padding: 10px;
+}
+
+@media screen and (max-width:768px) {
+
 }
 
 .headerSection {
@@ -29,6 +33,12 @@ body {
 
 .headerSection .navbar-toggler {
     border-radius: var(--BORDER-RADIUS);
+    border-color: var(--COLOR-SECONDARY);
+    background-color: var(--COLOR-PRIMARY);
+}
+
+.headerSection .navbar-toggler:focus {
+    box-shadow: none;
 }
 
 .tarjet{
@@ -155,6 +165,10 @@ body {
 
 .filterSection .choices__input {
     background-color: transparent;
+}
+
+.btnFilter {
+    text-align: right;
 }
 
 .datefilter {
