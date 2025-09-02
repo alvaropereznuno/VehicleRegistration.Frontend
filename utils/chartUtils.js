@@ -161,6 +161,7 @@ const ChartUtils = {
     annuals: {
         annualSellings: {
             chart: null,
+            data: null,
             create: (registrationList, ctx) => {
                 let methods = ChartUtils.annuals.annualSellings;
                 const config = {
@@ -202,32 +203,46 @@ const ChartUtils = {
                 }
             },
             groupData: (registrationList) => {
-                // 1. Agrupar los registros por fecha, y sumar las matriculaciones.
-                const groupedData = registrationList.reduce((acc, curr) => {
-                    acc[curr.registrationDate] = (acc[curr.registrationDate] || 0) + curr.count;
-                    return acc;
-                }
-                , {});
+                let methods = ChartUtils.annuals.annualSellings;
+                let minDate = null;
+                let maxDate = null;
 
-                // 2. Crear un dataset para cada año, con sus respectivos meses y matriculaciones en orden ascendente por mes.
-                const datasets = Object.entries(groupedData).reduce((acc, curr) => {
-                    const year = new Date(curr[0]).getFullYear();
-                    const month = new Date(curr[0]).getMonth();
+                // 1. Agrupar los registros por fecha y año, y sumar las matriculaciones.
+                const datasets = registrationList.reduce((acc, { registrationDate, count }) => {
+                    const date = new Date(registrationDate);
+                    const year = date.getFullYear();
+                    const month = date.getMonth();
 
-                    if (!acc[year]) {
-                        acc[year] = { 
-                            data: [],
-                            borderWidth: 3, 
-                        };
-                    };
-                    acc[year].data[month] = curr[1]; // Sumar matriculaciones al mes correspondiente
+                    if (!acc[year]) acc[year] = { data: Array(12).fill(undefined) };
+
+                    acc[year].data[month] = (acc[year].data[month] || 0) + count;
+
+                    if (!minDate || date < minDate) minDate = date;
+                    if (!maxDate || date > maxDate) maxDate = date;
 
                     return acc;
                 }, {});
 
+                // 2. Rellenamos con ceros los huecos.
+                Object.entries(datasets).forEach(([yearStr, { data }]) => {
+                    const year = Number(yearStr);
+                    const yearStart = new Date(year, 0, 1);
+                    const yearEnd = new Date(year, 11, 31);
+
+                    data.forEach((value, monthIndex) => {
+                        const monthStart = new Date(year, monthIndex, 1);
+                        const monthEnd = new Date(year, monthIndex + 1, 0);
+
+                        if (value === undefined && monthEnd >= minDate && monthStart <= maxDate) {
+                            data[monthIndex] = 0;
+                        }
+                    });
+                });
+
                 // 3. Retorna el objeto de datos para el gráfico.
                 var alphaIncremental = (1 - 0.4) / (Object.keys(datasets).length - 1);
-                return {
+
+                methods.data = {
                     labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
                     datasets: Object.entries(datasets).map((item, index) => {
                         return {
@@ -239,6 +254,7 @@ const ChartUtils = {
                         };
                     })
                 };
+                return methods.data;
             }
         },
         annualSellingsDiff: {
@@ -381,52 +397,41 @@ const ChartUtils = {
                 }
             },
             groupData: (registrationList) => {
-                // 1. Agrupar los registros por fecha, y sumar las matriculaciones.
-                const groupedData = registrationList.reduce((acc, curr) => {
-                    acc[curr.registrationDate] = (acc[curr.registrationDate] || 0) + curr.count;
-                    return acc;
-                }
-                , {});
+                let methodsAcc = ChartUtils.annuals.annualSellingsAcc;
+                let methods = ChartUtils.annuals.annualSellings;
 
-                // 2. Crear un dataset para cada año, con sus respectivos meses y matriculaciones en orden ascendente por mes.
-                const datasets = Object.entries(groupedData).reduce((acc, curr) => {
-                    const year = new Date(curr[0]).getFullYear();
-                    const month = new Date(curr[0]).getMonth();
+                // 1. Obtenemos el resultado normal
+                const result = JSON.parse(JSON.stringify(methods.data));
 
-                    if (!acc[year]) {
-                        acc[year] = { 
-                            data: [],
-                            borderWidth: 3, 
-                        };
+                const { minDate, maxDate } = registrationList.reduce((acc, { registrationDate }) => {
+                    const d = new Date(registrationDate);
+                    return {
+                        minDate: acc.minDate === null || d < acc.minDate ? d : acc.minDate,
+                        maxDate: acc.maxDate === null || d > acc.maxDate ? d : acc.maxDate
                     };
-                    acc[year].data[month] = curr[1]; // Sumar matriculaciones al mes correspondiente
+                }, { minDate: null, maxDate: null });
 
-                    return acc;
-                }, {});
+                // 2. Acumulamos los resultados
+                result.datasets.forEach(dataset => {
+                    let runningTotal = 0;
+                    const year = Number(dataset.label);
 
-                // 2.1. Por cada mes del año, sumar las matriculaciones de los meses anteriores.
-                Object.entries(datasets).forEach((item) => {
-                    const year = item[0];
-                    const data = item[1].data;
-                    for (let i = 1; i < data.length; i++) {
-                        data[i] += data[i - 1] || 0;
-                    }
+                    dataset.data = dataset.data.map((value, monthIndex) => {
+                        const monthStart = new Date(year, monthIndex, 1);
+                        const monthEnd = new Date(year, monthIndex + 1, 0);
+
+                        // Si está fuera del rango global, dejamos undefined
+                        if (monthEnd < minDate || monthStart > maxDate) return undefined;
+
+                        // Acumulamos solo si hay valor (0 incluido)
+                        runningTotal += value || 0;
+                        return runningTotal;
+                    });
                 });
 
-                // 3. Retorna el objeto de datos para el gráfico.
-                var alphaIncremental = (1 - 0.4) / (Object.keys(datasets).length - 1);
-                return {
-                    labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                    datasets: Object.entries(datasets).map((item, index) => {
-                        return {
-                            label: item[0],
-                            data: item[1].data,
-                            backgroundColor: Colors.accent(0.4 + alphaIncremental*index),
-                            borderColor: Colors.accent(0.1 + alphaIncremental*index),
-                            borderWidth: 3,
-                        };
-                    })
-                };
+                // 3. Devolvemos el resultado acumulativo
+                methodsAcc.data = result;
+                return result;
             }
         },
         annualSellingsAccDiff: {
