@@ -1,7 +1,6 @@
 // configurations.js
 
 const CONFIG = {
-    // BaseUrl : 'https://vehicleregistrationsapirest-e0e5fjagbmc7hwfp.spaincentral-01.azurewebsites.net/',
     BaseUrl : 'https://api.metricars.es/',
     // BaseUrl : 'https://localhost:7230/',
     VehiclesService: {
