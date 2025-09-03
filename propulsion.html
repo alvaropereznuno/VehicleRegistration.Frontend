@@ -9,8 +9,6 @@
     <script src="propulsion.js" type="module" defer></script>
 </head>
 <body>
-
-</body>
     <div>
         <h3 class="text-center">Matriculaciones por tipos de motor</h3>
         
@@ -25,18 +23,9 @@
             </div>
             <div class="col-12 col-lg-6 text-center">
                 <div class="tarjet">
-                    <h5>Acumulado de matriculaciones (%)</h5>
+                    <h5>Proporción por tipo de motor (%)</h5>
                     <div class="chart-container-medium">
-                        <canvas id="motorTypesAcc100"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6 text-center">
-                <div class="tarjet">
-                    <h5>Reparto total por tipos de motor</h5>
-                    <div class="chart-container-medium">
-                        <canvas id="motorTypesPie"></canvas>
+                        <canvas id="motorTypes100"></canvas>
                     </div>
                 </div>
             </div>
@@ -44,18 +33,17 @@
             <div class="col-12 col-lg-6 text-center">
                 <div class="tarjet">
                     <h5>Comparativas anuales por tipo de motor</h5>
-                    <div class="chart-container-medium">
+                    <div class="chart-container-small">
                         <canvas id="motorTypesAnnualDiff"></canvas>
                     </div>
-                    <!--<div class="chart-container-small">
-                        <canvas id="motorTypesAnnualDiff100"></canvas>
-                    </div>-->
                 </div>
             </div>
-
-            <div class="col-12">
-                <div class="grid">
-                    <div id="topResults"></div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h5>Proporciones anuales por tipo de motor (%)</h5>
+                    <div class="chart-container-small">
+                        <canvas id="motorTypesAnnualDiff100"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
