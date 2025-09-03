@@ -60,12 +60,20 @@ const Ranking = {
             const topBrands = groupedData.slice(0, tops);
 
             // 3. Crear el objeto de datos para el gráfico.
-            var alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
+            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
 
             const labels = topBrands.map(item => SharedUtils.getBrandDescription2(item[0])); 
             const data = topBrands.map(item => item[1]);
-            const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
-            const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
+
+            const backgroundColor = Array.from({ length: tops }, (_, index) => {
+                const alpha = 1 - alphaIncremental * index;
+                return Colors.getIndexColor(index % 8, alpha);
+            });
+
+            const borderColor = Array.from({ length: tops }, (_, index) => {
+                const alpha = 0.7 - alphaIncremental * index;
+                return Colors.getIndexColor(index % 8, alpha);
+            });
 
             // 4. Retorna el objeto de datos para el gráfico.
             return {
@@ -78,6 +86,7 @@ const Ranking = {
                 }]
             };
         }
+
     },
     topModels: {
         chart: null,
@@ -137,12 +146,20 @@ const Ranking = {
             const topModels = groupedData.slice(0, tops);
 
             // 3. Crear el objeto de datos para el gráfico.
-            var alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
+            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
 
             const labels = topModels.map(item => SharedUtils.getModelDescription(item[0], true)); 
             const data = topModels.map(item => item[1]);
-            const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
-            const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
+
+            const backgroundColor = Array.from({ length: tops }, (_, index) => {
+                const alpha = 1 - alphaIncremental * index;
+                return Colors.getIndexColor(index % 8, alpha);
+            });
+
+            const borderColor = Array.from({ length: tops }, (_, index) => {
+                const alpha = 0.7 - alphaIncremental * index;
+                return Colors.getIndexColor(index % 8, alpha);
+            });
 
             // 4. Retorna el objeto de datos para el gráfico.
             return {
