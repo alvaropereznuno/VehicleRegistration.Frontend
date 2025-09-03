@@ -3,7 +3,8 @@ import SharedUtils from '../sharedUtils.js';
 
 const Propulsion = {
     data: {
-        dataNor: null
+        dataNor: null,
+        dataAcc: null
     },
     motorTypesAcc: {
         chart: null,
@@ -14,6 +15,7 @@ const Propulsion = {
                 data: methods.groupData(registrationList),
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             stacked: true
@@ -61,7 +63,7 @@ const Propulsion = {
             // 2. Ordenamos por fecha (al ser YYYY-MM, string sort funciona bien)
             const sortedDates = Object.keys(groupedData).sort();
 
-            // 3. Construimos datasets acumulativos
+            // 3. Construimos datasets (valores mensuales sin acumulado)
             const datasets = {};
             for (const date of sortedDates) {
                 const motors = groupedData[date];
@@ -77,15 +79,7 @@ const Propulsion = {
                 }
             }
 
-            // 4. Convertimos cada dataset en acumulativo
-            for (const motorTypeId in datasets) {
-                datasets[motorTypeId] = datasets[motorTypeId].reduce((acc, val, i) => {
-                    acc[i] = (acc[i - 1] || 0) + val;
-                    return acc;
-                }, []);
-            }
-
-            // 5. Construimos objeto final
+            // 4. Construimos objeto final
             data.dataNor = {
                 labels: sortedDates,
                 datasets: Object.entries(datasets).map(([motorTypeId, data]) => ({
@@ -97,18 +91,38 @@ const Propulsion = {
                     fill: true
                 }))
             };
-            return data.dataNor
+
+            // 5. Creamos versión acumulada a partir de data.dataNor
+            const accumulatedDatasets = data.dataNor.datasets.map(ds => {
+                const accumulatedData = ds.data.reduce((acc, val, i) => {
+                    acc[i] = (acc[i - 1] || 0) + val;
+                    return acc;
+                }, []);
+                return {
+                    ...ds,
+                    data: accumulatedData
+                };
+            });
+
+            data.dataAcc = {
+                labels: data.dataNor.labels,
+                datasets: accumulatedDatasets
+            };
+
+            // Devolvemos la versión acumulada
+            return data.dataAcc;
         }
     },
-    motorTypesAcc100: {
+    motorTypes100: {
         chart: null,
         create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypesAcc100;
+            let methods = Propulsion.motorTypes100;
             const config = {
                 type: 'line',
                 data: methods.groupData(registrationList),
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             stacked: true
@@ -119,7 +133,14 @@ const Propulsion = {
                             display: false
                         },
                         tooltip: {
-                            mode: 'index'
+                            mode: 'index',
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw !== undefined ? context.raw : context.parsed.y;
+                                    return `${label}: ${value.toFixed(2)}%`;
+                                }
+                            }
                         }
                     },
                     interaction: {
@@ -133,7 +154,7 @@ const Propulsion = {
             methods.chart = new Chart(ctx, config);
         },
         update: (registrationList) => {
-            let methods = Propulsion.motorTypesAcc100;
+            let methods = Propulsion.motorTypes100;
             if (methods.chart) {
                 // Actualiza la data del Chart usando el método update
                 methods.chart.data = methods.groupData(registrationList);
@@ -145,32 +166,32 @@ const Propulsion = {
         groupData: (registrationList) => {
             const data = Propulsion.data;
 
-            // 1. Obtenemos el resultado normal, que son los datos del método anterior almacenados en una variable.
+            // 1. Obtenemos el resultado normal
             const result = JSON.parse(JSON.stringify(data.dataNor));
 
-            // 2. Recorremos cada mes (índice de labels)
+            // 2. Recorremos cada mes
             result.labels.forEach((_, monthIndex) => {
-                // 2.1. Sacamos todos los valores de ese mes (por motorType)
                 const monthValues = result.datasets.map(ds => ds.data[monthIndex] || 0);
                 const total = monthValues.reduce((a, b) => a + b, 0);
 
                 if (total > 0) {
-                    // 2.2. Normalizamos los valores de cada dataset a porcentaje
+                    // normalizamos con 2 decimales
                     result.datasets.forEach((ds, i) => {
-                        ds.data[monthIndex] = Math.round((monthValues[i] / total) * 100);
+                        const percent = (monthValues[i] / total) * 100;
+                        ds.data[monthIndex] = Math.round(percent * 100) / 100;
                     });
 
-                    // 2.3. Ajuste fino para garantizar que sumen 100 (corrección por redondeo)
-                    const diff = 100 - result.datasets.reduce((sum, ds) => sum + ds.data[monthIndex], 0);
+                    // ajuste fino
+                    let sum = result.datasets.reduce((s, ds) => s + ds.data[monthIndex], 0);
+                    let diff = Math.round((100 - sum) * 100) / 100;
                     if (diff !== 0) {
-                        // le sumamos la diferencia al dataset más grande de ese mes
                         const maxIdx = result.datasets
                             .map(ds => ds.data[monthIndex])
                             .reduce((maxI, val, i, arr) => val > arr[maxI] ? i : maxI, 0);
-                        result.datasets[maxIdx].data[monthIndex] += diff;
+                        result.datasets[maxIdx].data[monthIndex] =
+                            Math.round((result.datasets[maxIdx].data[monthIndex] + diff) * 100) / 100;
                     }
                 } else {
-                    // Si no hay datos ese mes, dejamos undefined o 0 según lo que prefieras
                     result.datasets.forEach(ds => {
                         ds.data[monthIndex] = 0;
                     });
@@ -178,62 +199,6 @@ const Propulsion = {
             });
 
             return result;
-        }
-    },
-    motorTypesPie: {
-        chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypesPie;
-            const config = {
-                type: 'doughnut',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: false,
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-                };
-
-            methods.chart = new Chart(ctx, config);
-        },
-        update: (registrationList) => {
-            let methods = Propulsion.motorTypesPie;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
-        },
-        groupData: (registrationList) => {
-            // 1. Agrupa los registros por tipo de motor, y suma las matriculaciones.
-            const groupedData = registrationList.reduce((acc, curr) => {
-                const motorTypeId = curr.motorTypeId; // SharedUtils.getMotorTypeDescription(curr.motorTypeId);
-                acc[motorTypeId] = (acc[motorTypeId] || 0) + curr.count;
-                return acc;
-            }, {});
-
-            const data = {
-                labels: Object.keys(groupedData).map((item, index) => SharedUtils.getMotorTypeDescription(item)),
-                datasets: [
-                    {
-                        data: Object.values(groupedData),
-                        backgroundColor: Object.keys(groupedData).map((item, index) => Colors.getPropulsionColor(item, 1)),
-                        borderColor: Object.keys(groupedData).map((item, index) => Colors.getPropulsionColor(item, 0.6)),
-                        borderWidth: 3
-                    }
-                ]
-            };
-
-            return data;
         }
     },
     motorTypesAnnualDiff: {
@@ -283,7 +248,7 @@ const Propulsion = {
             const data = Propulsion.data;
 
             // 1. Obtenemos los datos “normales” ya procesados
-            const baseData = JSON.parse(JSON.stringify(data.dataNor));
+            const baseData = JSON.parse(JSON.stringify(data.dataAcc));
 
             // 2. Inicializamos estructura para totales anuales por motor
             const annualGrouped = {};
@@ -364,6 +329,15 @@ const Propulsion = {
                             color: '#7d7d7d',
                             font: { size: 12 },
                             // formatter: (value) => value.toLocaleString()
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.chart.data.labels[context.dataIndex];
+                                    const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
+                                    return `${label}: ${value.toFixed(2)}%`;
+                                }
+                            }
                         }
                     }
                 },
@@ -385,64 +359,61 @@ const Propulsion = {
         groupData: (registrationList) => {
             const data = Propulsion.data;
 
-            // 1. Obtenemos los datos “normales” ya procesados
-            const baseData = JSON.parse(JSON.stringify(data.dataNor));
+            // 1. Usamos el acumulado ya calculado previamente
+            const baseData = JSON.parse(JSON.stringify(data.dataAcc));
 
-            // 2. Inicializamos estructura para totales anuales por motor
-            const annualGrouped = {};
+            // 2. Inicializamos estructura para guardar el último valor por año y motor
+            const lastValues = {};
 
-            // 3. Recorremos las fechas y acumulamos por año
-            for (let i = 0; i < baseData.labels.length; i++) {
-                const monthLabel = baseData.labels[i]; // "YYYY-MM"
+            // 3. Recorremos todas las fechas y guardamos el último valor visto de cada año
+            baseData.labels.forEach((monthLabel, i) => {
                 const year = monthLabel.slice(0, 4);
 
                 baseData.datasets.forEach(ds => {
                     const motorLabel = ds.label;
-                    const value = ds.data[i];
-
-                    if (!annualGrouped[motorLabel]) annualGrouped[motorLabel] = {};
-                    if (!annualGrouped[motorLabel][year]) annualGrouped[motorLabel][year] = 0;
-
-                    const prevMonthValue = ds.data[i - 1] || 0;
-                    const delta = value - prevMonthValue; // solo matriculaciones de este mes
-                    annualGrouped[motorLabel][year] += delta;
+                    if (!lastValues[motorLabel]) lastValues[motorLabel] = {};
+                    // siempre nos quedamos con el valor más reciente de ese año
+                    lastValues[motorLabel][year] = ds.data[i];
                 });
-            }
+            });
 
-            // 4. Obtenemos todos los años y motores
-            const motorLabels = Object.keys(annualGrouped);
+            // 4. Obtenemos todos los motores y años
+            const motorLabels = Object.keys(lastValues);
             const allYears = [...new Set(baseData.labels.map(l => l.slice(0, 4)))].sort();
 
-            // 5. Calculamos los porcentajes anuales y ajustamos a 100%
+            // 5. Calculamos los porcentajes finales por año
             const percentGrouped = {};
             allYears.forEach(year => {
                 let yearTotal = 0;
                 motorLabels.forEach(motor => {
-                    yearTotal += annualGrouped[motor][year] || 0;
+                    yearTotal += lastValues[motor][year] || 0;
                 });
 
-                // Primer cálculo en porcentaje (decimal)
+                // cálculo inicial en porcentaje (2 decimales)
                 motorLabels.forEach(motor => {
                     if (!percentGrouped[motor]) percentGrouped[motor] = {};
-                    percentGrouped[motor][year] = yearTotal > 0 ? (annualGrouped[motor][year] || 0) * 100 / yearTotal : 0;
+                    const value = lastValues[motor][year] || 0;
+                    percentGrouped[motor][year] = yearTotal > 0 ? Math.round((value / yearTotal) * 10000) / 100 : 0;
                 });
 
-                // Ajuste fino para que la suma sea exactamente 100
+                // ajuste fino para que sume 100
                 let sumPercent = motorLabels.reduce((sum, motor) => sum + percentGrouped[motor][year], 0);
-                let diff = 100 - sumPercent;
+                let diff = Math.round((100 - sumPercent) * 100) / 100;
 
                 if (diff !== 0) {
-                    // Ajustamos el motor con mayor porcentaje
-                    let maxMotor = motorLabels.reduce((a, b) =>
+                    const maxMotor = motorLabels.reduce((a, b) =>
                         (percentGrouped[a][year] > percentGrouped[b][year] ? a : b)
                     );
-                    percentGrouped[maxMotor][year] += diff;
+                    percentGrouped[maxMotor][year] = Math.round((percentGrouped[maxMotor][year] + diff) * 100) / 100;
                 }
             });
 
-            // 6. Construimos datasets para Chart.js con degradado por año
+            // 6. Construimos datasets para Chart.js (un dataset por año)
             const datasets = allYears.map((year, index) => {
-                let alpha = allYears.length > 1 ? (1 - 0.4) / (allYears.length - 1) * (allYears.length - 1 - index) : 1;
+                let alpha = allYears.length > 1
+                    ? (1 - 0.4) / (allYears.length - 1) * (allYears.length - 1 - index)
+                    : 1;
+
                 return {
                     label: year,
                     data: motorLabels.map(motor => percentGrouped[motor][year]),
@@ -455,12 +426,13 @@ const Propulsion = {
 
             // 7. Construimos objeto final para Chart.js
             data.dataAnnualPercent = {
-                labels: motorLabels,
+                labels: motorLabels, // eje X: tipos de motor
                 datasets
             };
 
             return data.dataAnnualPercent;
         }
+
 
     }
 }

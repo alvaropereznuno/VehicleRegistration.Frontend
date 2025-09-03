@@ -54,6 +54,29 @@ const Colors = {
         return getCssColor('--COLOR-TYPE-8', alpha);
     },
 
+    getIndexColor: function (index, alpha = 1) {
+        switch (index) {
+            case 0:
+                return this.type_8(alpha);
+            case 1:
+                return this.type_7(alpha);
+            case 2:
+                return this.type_6(alpha);
+            case 3:
+                return this.type_5(alpha);
+            case 4:
+                return this.type_4(alpha);
+            case 5:
+                return this.type_3(alpha);
+            case 6:
+                return this.type_2(alpha);
+            case 7:
+                return this.type_1(alpha);
+            default:
+                return this.primary(alpha); // Default color if type is not recognized
+        }
+    },
+
     getPropulsionColor: function (motorTypeId, alpha = 1) {
         switch (motorTypeId) {
             case '1':
