@@ -65,28 +65,14 @@ const Ranking = {
             const labels = topBrands.map(item => SharedUtils.getBrandDescription2(item[0])); 
             const data = topBrands.map(item => item[1]);
 
-            // funciones de colores cíclicas
-            const colorFns = [
-                Colors.type_8,
-                Colors.type_7,
-                Colors.type_6,
-                Colors.type_5,
-                Colors.type_4,
-                Colors.type_3,
-                Colors.type_2,
-                Colors.type_1
-            ];
-
             const backgroundColor = Array.from({ length: tops }, (_, index) => {
-                const colorFn = colorFns[index % colorFns.length]; // ciclo
                 const alpha = 1 - alphaIncremental * index;
-                return colorFn(alpha);
+                return Colors.getIndexColor(index % 8, alpha);
             });
 
             const borderColor = Array.from({ length: tops }, (_, index) => {
-                const colorFn = colorFns[index % colorFns.length];
                 const alpha = 0.7 - alphaIncremental * index;
-                return colorFn(alpha);
+                return Colors.getIndexColor(index % 8, alpha);
             });
 
             // 4. Retorna el objeto de datos para el gráfico.
@@ -165,28 +151,14 @@ const Ranking = {
             const labels = topModels.map(item => SharedUtils.getModelDescription(item[0], true)); 
             const data = topModels.map(item => item[1]);
 
-            // funciones de colores cíclicas
-            const colorFns = [
-                Colors.type_8,
-                Colors.type_7,
-                Colors.type_6,
-                Colors.type_5,
-                Colors.type_4,
-                Colors.type_3,
-                Colors.type_2,
-                Colors.type_1
-            ];
-
             const backgroundColor = Array.from({ length: tops }, (_, index) => {
-                const colorFn = colorFns[index % colorFns.length]; // ciclo
                 const alpha = 1 - alphaIncremental * index;
-                return colorFn(alpha);
+                return Colors.getIndexColor(index % 8, alpha);
             });
 
             const borderColor = Array.from({ length: tops }, (_, index) => {
-                const colorFn = colorFns[index % colorFns.length];
                 const alpha = 0.7 - alphaIncremental * index;
-                return colorFn(alpha);
+                return Colors.getIndexColor(index % 8, alpha);
             });
 
             // 4. Retorna el objeto de datos para el gráfico.

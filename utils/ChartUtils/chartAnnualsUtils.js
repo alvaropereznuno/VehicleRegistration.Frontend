@@ -87,30 +87,18 @@ const Annuals = {
             const yearKeys = Object.keys(datasets);
             const alphaIncremental = yearKeys.length > 1 ? (1 - 0.4) / (yearKeys.length - 1) : 1;
 
-            const colorFns = [
-                Colors.type_8,
-                Colors.type_7,
-                Colors.type_6,
-                Colors.type_5,
-                Colors.type_4,
-                Colors.type_3,
-                Colors.type_2,
-                Colors.type_1
-            ];
-
             // 4. Construimos datasets con colores y degradado de alpha
             data.dataNor = {
                 labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
                 datasets: yearKeys.map((year, index) => {
-                    const colorFn = colorFns[index % colorFns.length]; // ciclo de colores
                     const alphaBg = 1 - alphaIncremental * (yearKeys.length - 1 - index);
                     const alphaBorder = 0.7 - alphaIncremental * (yearKeys.length - 1 - index);
 
                     return {
                         label: year,
                         data: datasets[year].yearList,
-                        backgroundColor: colorFn(alphaBg),
-                        borderColor: colorFn(alphaBorder),
+                        backgroundColor: Colors.getIndexColor(index % 8, alphaBg),
+                        borderColor: Colors.getIndexColor(index % 8, alphaBorder),
                         borderWidth: 3,
                     };
                 })
