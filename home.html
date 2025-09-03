@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ránking de matriculaciones</title>
+
+    <link href="../styles/styles.css" rel="stylesheet">
+    <script src="home.js" type="module" defer></script>
+</head>
+<body>
+    <div>
+        <h3 class="text-center">El pulso del mercado de vehículos en España, al instante</h3>
+        <h5 class="text-center">Explora los datos de matriculaciones en España con gráficos dinámicos e interactivos</h4>
+        
+        <div class="row mt-2">
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <p class="mt-2"><strong>Ranking:</strong> Consulta las marcas y modelos más vendidos, de forma visual.</p>
+                    <div class="chart-container-medium">
+                        <canvas id="rankingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <p class="mt-2"><strong>Anuales:</strong> Observa la evolución de matriculaciones a lo largo de los años.</p>
+                    <div class="chart-container-medium">
+                        <canvas id="annualsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <p class="mt-2"><strong>Tipos de motor:</strong> Visualiza cómo se distribuyen las matriculaciones por motor.</p>
+                    <div class="chart-container-medium">
+                        <canvas id="propulsionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <p class="mt-2"><strong>Versus:</strong> Compara fácilmente dos marcas, modelos o tipos de motor entre sí.</p>
+                    <div class="chart-container-medium">
+                        <canvas id="versusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
