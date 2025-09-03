@@ -15,6 +15,7 @@ body {
 
 .headerSection {
     background-color: var(--COLOR-ACCENT);
+    margin-bottom: 20px;
 }
 
 .headerSection .navbar-brand {
