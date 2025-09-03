@@ -15,6 +15,7 @@ const Propulsion = {
                 data: methods.groupData(registrationList),
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             stacked: true
@@ -121,6 +122,7 @@ const Propulsion = {
                 data: methods.groupData(registrationList),
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             stacked: true
