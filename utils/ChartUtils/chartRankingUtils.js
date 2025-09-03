@@ -60,12 +60,34 @@ const Ranking = {
             const topBrands = groupedData.slice(0, tops);
 
             // 3. Crear el objeto de datos para el gráfico.
-            var alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
+            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
 
             const labels = topBrands.map(item => SharedUtils.getBrandDescription2(item[0])); 
             const data = topBrands.map(item => item[1]);
-            const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
-            const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
+
+            // funciones de colores cíclicas
+            const colorFns = [
+                Colors.type_8,
+                Colors.type_7,
+                Colors.type_6,
+                Colors.type_5,
+                Colors.type_4,
+                Colors.type_3,
+                Colors.type_2,
+                Colors.type_1
+            ];
+
+            const backgroundColor = Array.from({ length: tops }, (_, index) => {
+                const colorFn = colorFns[index % colorFns.length]; // ciclo
+                const alpha = 1 - alphaIncremental * index;
+                return colorFn(alpha);
+            });
+
+            const borderColor = Array.from({ length: tops }, (_, index) => {
+                const colorFn = colorFns[index % colorFns.length];
+                const alpha = 0.7 - alphaIncremental * index;
+                return colorFn(alpha);
+            });
 
             // 4. Retorna el objeto de datos para el gráfico.
             return {
@@ -78,6 +100,7 @@ const Ranking = {
                 }]
             };
         }
+
     },
     topModels: {
         chart: null,
@@ -137,12 +160,34 @@ const Ranking = {
             const topModels = groupedData.slice(0, tops);
 
             // 3. Crear el objeto de datos para el gráfico.
-            var alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
+            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
 
             const labels = topModels.map(item => SharedUtils.getModelDescription(item[0], true)); 
             const data = topModels.map(item => item[1]);
-            const backgroundColor = Array.from({ length: tops }, (_, index) => Colors.accent(1 - alphaIncremental * (index + 1)));
-            const borderColor = Array.from({ length: tops }, (_, index) => Colors.accent(0.7 - alphaIncremental * (index + 1)));
+
+            // funciones de colores cíclicas
+            const colorFns = [
+                Colors.type_8,
+                Colors.type_7,
+                Colors.type_6,
+                Colors.type_5,
+                Colors.type_4,
+                Colors.type_3,
+                Colors.type_2,
+                Colors.type_1
+            ];
+
+            const backgroundColor = Array.from({ length: tops }, (_, index) => {
+                const colorFn = colorFns[index % colorFns.length]; // ciclo
+                const alpha = 1 - alphaIncremental * index;
+                return colorFn(alpha);
+            });
+
+            const borderColor = Array.from({ length: tops }, (_, index) => {
+                const colorFn = colorFns[index % colorFns.length];
+                const alpha = 0.7 - alphaIncremental * index;
+                return colorFn(alpha);
+            });
 
             // 4. Retorna el objeto de datos para el gráfico.
             return {

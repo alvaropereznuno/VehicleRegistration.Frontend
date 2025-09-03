@@ -83,21 +83,39 @@ const Annuals = {
                 });
             });
 
-            // 3. Retorna el objeto de datos para el gráfico.
-            var alphaIncremental = Object.keys(datasets).length > 1 ? (1 - 0.4) / (Object.keys(datasets).length - 1) : 1;
+            // 3. Colores por año
+            const yearKeys = Object.keys(datasets);
+            const alphaIncremental = yearKeys.length > 1 ? (1 - 0.4) / (yearKeys.length - 1) : 1;
 
+            const colorFns = [
+                Colors.type_8,
+                Colors.type_7,
+                Colors.type_6,
+                Colors.type_5,
+                Colors.type_4,
+                Colors.type_3,
+                Colors.type_2,
+                Colors.type_1
+            ];
+
+            // 4. Construimos datasets con colores y degradado de alpha
             data.dataNor = {
                 labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                datasets: Object.entries(datasets).map((item, index) => {
+                datasets: yearKeys.map((year, index) => {
+                    const colorFn = colorFns[index % colorFns.length]; // ciclo de colores
+                    const alphaBg = 1 - alphaIncremental * (yearKeys.length - 1 - index);
+                    const alphaBorder = 0.7 - alphaIncremental * (yearKeys.length - 1 - index);
+
                     return {
-                        label: item[0],
-                        data: item[1].yearList,
-                        backgroundColor: Colors.accent(1 - alphaIncremental*(Object.keys(datasets).length-1-index)),
-                        borderColor: Colors.accent(0.7 - alphaIncremental*(Object.keys(datasets).length-1-index)),
+                        label: year,
+                        data: datasets[year].yearList,
+                        backgroundColor: colorFn(alphaBg),
+                        borderColor: colorFn(alphaBorder),
                         borderWidth: 3,
                     };
                 })
             };
+
             return data.dataNor;
         }
     },
