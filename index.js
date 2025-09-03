@@ -7,6 +7,7 @@ $(document).ready(async () => {
 
 const home = {
     currentScript: null,
+    
     initialize: async function () {
         home.loadingScreen(true);
         $("#filterSection").hide();
@@ -23,6 +24,21 @@ const home = {
 
         filters.initializeFilters();
         this.loadingScreen(false);
+    },
+    goHome: function() {
+        // Vaciar contenido actual
+        const contentElement = document.getElementById('content');
+        contentElement.innerHTML = `<p>Bienvenido a la página principal. Haz clic en los botones de navegación para ver más contenido.</p>`;
+
+        // Ocultar filtros
+        $("#btnFilter").addClass("d-none");
+        $("#filterSection").hide();
+
+        // Eliminar cualquier script cargado
+        if (this.currentScript) {
+            this.currentScript.remove();
+            this.currentScript = null;
+        }
     },
     loadPage: function (page, jsFile = null) {
         // Eliminar el contenido HTML actual
@@ -259,5 +275,6 @@ const filters = {
     }
 }
 
+window.goHome = home.goHome.bind(home);
 window.loadPage = home.loadPage.bind(home);
 window.toggleFilterSection = home.toggleFilterSection.bind(home);
