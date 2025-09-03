@@ -2,13 +2,14 @@ import SharedUtils from './utils/sharedUtils.js';
 import DICT from './configurations/dict.js';
 
 $(document).ready(async () => {
-    await home.initialize();
+    await index.initialize();
 });
 
-const home = {
+const index = {
     currentScript: null,
+    
     initialize: async function () {
-        home.loadingScreen(true);
+        index.loadingScreen(true);
         $("#filterSection").hide();
 
         await Promise.all([
@@ -22,6 +23,7 @@ const home = {
         });
 
         filters.initializeFilters();
+        loadPage('home.html','home.js');
         this.loadingScreen(false);
     },
     loadPage: function (page, jsFile = null) {
@@ -50,6 +52,10 @@ const home = {
                     script.type = 'module';
                     script.src = jsFile;
                     script.onload = () => {
+                        // Verificar si la función `home.initialize()` está disponible y ejecutarla
+                        if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
+                            home.initialize();
+                        }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
                             ranking.initialize();
@@ -77,7 +83,7 @@ const home = {
     },
     events: {
         btnRefreshDashboard_click: async function () {
-            home.loadingScreen(true);
+            index.loadingScreen(true);
         
             await Promise.all([
                 SharedUtils.loadModels(true),
@@ -85,7 +91,7 @@ const home = {
                 SharedUtils.loadRegistrations('2020-01-01', null, true)
             ]);
         
-            home.loadingScreen(false);
+            index.loadingScreen(false);
         }
     },
     loadingScreen: function(visible){
@@ -259,5 +265,5 @@ const filters = {
     }
 }
 
-window.loadPage = home.loadPage.bind(home);
-window.toggleFilterSection = home.toggleFilterSection.bind(home);
+window.loadPage = index.loadPage.bind(index);
+window.toggleFilterSection = index.toggleFilterSection.bind(index);
