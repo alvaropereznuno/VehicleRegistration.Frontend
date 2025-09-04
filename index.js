@@ -12,15 +12,12 @@ const index = {
         index.loadingScreen(true);
         $("#filterSection").hide();
 
+        let isLastVersion = await SharedUtils.isLastVersion();
         await Promise.all([
-            SharedUtils.loadModels(),
-            SharedUtils.loadBrands(),
-            SharedUtils.loadRegistrations('2020-01-01')
+            SharedUtils.loadModels(!isLastVersion),
+            SharedUtils.loadBrands(!isLastVersion),
+            SharedUtils.loadRegistrations('2020-01-01', null, !isLastVersion)
         ]);
-
-        $('#btnRefresh').click(async () => {
-            await this.events.btnRefreshDashboard_click();
-        });
 
         filters.initializeFilters();
         loadPage('home.html','home.js');
@@ -82,17 +79,6 @@ const index = {
             });
     },
     events: {
-        btnRefreshDashboard_click: async function () {
-            index.loadingScreen(true);
-        
-            await Promise.all([
-                SharedUtils.loadModels(true),
-                SharedUtils.loadBrands(true),
-                SharedUtils.loadRegistrations('2020-01-01', null, true)
-            ]);
-        
-            index.loadingScreen(false);
-        }
     },
     loadingScreen: function(visible){
         const loadingScreen = $("#loading")[0];
