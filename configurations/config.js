@@ -6,6 +6,9 @@ const CONFIG = {
     VehiclesService: {
         Controller: 'Vehicles'
     },
+    UsersService: {
+        Controller: 'Users'
+    },
     AdminService: {
         Controller: 'Admin'
     }
