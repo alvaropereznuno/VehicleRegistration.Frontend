@@ -1,5 +1,6 @@
 import DICT from '../configurations/dict.js';
 import VehiclesService from '../services/vehiclesService.js';
+import UsersService from '../services/usersService.js';
 import { getIndexedData, setIndexedData } from '../utils/indexedUtils.js';
 
 const SharedUtils = {
@@ -8,6 +9,14 @@ const SharedUtils = {
         modelList: [],
         registrationList: [],
         registrationFilteredList: []
+    },
+    isLastVersion: async function(){
+        let version = await UsersService.getLastVersion();
+        let indexedVersion = await getIndexedData('version');
+        
+        setIndexedData('version', version);
+
+        return !(indexedVersion == null || version.guid == null || indexedVersion.guid == null || version.guid != indexedVersion.guid);
     },
     loadBrands: async function (force = false) {
         try {
@@ -55,9 +64,6 @@ const SharedUtils = {
             return [];
         }
     },
-
-
-
     getModelDescription: function (modelId, withBrand = false) {
         const model = this.data.modelList.find(model => model.id == modelId);
 
