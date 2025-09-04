@@ -1,6 +1,31 @@
 import Colors from '../colorsUtils.js';
 
 const Annuals = {
+    watermark: function(maxWidth, marginLeft, marginRight){
+        const img = new Image();
+        img.src = '/Images/metricars_es.svg';
+
+        return {
+            id: 'watermark',
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                const { width, height } = chart;
+
+                if (!img.complete) return;
+
+                const aspectRatio = img.height / img.width;
+                const imgWidth = maxWidth;
+                const imgHeight = maxWidth * aspectRatio;
+                const x = width - imgWidth - marginLeft;
+                const y = height - imgHeight - marginRight;
+
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(img, x, y, imgWidth, imgHeight);
+                ctx.restore();
+            }
+        }
+    },
     data: {
         minDate: null,
         maxDate: null,
@@ -35,7 +60,7 @@ const Annuals = {
                         }
                     }
                 },
-                plugins: [ChartDataLabels] // Registra el plugin
+                plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
             };
         
             methods.chart = new Chart(ctx, config);
@@ -210,7 +235,7 @@ const Annuals = {
                         }
                     }
                 },
-                plugins: [ChartDataLabels] // Registra el plugin
+                plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
             };
         
             methods.chart = new Chart(ctx, config);

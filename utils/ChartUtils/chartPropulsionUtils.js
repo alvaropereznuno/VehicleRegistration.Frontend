@@ -2,6 +2,31 @@ import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
 
 const Propulsion = {
+    watermark: function(maxWidth, marginLeft, marginRight){
+        const img = new Image();
+        img.src = '/Images/metricars_es.svg';
+
+        return {
+            id: 'watermark',
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                const { width, height } = chart;
+
+                if (!img.complete) return;
+
+                const aspectRatio = img.height / img.width;
+                const imgWidth = maxWidth;
+                const imgHeight = maxWidth * aspectRatio;
+                const x = width - imgWidth - marginLeft;
+                const y = height - imgHeight - marginRight;
+
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(img, x, y, imgWidth, imgHeight);
+                ctx.restore();
+            }
+        }
+    },
     data: {
         dataNor: null,
         dataAcc: null
