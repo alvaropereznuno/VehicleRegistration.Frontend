@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/favicon.svg">
 
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +41,9 @@
     <header>
         <nav class="navbar navbar-expand-md headerSection">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" onclick="loadPage('home.html','home.js');">Metricars</a>
+                <a class="navbar-brand" href="#" onclick="loadPage('home.html','home.js');">
+                    <img src="Images/logo_light.svg" alt="Logo Metricars" width="80">
+                    Metricars</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -82,37 +85,37 @@
         </div>
         <div class="row g-3">
             <!-- Marcas -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="brands" multiple>
                 </select>
             </div>
 
             <!-- Modelos -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="models" multiple>
                 </select>
             </div>
 
             <!-- Tipos de Motor -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="motorTypes" multiple>
                 </select>
             </div>
 
             <!-- Tipos de Vehículos -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="serviceTypes" multiple>
                 </select>
             </div>
 
             <!-- Comunidades autónomas -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="communities" multiple>
                 </select>
             </div>
 
             <!-- Provincias -->
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-2">
                 <select id="provinces" multiple>
                 </select>
             </div>
@@ -122,6 +125,10 @@
     <div id="content" class="container"> <!--class content-->
         <!-- Aquí se cargará el contenido dinámico -->
         <p>Bienvenido a la página principal. Haz clic en los botones de navegación para ver más contenido.</p>
+    </div>
+
+    <div id="footer" class="text-center p-3">
+        <span>© 2025 Metricars - Datos obtenidos de la DGT</span>
     </div>
 
     <div class="refresh">
