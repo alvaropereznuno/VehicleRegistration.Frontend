@@ -2,6 +2,31 @@ import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
 
 const Ranking = {
+    watermark: function(maxWidth, marginLeft, marginRight){
+        const img = new Image();
+        img.src = '/Images/metricars_es.svg';
+
+        return {
+            id: 'watermark',
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                const { width, height } = chart;
+
+                if (!img.complete) return;
+
+                const aspectRatio = img.height / img.width;
+                const imgWidth = maxWidth;
+                const imgHeight = maxWidth * aspectRatio;
+                const x = width - imgWidth - marginLeft;
+                const y = height - imgHeight - marginRight;
+
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(img, x, y, imgWidth, imgHeight);
+                ctx.restore();
+            }
+        }
+    },
     topBrands: {
         chart: null,
         create: (registrationList, ctx) => {
@@ -32,7 +57,7 @@ const Ranking = {
                         }
                     }
                 },
-                plugins: [ChartDataLabels] // Registra el plugin
+                plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
             };
         
             methods.chart = new Chart(ctx, config);
@@ -117,7 +142,7 @@ const Ranking = {
                         }
                     }
                 },
-                plugins: [ChartDataLabels] // Registra el plugin
+                plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
             };
         
             methods.chart = new Chart(ctx, config);

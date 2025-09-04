@@ -15,7 +15,6 @@ body {
 
 .headerSection {
     background-color: var(--COLOR-ACCENT);
-    margin-bottom: 20px;
 }
 
 .headerSection .navbar-brand {
@@ -40,6 +39,11 @@ body {
 
 .headerSection .navbar-toggler:focus {
     box-shadow: none;
+}
+
+.footerSection {
+    background-color: var(--COLOR-PRIMARY);
+    color: var(--COLOR-ACCENT-DARK);
 }
 
 .tarjet{
