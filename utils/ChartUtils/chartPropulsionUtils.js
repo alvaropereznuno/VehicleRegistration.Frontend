@@ -4,7 +4,7 @@ import SharedUtils from '../sharedUtils.js';
 const Propulsion = {
     watermark: function(maxWidth, marginLeft, marginRight){
         const img = new Image();
-        img.src = '/Images/metricars_es.svg';
+        img.src = '/images/metricars_es.svg';
 
         return {
             id: 'watermark',
