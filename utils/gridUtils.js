@@ -4,16 +4,22 @@ const ChartUtils = {
     ranking: {
         topResults: {
             grid: null,
-            create: (registrationList, ctx) => {
-                let methods = ChartUtils.ranking.topResults;
+            create: async (registrationList, ctx) => {
+                return new Promise((resolve) => {
+                    let methods = ChartUtils.ranking.topResults;
 
-                methods.grid = new gridjs.Grid(methods.groupData(registrationList))
-                    .render(ctx);
+                    methods.grid = new gridjs.Grid(methods.groupData(registrationList))
+                        .render(ctx);
+                    resolve();
+                });
             },
-            update: (registrationList) => {
-                let methods = ChartUtils.ranking.topResults;
+            update: async (registrationList) => {
+                return new Promise((resolve) => {
+                    let methods = ChartUtils.ranking.topResults;
 
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
+                    methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
+                    resolve();
+                });
             },
             groupData: (registrationList) => {
                 // 1. Agrupar RegistrationList por Marca y obtener sumatorios y se ordenan de mayor a menor cantidad.
@@ -55,16 +61,22 @@ const ChartUtils = {
     annuals: {
         annualSellings: {
             grid: null,
-            create: (registrationList, ctx) => {
-                let methods = ChartUtils.annuals.annualSellings;
+            create: async (registrationList, ctx) => {
+                return new Promise((resolve) => {
+                    let methods = ChartUtils.annuals.annualSellings;
 
-                methods.grid = new gridjs.Grid(methods.groupData(registrationList))
+                    methods.grid = new gridjs.Grid(methods.groupData(registrationList))
                     .render(ctx);
+                    resolve();
+                });
             },
-            update: (registrationList) => {
-                let methods = ChartUtils.annuals.annualSellings;
+            update: async (registrationList) => {
+                return new Promise((resolve) => {
+                    let methods = ChartUtils.annuals.annualSellings;
 
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
+                    methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
+                    resolve();
+                });
             },
             groupData: (registrationList) => {
                 // 1. Agrupar RegistrationList por Marca y obtener sumatorios y se ordenan de mayor a menor cantidad.
