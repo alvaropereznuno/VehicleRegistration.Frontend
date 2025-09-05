@@ -12,15 +12,12 @@ const index = {
         index.loadingScreen(true);
         $("#filterSection").hide();
 
+        let isLastVersion = await SharedUtils.isLastVersion();
         await Promise.all([
-            SharedUtils.loadModels(),
-            SharedUtils.loadBrands(),
-            SharedUtils.loadRegistrations('2020-01-01')
+            SharedUtils.loadModels(!isLastVersion),
+            SharedUtils.loadBrands(!isLastVersion),
+            SharedUtils.loadRegistrations('2020-01-01', null, !isLastVersion)
         ]);
-
-        $('#btnRefresh').click(async () => {
-            await this.events.btnRefreshDashboard_click();
-        });
 
         filters.initializeFilters();
         loadPage('home.html','home.js');
@@ -54,18 +51,23 @@ const index = {
                     script.onload = () => {
                         // Verificar si la función `home.initialize()` está disponible y ejecutarla
                         if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
+                            $("#filterSection").hide();
+                            $("#btnFilter").addClass("d-none");
                             home.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             ranking.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             annuals.initialize();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             propulsion.initialize();
                         }
                     };
@@ -75,24 +77,12 @@ const index = {
                     this.currentScript = script;
                 }
 
-                $("#btnFilter").removeClass("d-none");
             })
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
             });
     },
     events: {
-        btnRefreshDashboard_click: async function () {
-            index.loadingScreen(true);
-        
-            await Promise.all([
-                SharedUtils.loadModels(true),
-                SharedUtils.loadBrands(true),
-                SharedUtils.loadRegistrations('2020-01-01', null, true)
-            ]);
-        
-            index.loadingScreen(false);
-        }
     },
     loadingScreen: function(visible){
         const loadingScreen = $("#loading")[0];

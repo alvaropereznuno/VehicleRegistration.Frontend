@@ -72,6 +72,7 @@ body {
 
 .loading {
     display: flex;
+    flex-direction: column; /* Esto coloca los elementos en columna */
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -80,9 +81,29 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--COLOR-TRANSPARENT); /* Transparente */
-    z-index: 9999; /* Asegura que esté sobre otros elementos */
+    z-index: 9999;
     font-size: 1.5rem;
-    color: var(--COLOR-ACCENT_DARK); /* Cambia el color del texto si es necesario */
+    color: var(--COLOR-ACCENT_DARK);
+}
+
+@keyframes shine {
+    0% { background-position: -200% 0; filter: brightness(0.8); }
+    50% { filter: brightness(1.2); }
+    100% { background-position: 200% 0; filter: brightness(0.8); }
+}
+
+.spinner {
+    width: 130px;
+    height: 50px;
+    margin-bottom: 15px;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 100%
+    ) center / 200% 100% no-repeat,
+    url('../images/logo_color2.svg') center / contain no-repeat;
+    animation: shine 2s linear infinite;
 }
 
 .refresh {

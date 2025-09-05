@@ -60,7 +60,7 @@
                         </li>
                     </ul>
                     <!-- Contenedor para posicionar correctamente el icono de filtros -->
-                    <div id="btnFilter" class="btnFilter navbar-nav d-flex ms-auto" onclick="toggleFilterSection()" style="cursor: pointer;">
+                    <div id="btnFilter" class="btnFilter navbar-nav d-flex ms-auto d-none" onclick="toggleFilterSection()" style="cursor: pointer;">
                         <div class="bi bi-funnel"> Filtrar</div>
                     </div>
                 </div>
@@ -131,12 +131,9 @@
         <span>© 2025 Metricars - Datos obtenidos de la DGT</span>
     </div>
 
-    <div class="refresh">
-        <i id="btnRefresh" class="fas fa-sync-alt"></i>
-    </div>
     <div id=loading class="loading">
         <div class="spinner"></div>
-        <h4>Cargando</h4>
+        <span><h4>Cargando</h4></span>
     </div>
 </body>
 </html>

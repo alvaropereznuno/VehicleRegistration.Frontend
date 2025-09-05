@@ -162,6 +162,18 @@ const Home = {
                         },
                         title: {
                             display: false,
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = dataset.data[context.dataIndex];
+                                    return context.label + ': ' + value + '%';
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (value, context) => { return value + '%'; },
+                            color: Colors.primary()
                         }
                     }
                 },
@@ -171,20 +183,26 @@ const Home = {
             methods.chart = new Chart(ctx, config);
         },
         groupData: (registrationList) => {
-            // 1. Agrupa los registros por tipo de motor, y suma las matriculaciones.
+            // 1. Agrupa los registros por tipo de motor y suma las matriculaciones
             const groupedData = registrationList.reduce((acc, curr) => {
                 const motorTypeId = curr.motorTypeId;
                 acc[motorTypeId] = (acc[motorTypeId] || 0) + curr.count;
                 return acc;
             }, {});
 
+            // 2. Calcula el total de matriculaciones
+            const total = Object.values(groupedData).reduce((sum, val) => sum + val, 0);
+
+            // 3. Convierte los valores en porcentaje con dos decimales
+            const percentages = Object.values(groupedData).map(val => ((val / total) * 100).toFixed(2));
+
             const data = {
-                labels: Object.keys(groupedData).map((item, index) => SharedUtils.getMotorTypeDescription(item)),
+                labels: Object.keys(groupedData).map(item => SharedUtils.getMotorTypeDescription(item)),
                 datasets: [
                     {
-                        data: Object.values(groupedData),
-                        backgroundColor: Object.keys(groupedData).map((item, index) => Colors.getPropulsionColor(item, 1)),
-                        borderColor: Object.keys(groupedData).map((item, index) => Colors.getPropulsionColor(item, 0.6)),
+                        data: percentages,
+                        backgroundColor: Object.keys(groupedData).map(item => Colors.getPropulsionColor(item, 1)),
+                        borderColor: Object.keys(groupedData).map(item => Colors.getPropulsionColor(item, 0.6)),
                         borderWidth: 3
                     }
                 ]
