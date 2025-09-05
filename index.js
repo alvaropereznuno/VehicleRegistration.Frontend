@@ -51,18 +51,23 @@ const index = {
                     script.onload = () => {
                         // Verificar si la función `home.initialize()` está disponible y ejecutarla
                         if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
+                            $("#filterSection").hide();
+                            $("#btnFilter").addClass("d-none");
                             home.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             ranking.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             annuals.initialize();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
+                            $("#btnFilter").removeClass("d-none");
                             propulsion.initialize();
                         }
                     };
@@ -72,7 +77,6 @@ const index = {
                     this.currentScript = script;
                 }
 
-                $("#btnFilter").removeClass("d-none");
             })
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
