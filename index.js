@@ -9,6 +9,7 @@ const index = {
     currentScript: null,
     
     initialize: async function () {
+        index.loadingFilter(false);
         index.loadingScreen(true);
         $("#filterSection").hide();
 
@@ -90,6 +91,14 @@ const index = {
             loadingScreen.style.display = "flex";
         } else {
             loadingScreen.style.display = "none";
+        }
+    },
+    loadingFilter: function(visible){
+        const loadingFilter = $("#loadingFilter")[0];
+        if (visible) {
+            loadingFilter.style.display = "flex";
+        } else {
+            loadingFilter.style.display = "none";
         }
     },
     toggleFilterSection: function() {
@@ -234,24 +243,30 @@ const filters = {
 
         filters.populateChoice(filters.choiceModels, filteredModels);
     },
-    filterRegistrations: function(){
-        const [yearFrom, monthFrom] = document.getElementById("dateFrom").value.split("-").map(Number);
-        const registrationDateFrom = new Date(yearFrom, monthFrom - 1, 1);
-        const [yearTo, monthTo] = document.getElementById("dateTo").value.split("-").map(Number);
-        const registrationDateTo = new Date(yearTo, monthTo - 1, 1);
-        const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
-        let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
-        const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
-        const serviceTypeIdList = Array.from(document.getElementById("serviceTypes").selectedOptions).map(option => parseInt(option.value));
-        const communityIdList = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
-        let provinceIdList = Array.from(document.getElementById("provinces").selectedOptions).map(option => parseInt(option.value));
+    filterRegistrations: function() {
+        index.loadingFilter(true);
 
-        if (modelIdList.length === 0 && brandIdList.length > 0)
-            modelIdList = Array.from(SharedUtils.data.modelList).filter(model => brandIdList.includes(model.brandId)).map(m => m.id);
-        if (provinceIdList.length === 0 && communityIdList.length > 0)
-            provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
+        setTimeout(() => {
+            const [yearFrom, monthFrom] = document.getElementById("dateFrom").value.split("-").map(Number);
+            const registrationDateFrom = new Date(yearFrom, monthFrom - 1, 1);
+            const [yearTo, monthTo] = document.getElementById("dateTo").value.split("-").map(Number);
+            const registrationDateTo = new Date(yearTo, monthTo - 1, 1);
+            const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
+            let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
+            const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
+            const serviceTypeIdList = Array.from(document.getElementById("serviceTypes").selectedOptions).map(option => parseInt(option.value));
+            const communityIdList = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
+            let provinceIdList = Array.from(document.getElementById("provinces").selectedOptions).map(option => parseInt(option.value));
 
-        SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);
+            if (modelIdList.length === 0 && brandIdList.length > 0)
+                modelIdList = Array.from(SharedUtils.data.modelList).filter(model => brandIdList.includes(model.brandId)).map(m => m.id);
+            if (provinceIdList.length === 0 && communityIdList.length > 0)
+                provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
+
+            SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);
+            
+            index.loadingFilter(false);
+        }, 0);
     }
 }
 
