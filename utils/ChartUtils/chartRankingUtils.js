@@ -29,48 +29,54 @@ const Ranking = {
     },
     topBrands: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Ranking.topBrands;
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topBrands;
 
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
 
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Top Matriculaciones por Marca'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Top Matriculaciones por Marca'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Ranking.topBrands;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topBrands;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList, tops = 25) => {
             // 1. Agrupar RegistrationList por Marca y obtener sumatorios y se ordenan de mayor a menor cantidad.
@@ -115,47 +121,53 @@ const Ranking = {
     },
     topModels: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Ranking.topModels;
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topModels;
 
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Top Modelos por matriculaciones'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Top Modelos por matriculaciones'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Ranking.topModels;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topModels;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList, tops = 25) => {
             // 1. Agrupar RegistrationList por Modelo y obtener sumatorios y se ordenan de mayor a menor cantidad.

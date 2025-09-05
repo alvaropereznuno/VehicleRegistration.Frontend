@@ -33,46 +33,52 @@ const Propulsion = {
     },
     motorTypesAcc: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypesAcc;
-            const config = {
-                type: 'line',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            stacked: true
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: false
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAcc;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                stacked: true
+                            }
                         },
-                        tooltip: {
-                            mode: 'index'
+                        plugins: {
+                            title: {
+                                display: false
+                            },
+                            tooltip: {
+                                mode: 'index'
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
                         }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
                     }
-                }
-            };
+                };
 
-            methods.chart = new Chart(ctx, config);
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Propulsion.motorTypesAcc;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAcc;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Propulsion.data;
@@ -140,53 +146,59 @@ const Propulsion = {
     },
     motorTypes100: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypes100;
-            const config = {
-                type: 'line',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            stacked: true
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: false
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypes100;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                stacked: true
+                            }
                         },
-                        tooltip: {
-                            mode: 'index',
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.dataset.label || '';
-                                    const value = context.raw !== undefined ? context.raw : context.parsed.y;
-                                    return `${label}: ${value.toFixed(2)}%`;
+                        plugins: {
+                            title: {
+                                display: false
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.raw !== undefined ? context.raw : context.parsed.y;
+                                        return `${label}: ${value.toFixed(2)}%`;
+                                    }
                                 }
                             }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
                         }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
                     }
-                }
-            };
+                };
 
-            methods.chart = new Chart(ctx, config);
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Propulsion.motorTypes100;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypes100;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Propulsion.data;
@@ -228,46 +240,52 @@ const Propulsion = {
     },
     motorTypesAnnualDiff: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypesAnnualDiff;
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAnnualDiff;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
 
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            // formatter: (value) => value.toLocaleString()
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                // formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Propulsion.motorTypesAnnualDiff;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAnnualDiff;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Propulsion.data;
@@ -331,55 +349,61 @@ const Propulsion = {
     },
     motorTypesAnnualDiff100: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Propulsion.motorTypesAnnualDiff100;
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAnnualDiff100;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
 
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            // formatter: (value) => value.toLocaleString()
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.chart.data.labels[context.dataIndex];
-                                    const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
-                                    return `${label}: ${value.toFixed(2)}%`;
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                // formatter: (value) => value.toLocaleString()
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const label = context.chart.data.labels[context.dataIndex];
+                                        const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
+                                        return `${label}: ${value.toFixed(2)}%`;
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Propulsion.motorTypesAnnualDiff100;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Propulsion.motorTypesAnnualDiff100;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Propulsion.data;
@@ -457,8 +481,6 @@ const Propulsion = {
 
             return data.dataAnnualPercent;
         }
-
-
     }
 }
 

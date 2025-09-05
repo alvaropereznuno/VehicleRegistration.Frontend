@@ -35,45 +35,52 @@ const Annuals = {
     annualSellings: {
         chart: null,
         data: null,
-        create: (registrationList, ctx) => {
-            let methods = Annuals.annualSellings;
-            const config = {
-                type: 'line',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Ventas anuales'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellings;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Ventas anuales'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)]
+                };
+
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Annuals.annualSellings;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellings;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+            
         },
         groupData: (registrationList) => {
             let data = Annuals.data;
@@ -134,46 +141,52 @@ const Annuals = {
     },
     annualSellingsDiff: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Annuals.annualSellingsDiff;
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsDiff;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
 
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            // formatter: (value) => value.toLocaleString()
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                // formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Annuals.annualSellingsDiff;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsDiff;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Annuals.data;
@@ -210,45 +223,51 @@ const Annuals = {
     },
     annualSellingsAcc: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Annuals.annualSellingsAcc;
-            const config = {
-                type: 'line',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Ventas anuales'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsAcc;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Ventas anuales'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Annuals.annualSellingsAcc;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsAcc;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             let data = Annuals.data;
@@ -281,46 +300,52 @@ const Annuals = {
     },
     annualSellingsAccDiff: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Annuals.annualSellingsAccDiff;
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsAccDiff;
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
 
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        title: {
-                            display: false,
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            // formatter: (value) => value.toLocaleString()
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                // formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
-        update: (registrationList) => {
-            let methods = Annuals.annualSellingsAccDiff;
-            if (methods.chart) {
-                // Actualiza la data del Chart usando el método update
-                methods.chart.data = methods.groupData(registrationList);
-                methods.chart.update();
-            } else {
-                console.error('El gráfico no ha sido creado aún. Llame primero a create().');
-            }
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Annuals.annualSellingsAccDiff;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             const data = Annuals.data;

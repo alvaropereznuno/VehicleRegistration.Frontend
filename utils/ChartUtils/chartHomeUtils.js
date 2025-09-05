@@ -10,37 +10,40 @@ const Home = {
     },
     ranking: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Home.ranking;
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Home.ranking;
 
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Top Modelos por matriculaciones'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Top Modelos por matriculaciones'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
         groupData: (registrationList, tops = 5) => {
             // 1. Agrupar RegistrationList por Modelo y obtener sumatorios y se ordenan de mayor a menor cantidad.
@@ -81,37 +84,40 @@ const Home = {
     },
     annuals: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Home.annuals;
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Home.annuals;
 
-            const config = {
-                type: 'bar',
-                data: methods.groupData(registrationList),
-                options: {
-                    indexAxis: 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: false,
-                            text: 'Top Modelos por matriculaciones'
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#7d7d7d',
-                            font: { size: 12 },
-                            formatter: (value) => value.toLocaleString()
+                const config = {
+                    type: 'bar',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        indexAxis: 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Top Modelos por matriculaciones'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-            };
-        
-            methods.chart = new Chart(ctx, config);
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                };
+            
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
         groupData: (registrationList, tops = 5) => {
             // 1. Agrupar RegistrationList por año y sumar matriculaciones
@@ -149,38 +155,41 @@ const Home = {
     },
     propulsion: {
         chart: null,
-        create: (registrationList, ctx) => {
-            let methods = Home.propulsion;
-            const config = {
-                type: 'doughnut',
-                data: methods.groupData(registrationList),
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: false,
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = dataset.data[context.dataIndex];
-                                    return context.label + ': ' + value + '%';
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Home.propulsion;
+                const config = {
+                    type: 'doughnut',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: false,
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = dataset.data[context.dataIndex];
+                                        return context.label + ': ' + value + '%';
+                                    }
                                 }
+                            },
+                            datalabels: {
+                                formatter: (value, context) => { return value + '%'; },
+                                color: Colors.primary()
                             }
-                        },
-                        datalabels: {
-                            formatter: (value, context) => { return value + '%'; },
-                            color: Colors.primary()
                         }
-                    }
-                },
-                plugins: [ChartDataLabels] // Registra el plugin
-                };
+                    },
+                    plugins: [ChartDataLabels] // Registra el plugin
+                    };
 
-            methods.chart = new Chart(ctx, config);
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
         },
         groupData: (registrationList) => {
             // 1. Agrupa los registros por tipo de motor y suma las matriculaciones
