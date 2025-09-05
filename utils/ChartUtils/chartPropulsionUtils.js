@@ -2,7 +2,7 @@ import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
 
 const Propulsion = {
-    watermark: function(maxWidth, marginLeft, marginRight){
+    watermark: function(maxWidth, marginRight, marginTop){
         const img = new Image();
         img.src = '/images/metricars_es.svg';
 
@@ -17,8 +17,8 @@ const Propulsion = {
                 const aspectRatio = img.height / img.width;
                 const imgWidth = maxWidth;
                 const imgHeight = maxWidth * aspectRatio;
-                const x = width - imgWidth - marginLeft;
-                const y = height - imgHeight - marginRight;
+                const x = marginRight;
+                const y = marginTop;
 
                 ctx.save();
                 ctx.globalAlpha = 0.3;
@@ -60,7 +60,8 @@ const Propulsion = {
                             axis: 'x',
                             intersect: false
                         }
-                    }
+                    },
+                    plugins: [Propulsion.watermark(80, 100, 120)]
                 };
 
                 methods.chart = new Chart(ctx, config);
