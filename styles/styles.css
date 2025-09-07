@@ -13,6 +13,24 @@ body {
 
 }
 
+@media (min-width: 768px) {
+  #sectionFilterDesktop {
+    display: flex; /* será flex en desktop */
+  }
+}
+
+@media (min-width: 768px) {
+  #sectionFilterDesktop {
+    display: flex; /* se muestra como flex en desktop */
+  }
+}
+/* Oculto en móvil por defecto */
+@media (max-width: 767.98px) {
+  #sectionFilterDesktop {
+    display: none;
+  }
+}
+
 .headerSection {
     background-color: var(--COLOR-ACCENT);
 }
@@ -217,6 +235,41 @@ body {
     border-radius: 4px;
     background-color: transparent;
     border: 1px solid var(--COLOR-SEPARATOR);
+}
+
+.periodFilter {
+    text-align: right;
+    background-color: transparent;
+    color: white;
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    padding: 4px 30px 4px 8px;   /* espacio para la flecha a la derecha */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpolygon points='0,0 12,0 6,6' fill='white'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px 12px;
+    background-position-y: 14px;
+}
+
+.separator {
+    width: 2px;
+    background-color: var(--COLOR-PRIMARY);
+    align-self: stretch;
+    margin: 0px 12px 0px 6px;
+  }
+
+.periodFilter option {
+    background-color: var(--COLOR-PRIMARY);
+    color: var(--COLOR-ACCENT);
+}
+
+.periodFilter option:hover {
+    background-color: var(--COLOR-ACCENT);
+    color: var(--COLOR-PRIMARY);
 }
 
 textarea:focus,
