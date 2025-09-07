@@ -53,22 +53,22 @@ const index = {
                         // Verificar si la función `home.initialize()` está disponible y ejecutarla
                         if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
                             $("#filterSection").hide();
-                            $("#btnFilter").addClass("d-none");
+                            $("#sectionFilter").addClass("d-none");
                             home.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
-                            $("#btnFilter").removeClass("d-none");
+                            $("#sectionFilter").removeClass("d-none");
                             ranking.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
-                            $("#btnFilter").removeClass("d-none");
+                            $("#sectionFilter").removeClass("d-none");
                             annuals.initialize();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
-                            $("#btnFilter").removeClass("d-none");
+                            $("#sectionFilter").removeClass("d-none");
                             propulsion.initialize();
                         }
                     };
@@ -166,10 +166,10 @@ const filters = {
             removeItemButton: true,
             searchEnabled: true,
             placeholder: true,
-            placeholderValue: "Comunidades autónomas ...",
+            placeholderValue: "CCAA ...",
             loadingText: 'Cargando ...',
-            noResultsText: 'No se han encontrado comunidades autónomas',
-            noChoicesText: 'No hay comunidades autónomas a elegir',
+            noResultsText: 'No se han encontrado CCAA',
+            noChoicesText: 'No hay CCAA a elegir',
             itemSelectText: 'Selecciona',
         });
         // Filtro de Provincias
@@ -193,8 +193,10 @@ const filters = {
         document.getElementById("serviceTypes").addEventListener("change", this.filterRegistrations);
         document.getElementById("communities").addEventListener("change", this.filterRegistrations);
         document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
-        document.getElementById("dateFrom").addEventListener("change", this.filterRegistrations);
-        document.getElementById("dateTo").addEventListener("change", this.filterRegistrations);
+        // document.getElementById("dateFrom").addEventListener("change", this.filterRegistrations);
+        // document.getElementById("dateTo").addEventListener("change", this.filterRegistrations);
+
+        document.getElementById("datePeriod").addEventListener("change", this.filterRegistrations)
 
         this.populateFilters();
     },
@@ -247,10 +249,7 @@ const filters = {
         index.loadingFilter(true);
 
         setTimeout(() => {
-            const [yearFrom, monthFrom] = document.getElementById("dateFrom").value.split("-").map(Number);
-            const registrationDateFrom = new Date(yearFrom, monthFrom - 1, 1);
-            const [yearTo, monthTo] = document.getElementById("dateTo").value.split("-").map(Number);
-            const registrationDateTo = new Date(yearTo, monthTo - 1, 1);
+            const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(document.getElementById("datePeriod").value);
             const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
             let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
             const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
@@ -267,6 +266,33 @@ const filters = {
             
             index.loadingFilter(false);
         }, 0);
+    },
+    getPeriodDates: function(period) {
+        const now = new Date();
+        let startDate, endDate;
+        switch (period) {
+            case '1': // Último mes
+                startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                break;
+            case '2': // Últimos 3 meses
+                startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                break;
+            case '3': // Año actual
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                break;
+            case '4': // Últimos 3 años
+                startDate = new Date(now.getFullYear() - 3, 0, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                break;
+            default:
+                startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        }
+
+        return [startDate, endDate];
     }
 }
 
