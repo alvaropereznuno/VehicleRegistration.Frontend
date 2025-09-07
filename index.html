@@ -43,10 +43,30 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="#" onclick="loadPage('home.html','home.js');">
                     <img src="images/logo_light.svg" alt="Logo Metricars" width="80">
-                    Metricars</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    Metricars
+                </a>
+
+                <!-- sectionFilter versión móvil: visible siempre fuera del collapse -->
+                <div id="sectionFilterMobile" class="d-flex d-md-none align-items-center ms-auto me-3">
+                    <select id="datePeriodMobile" class="periodFilter">
+                        <option value="1">Último mes</option>
+                        <option value="2">Últimos 3 meses</option>
+                        <option value="3">Año actual</option>
+                        <option value="4">Últimos 3 años</option>
+                    </select>
+                    <div class="separator"></div>
+                    <div id="btnFilterMobile" class="btnFilter" onclick="toggleFilterSection()" style="cursor: pointer;">
+                        <div class="bi bi-funnel"></div>
+                    </div>
+                </div>
+
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <!-- Menú desplegable collapse -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
@@ -59,9 +79,19 @@
                             <a class="nav-link" href="#" onclick="loadPage('propulsion.html','propulsion.js')">Tipos de motor</a>
                         </li>
                     </ul>
-                    <!-- Contenedor para posicionar correctamente el icono de filtros -->
-                    <div id="btnFilter" class="btnFilter navbar-nav d-flex ms-auto d-none" onclick="toggleFilterSection()" style="cursor: pointer;">
-                        <div class="bi bi-funnel"> Filtrar</div>
+
+                    <!-- sectionFilter versión escritorio: solo visible md y arriba -->
+                    <div id="sectionFilterDesktop" class="navbar-nav ms-auto align-items-center d-none">
+                        <select id="datePeriod" class="periodFilter">
+                            <option value="1">Último mes</option>
+                            <option value="2">Últimos 3 meses</option>
+                            <option value="3">Año actual</option>
+                            <option value="4">Últimos 3 años</option>
+                        </select>
+                        <div class="separator"></div>
+                        <div id="btnFilter" class="btnFilter" onclick="toggleFilterSection()" style="cursor: pointer;">
+                            <div class="bi bi-funnel"> Filtrar</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,19 +100,7 @@
 
     <!-- Contenedor del filtro (inicialmente oculto) -->
     <div id="filterSection" class="container-fluid p-3 filterSection">
-        <div class="row g-3">
-            <!-- Fecha Desde -->
-            <div class="col-6 col-md-3 col-xl-2 mb-3">
-                <label for="dateFrom" class="form-label">Desde</label>
-                <input type="month" class="datefilter form-control" id="dateFrom">
-            </div>
-    
-            <!-- Fecha Hasta -->
-            <div class="col-6 col-md-3 col-xl-2 mb-3">
-                <label for="dateTo" class="form-label">Hasta</label>
-                <input type="month" class="datefilter form-control" id="dateTo">
-            </div>
-        </div>
+        
         <div class="row g-3">
             <!-- Marcas -->
             <div class="col-6 col-md-4 col-xl-2">
