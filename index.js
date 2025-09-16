@@ -148,10 +148,9 @@ const filters = {
             placeholderValue: "Modelos ...",
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado modelos',
-            noChoicesText: 'No hay modelos a elegir',
+            noChoicesText: 'Selecciona alguna marca',
             itemSelectText: 'Selecciona',
         });
-        this.choiceModels.disable();
         // Filtro de Tipos de motor
         this.choiceMotorTypes = new Choices("#motorTypes", {
             removeItemButton: true,
@@ -214,7 +213,7 @@ const filters = {
     },
     populateFilters(){
         this.populateChoice(this.choiceBrands, SharedUtils.data.brandList);
-        this.populateChoice(this.choiceModels, SharedUtils.data.modelList);
+        this.populateChoice(this.choiceModels, []);
         this.populateChoice(this.choiceMotorTypes, DICT.MOTOR_TYPES);
         this.populateChoice(this.choiceServiceTypes, DICT.SERVICE_TYPES);
         this.populateChoice(this.choiceCommunities, DICT.COMMUNITIES);
@@ -244,7 +243,23 @@ const filters = {
 
         let filteredProvinces = DICT.PROVINCES;
         if (selectedCommunities.length > 0)
+        {
             filteredProvinces = Array.from(filteredProvinces).filter(province => selectedCommunities.includes(province.communityId));
+            
+            const selectedProvinces = filters.choiceProvinces.getValue(true);
+            const validSelectedProvinces = selectedProvinces.filter(m => filteredProvinces.some(mm => mm.id === m));
+            
+            if (selectedProvinces.length > 0) {
+                // filters.choiceModels.clearStore();
+                selectedProvinces.forEach(sm => {
+                    if (!validSelectedProvinces.includes(sm)) {
+                        filters.choiceProvinces.removeActiveItemsByValue(sm);
+                    }
+                });
+            }
+        }else {
+            filters.choiceProvinces.hideDropdown();
+        }
 
         filters.populateChoice(filters.choiceProvinces, filteredProvinces);
     },
@@ -268,13 +283,12 @@ const filters = {
             }
 
             filters.choiceModels.enable();
-        }else{
+            filters.populateChoice(filters.choiceModels, filteredModels);
+        } else {
             filters.choiceModels.clearStore();
             filters.choiceModels.hideDropdown();
-            filters.choiceModels.disable();
+            filters.populateChoice(filters.choiceModels, []);
         }
-
-        filters.populateChoice(filters.choiceModels, filteredModels);
     },
     filterRegistrations: function() {
         index.loadingFilter(true);
