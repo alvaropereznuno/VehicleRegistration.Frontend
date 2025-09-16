@@ -151,6 +151,7 @@ const filters = {
             noChoicesText: 'No hay modelos a elegir',
             itemSelectText: 'Selecciona',
         });
+        this.choiceModels.disable();
         // Filtro de Tipos de motor
         this.choiceMotorTypes = new Choices("#motorTypes", {
             removeItemButton: true,
@@ -251,8 +252,27 @@ const filters = {
         const selectedBrands = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));
 
         let filteredModels = SharedUtils.data.modelList;
-        if (selectedBrands.length > 0)
+        if (selectedBrands.length > 0){
             filteredModels = Array.from(filteredModels).filter(model => selectedBrands.includes(model.brandId));
+            
+            const selectedModels = filters.choiceModels.getValue(true);
+            const validSelectedModels = selectedModels.filter(m => filteredModels.some(mm => mm.id === m));
+            
+            if (selectedModels.length > 0) {
+                // filters.choiceModels.clearStore();
+                selectedModels.forEach(sm => {
+                    if (!validSelectedModels.includes(sm)) {
+                        filters.choiceModels.removeActiveItemsByValue(sm);
+                    }
+                });
+            }
+
+            filters.choiceModels.enable();
+        }else{
+            filters.choiceModels.clearStore();
+            filters.choiceModels.hideDropdown();
+            filters.choiceModels.disable();
+        }
 
         filters.populateChoice(filters.choiceModels, filteredModels);
     },

@@ -1,8 +1,8 @@
 // configurations.js
 
 const CONFIG = {
-    BaseUrl : 'https://api.metricars.es/',
-    // BaseUrl : 'https://localhost:7230/',
+    // BaseUrl : 'https://api.metricars.es/',
+    BaseUrl : 'https://localhost:7230/',
     VehiclesService: {
         Controller: 'Vehicles'
     },
