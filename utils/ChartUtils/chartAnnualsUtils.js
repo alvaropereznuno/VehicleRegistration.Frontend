@@ -132,6 +132,7 @@ const Annuals = {
                         backgroundColor: Colors.getIndexColor(index % 8, alphaBg),
                         borderColor: Colors.getIndexColor(index % 8, alphaBorder),
                         borderWidth: 3,
+                        tension: 0.2,
                     };
                 })
             };

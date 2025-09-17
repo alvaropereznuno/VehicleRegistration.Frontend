@@ -120,7 +120,8 @@ const Propulsion = {
                     backgroundColor: Colors.getPropulsionColor(motorTypeId, 1),
                     borderColor: Colors.getPropulsionColor(motorTypeId, 0.6),
                     borderWidth: 3,
-                    fill: true
+                    fill: true,
+                    tension: 0.2,
                 }))
             };
 
