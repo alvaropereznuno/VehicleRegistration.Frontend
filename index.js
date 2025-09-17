@@ -26,7 +26,6 @@ const index = {
         ]);
         filters.initializeFilters();
         
-
         const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(4);
         SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, [], [], [], [], []);
 

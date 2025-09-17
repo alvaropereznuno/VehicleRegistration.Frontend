@@ -209,6 +209,221 @@ const Ranking = {
                 }]
             };
         }
+    },
+    topBrandsAcc: {
+        chart: null,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topBrandsAcc;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Ventas anuales'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: [Ranking.watermark(80, 40, 80)]
+                };
+
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
+        },
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topBrandsAcc;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+        },
+        groupData: (registrationList, top = 5) => {
+            // 1. Agrupar por marca y por fecha
+            const datasetsByBrand = registrationList.reduce((acc, { brandId, registrationDate, count }) => {
+                const date = new Date(registrationDate);
+                const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD
+
+                if (!acc[brandId]) {
+                    acc[brandId] = { 
+                        label: SharedUtils.getBrandDescription2(brandId), 
+                        data: {}, 
+                        total: 0 
+                    };
+                }
+
+                acc[brandId].data[dateKey] = (acc[brandId].data[dateKey] || 0) + count;
+                acc[brandId].total += count;
+
+                return acc;
+            }, {});
+
+            // 2. Obtener todas las fechas únicas y ordenarlas
+            const allDates = [
+                ...new Set(
+                    registrationList.map(r => new Date(r.registrationDate).toISOString().split("T")[0])
+                )
+            ].sort((a, b) => new Date(a) - new Date(b));
+
+            // 3. Seleccionar las TOP marcas
+            const topBrands = Object.entries(datasetsByBrand)
+                .sort(([, a], [, b]) => b.total - a.total) // ordenar por total descendente
+                .slice(0, top);
+
+            // 4. Construir datasets acumulados solo para las TOP marcas
+            const datasets = topBrands.map(([brandId, brandData], index) => {
+                let cumulative = 0;
+
+                const values = allDates.map(dateKey => {
+                    cumulative += brandData.data[dateKey] || 0;
+                    return cumulative;
+                });
+
+                return {
+                    label: brandData.label,
+                    data: values,
+                    borderColor: Colors.getIndexColor(index % 8, 0.7),
+                    backgroundColor: Colors.getIndexColor(index % 8, 1),
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.2,
+                };
+            });
+
+            // 5. Retorno listo para Chart.js
+            return {
+                labels: allDates,
+                datasets: datasets
+            };
+        }
+
+    },
+    topModelsAcc: {
+        chart: null,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topModelsAcc;
+                const config = {
+                    type: 'line',
+                    data: methods.groupData(registrationList),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            title: {
+                                display: false,
+                                text: 'Ventas anuales'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#7d7d7d',
+                                font: { size: 12 },
+                                formatter: (value) => value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: [Ranking.watermark(80, 40, 80)]
+                };
+
+                methods.chart = new Chart(ctx, config);
+                resolve();
+            });
+        },
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Ranking.topModelsAcc;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+        },
+        groupData: (registrationList, top = 5) => {
+            // 1. Agrupar por modelo y por fecha
+            const datasetsByModel = registrationList.reduce((acc, { modelId, registrationDate, count }) => {
+                const date = new Date(registrationDate);
+                const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD
+
+                if (!acc[modelId]) {
+                    acc[modelId] = { 
+                        label: SharedUtils.getModelDescription(modelId, false), 
+                        data: {}, 
+                        total: 0 
+                    };
+                }
+
+                acc[modelId].data[dateKey] = (acc[modelId].data[dateKey] || 0) + count;
+                acc[modelId].total += count;
+
+                return acc;
+            }, {});
+
+            // 2. Obtener todas las fechas únicas y ordenarlas
+            const allDates = [
+                ...new Set(
+                    registrationList.map(r => new Date(r.registrationDate).toISOString().split("T")[0])
+                )
+            ].sort((a, b) => new Date(a) - new Date(b));
+
+            // 3. Seleccionar las TOP marcas
+            const topModels = Object.entries(datasetsByModel)
+                .sort(([, a], [, b]) => b.total - a.total) // ordenar por total descendente
+                .slice(0, top);
+
+            // 4. Construir datasets acumulados solo para las TOP marcas
+            const datasets = topModels.map(([modelId, modelData], index) => {
+                let cumulative = 0;
+
+                const values = allDates.map(dateKey => {
+                    cumulative += modelData.data[dateKey] || 0;
+                    return cumulative;
+                });
+
+                return {
+                    label: modelData.label,
+                    data: values,
+                    borderColor: Colors.getIndexColor(index % 8, 0.7),
+                    backgroundColor: Colors.getIndexColor(index % 8, 1),
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.2,
+                };
+            });
+
+            // 5. Retorno listo para Chart.js
+            return {
+                labels: allDates,
+                datasets: datasets
+            };
+        }
     }
 }
 
