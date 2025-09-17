@@ -11,6 +11,8 @@ const ranking = {
         await Promise.all([
             ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationFilteredList, $('#topBrands')),
             ChartUtils.ranking.topModels.create(SharedUtils.data.registrationFilteredList, $('#topModels')),
+            ChartUtils.ranking.topBrandsAcc.create(SharedUtils.data.registrationFilteredList, $('#topBrandsAcc')),
+            ChartUtils.ranking.topModelsAcc.create(SharedUtils.data.registrationFilteredList, $('#topModelsAcc')),
 
             GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'))
         ]);
@@ -19,6 +21,8 @@ const ranking = {
             await Promise.all([
                 ChartUtils.ranking.topBrands.update(SharedUtils.data.registrationFilteredList),
                 ChartUtils.ranking.topModels.update(SharedUtils.data.registrationFilteredList),
+                ChartUtils.ranking.topBrandsAcc.update(SharedUtils.data.registrationFilteredList),
+                ChartUtils.ranking.topModelsAcc.update(SharedUtils.data.registrationFilteredList),
         
                 GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList)
             ]);
