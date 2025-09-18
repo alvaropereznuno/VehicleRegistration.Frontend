@@ -68,19 +68,19 @@ const index = {
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
                             $("#sectionFilterDesktop").removeClass("d-none");
                             $("#sectionFilterMobile").removeClass("d-none");
-                            ranking.initialize();
+                            this.loadRanking();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
                             $("#sectionFilterDesktop").removeClass("d-none");
                             $("#sectionFilterMobile").removeClass("d-none");
-                            annuals.initialize();
+                            this.loadAnnuals();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
                             $("#sectionFilterDesktop").removeClass("d-none");
                             $("#sectionFilterMobile").removeClass("d-none");
-                            propulsion.initialize();
+                            this.loadPropulsion();
                         }
                     };
                     document.body.appendChild(script);
@@ -93,6 +93,31 @@ const index = {
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
             });
+    },
+    loadRanking: function() {
+        ranking.start();
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(async () => {
+                await ranking.initialize();
+            });
+        });
+    },
+    loadAnnuals: function() {
+        index.loadingFilter(true);
+
+        setTimeout(() => {
+            annuals.initialize();
+            index.loadingFilter(false);
+        }, 0);
+    },
+    loadPropulsion: function() {
+        index.loadingFilter(true);
+
+        setTimeout(() => {
+            propulsion.initialize();
+            index.loadingFilter(false);
+        }, 0);
     },
     events: {
     },

@@ -88,6 +88,8 @@ body {
     height: 600px;
     display: flex;
     justify-content: center;
+    position: relative;
+    align-items: center;
 }
 
 .loading {
@@ -116,7 +118,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 9999;
-    color: var(--COLOR-ACCENT_DARK);
+    color: var(--COLOR-BLACK);
 }
 
 @keyframes shine {

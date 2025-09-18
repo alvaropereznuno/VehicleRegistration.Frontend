@@ -4,7 +4,9 @@
     --COLOR-ACCENT: #410066;            /* Naranja vibrante para botones y gráficos activos */
     --COLOR-ACCENT-DARK: #1f0872;       /* Azul profundo para texto y encabezados */
     --COLOR-SEPARATOR: #d7bfe4;         /* Líneas suaves con calidez */
+    --COLOR-BLACK: #333333;
     --COLOR-TRANSPARENT: rgba(255, 255, 255, 0.9); /* Overlays limpios */
+
 
     --BORDER-RADIUS: 4px;
 

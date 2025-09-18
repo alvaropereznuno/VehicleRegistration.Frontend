@@ -28,6 +28,9 @@ const Colors = {
     separator: function (alpha = 1) {
         return getCssColor('--COLOR-SEPARATOR', alpha);
     },
+    black: function (alpha = 1) {
+        return getCssColor('--COLOR-BLACK', alpha);
+    },
     
     type_1: function (alpha = 1) {
         return getCssColor('--COLOR-TYPE-1', alpha);

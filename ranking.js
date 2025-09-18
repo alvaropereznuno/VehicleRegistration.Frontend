@@ -5,9 +5,24 @@ import SharedUtils from './utils/sharedUtils.js';
 /*$(document).ready(async () => {
     await ranking.initialize();
 });*/
+const start = {
+
+}
 
 const ranking = {
+    start: function(){
+        $("#topBrandsLoading").show();
+        $("#topModelsLoading").show();
+        $("#topBrandsAccLoading").show();
+        $("#topModelsAccLoading").show();
+
+        $("#topBrands").hide();
+        $("#topModels").hide();
+        $("#topBrandsAcc").hide();
+        $("#topModelsAcc").hide();
+    },
     initialize: async function (){
+        $("#topBrands").hide();
         await Promise.all([
             ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationFilteredList, $('#topBrands')),
             ChartUtils.ranking.topModels.create(SharedUtils.data.registrationFilteredList, $('#topModels')),
@@ -16,6 +31,16 @@ const ranking = {
 
             GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'))
         ]);
+
+        $("#topBrandsLoading").hide();
+        $("#topModelsLoading").hide();
+        $("#topBrandsAccLoading").hide();
+        $("#topModelsAccLoading").hide();
+        
+        $("#topBrands").show();
+        $("#topModels").show();
+        $("#topBrandsAcc").show();
+        $("#topModelsAcc").show();
         
         window.addEventListener("globalDataUpdated", async () => {
             await Promise.all([
@@ -27,7 +52,7 @@ const ranking = {
                 GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList)
             ]);
         });
-    }
+    },
 }
 
 window.ranking = ranking;
