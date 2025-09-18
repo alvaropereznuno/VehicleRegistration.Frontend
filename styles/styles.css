@@ -121,6 +121,10 @@ body {
     color: var(--COLOR-BLACK);
 }
 
+.loadingTarjet {
+    width: 100px;
+}
+
 @keyframes shine {
     0% { background-position: -200% 0; filter: brightness(0.8); }
     50% { filter: brightness(1.2); }

@@ -11,15 +11,8 @@ const start = {
 
 const ranking = {
     start: function(){
-        $("#topBrandsLoading").show();
-        $("#topModelsLoading").show();
-        $("#topBrandsAccLoading").show();
-        $("#topModelsAccLoading").show();
-
-        $("#topBrands").hide();
-        $("#topModels").hide();
-        $("#topBrandsAcc").hide();
-        $("#topModelsAcc").hide();
+        $(".loadingTarjet").show();
+        $(".loadedTarjet").hide();
     },
     initialize: async function (){
         $("#topBrands").hide();
@@ -32,15 +25,8 @@ const ranking = {
             GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'))
         ]);
 
-        $("#topBrandsLoading").hide();
-        $("#topModelsLoading").hide();
-        $("#topBrandsAccLoading").hide();
-        $("#topModelsAccLoading").hide();
-        
-        $("#topBrands").show();
-        $("#topModels").show();
-        $("#topBrandsAcc").show();
-        $("#topModelsAcc").show();
+        $(".loadingTarjet").hide();
+        $(".loadedTarjet").show();
         
         window.addEventListener("globalDataUpdated", async () => {
             await Promise.all([

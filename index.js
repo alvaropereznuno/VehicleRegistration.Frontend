@@ -104,20 +104,22 @@ const index = {
         });
     },
     loadAnnuals: function() {
-        index.loadingFilter(true);
+        annuals.start();
 
-        setTimeout(() => {
-            annuals.initialize();
-            index.loadingFilter(false);
-        }, 0);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(async () => {
+                await annuals.initialize();
+            });
+        });
     },
     loadPropulsion: function() {
-        index.loadingFilter(true);
+        propulsion.start();
 
-        setTimeout(() => {
-            propulsion.initialize();
-            index.loadingFilter(false);
-        }, 0);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(async () => {
+                await propulsion.initialize();
+            });
+        });
     },
     events: {
     },

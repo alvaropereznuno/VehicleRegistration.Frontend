@@ -3,6 +3,10 @@ import GridUtils from './utils/gridUtils.js';
 import SharedUtils from './utils/sharedUtils.js';
 
 const propulsion = {
+    start: function(){
+        $(".loadingTarjet").show();
+        $(".loadedTarjet").hide();
+    },
     initialize: async function (){
         await Promise.all([
             ChartUtils.propulsion.motorTypesAcc.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAcc')),
@@ -10,6 +14,9 @@ const propulsion = {
             ChartUtils.propulsion.motorTypesAnnualDiff.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAnnualDiff')),
             ChartUtils.propulsion.motorTypesAnnualDiff100.create(SharedUtils.data.registrationFilteredList, $('#motorTypesAnnualDiff100'))
         ]);
+
+        $(".loadingTarjet").hide();
+        $(".loadedTarjet").show();
         
         // GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'));
 

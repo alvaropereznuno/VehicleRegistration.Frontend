@@ -7,6 +7,10 @@ import SharedUtils from './utils/sharedUtils.js';
 });*/
 
 const annuals = {
+    start: function(){
+        $(".loadingTarjet").show();
+        $(".loadedTarjet").hide();
+    },
     initialize: async function (){
         await Promise.all([
             ChartUtils.annuals.annualSellings.create(SharedUtils.data.registrationFilteredList, $('#annuals')),
@@ -16,6 +20,9 @@ const annuals = {
             
             GridUtils.annuals.annualSellings.create(SharedUtils.data.registrationFilteredList, document.getElementById('annualsResults'))
         ]);
+
+        $(".loadingTarjet").hide();
+        $(".loadedTarjet").show();
 
         window.addEventListener("globalDataUpdated", async () => {
             await Promise.all([
