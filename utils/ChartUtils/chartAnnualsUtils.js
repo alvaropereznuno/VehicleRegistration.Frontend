@@ -55,7 +55,7 @@ const Annuals = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
@@ -163,7 +163,7 @@ const Annuals = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 // formatter: (value) => value.toLocaleString()
                             }
@@ -244,7 +244,7 @@ const Annuals = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
@@ -322,7 +322,7 @@ const Annuals = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 // formatter: (value) => value.toLocaleString()
                             }

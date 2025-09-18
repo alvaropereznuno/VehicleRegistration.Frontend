@@ -52,7 +52,7 @@ const Ranking = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
@@ -143,7 +143,7 @@ const Ranking = {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
@@ -230,15 +230,21 @@ const Ranking = {
                                 text: 'Ventas anuales'
                             },
                             datalabels: {
+                                display: (ctx) => {
+                                    const index = ctx.dataIndex;
+                                    const total = ctx.dataset.data.length;
+                                    // Mostrar cada 4, o el último siempre
+                                    return index % 4 === 0 || index === total - 1;
+                                },
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
                         }
                     },
-                    plugins: [Ranking.watermark(80, 40, 80)]
+                    plugins: [ChartDataLabels, Ranking.watermark(80, 40, 80)]
                 };
 
                 methods.chart = new Chart(ctx, config);
@@ -338,15 +344,21 @@ const Ranking = {
                                 text: 'Ventas anuales'
                             },
                             datalabels: {
+                                display: (ctx) => {
+                                    const index = ctx.dataIndex;
+                                    const total = ctx.dataset.data.length;
+                                    // Mostrar cada 4, o el último siempre
+                                    return index % 4 === 0 || index === total - 1;
+                                },
                                 anchor: 'end',
                                 align: 'end',
-                                color: '#7d7d7d',
+                                color: Colors.black(0.6),
                                 font: { size: 12 },
                                 formatter: (value) => value.toLocaleString()
                             }
                         }
                     },
-                    plugins: [Ranking.watermark(80, 40, 80)]
+                    plugins: [ChartDataLabels, Ranking.watermark(80, 40, 80)]
                 };
 
                 methods.chart = new Chart(ctx, config);
