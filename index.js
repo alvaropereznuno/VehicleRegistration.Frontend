@@ -348,12 +348,12 @@ const filters = {
                 startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 break;
-            case '2': case 2: // Últimos 3 meses
-                startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+            case '2': case 3: // Año actual
+                startDate = new Date(now.getFullYear(), 0, 1);
                 endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 break;
-            case '3': case 3: // Año actual
-                startDate = new Date(now.getFullYear(), 0, 1);
+            case '3': case 2: // Últimos 12 meses
+                startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
                 endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 break;
             case '4': case 4: // Últimos 3 años
