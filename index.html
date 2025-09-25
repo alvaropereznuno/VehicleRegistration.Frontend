@@ -46,26 +46,8 @@
                     Metricars
                 </a>
 
-                <!-- sectionFilter versión móvil: visible siempre fuera del collapse -->
-                <div id="sectionFilterMobile" class="d-flex d-md-none align-items-center ms-auto me-3">
-                    <select id="datePeriodMobile" class="periodFilter">
-                        <option value="1">Último mes</option>
-                        <option value="2">Año actual</option>
-                        <option value="3">Últimos 12 meses</option>
-                        <option value="4">Últimos 3 años</option>
-                    </select>
-                    <div class="separator"></div>
-                    <div id="btnFilterMobile" class="btnFilter" onclick="toggleFilterSection()" style="cursor: pointer;">
-                        <div class="bi bi-funnel"></div>
-                    </div>
-                </div>
-
-                <!-- Botón hamburguesa -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
+                <!-- ELIMINAR: ID: sectionFilterMobile, sectionFilterDesktop CLASS: -->
+                
                 <!-- Menú desplegable collapse -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
@@ -80,18 +62,19 @@
                         </li>
                     </ul>
 
+                    <div id="btnFilter" class="btnFilter navbar-nav d-flex ms-auto" onclick="toggleFilterSection()" style="cursor: pointer;">
+                        <div class="bi bi-funnel"> Filtros</div>
+                    </div>
+
                     <!-- sectionFilter versión escritorio: solo visible md y arriba -->
-                    <div id="sectionFilterDesktop" class="navbar-nav ms-auto align-items-center d-none">
+                    <div id="sectionFilter" class="navbar-nav ms-auto align-items-center d-none">
                         <select id="datePeriod" class="periodFilter">
                             <option value="1">Último mes</option>
-                            <option value="2">Últimos 3 meses</option>
-                            <option value="3">Año actual</option>
+                            <option value="2">Año actual</option>
+                            <option value="3">Últimos 12 meses</option>
                             <option value="4">Últimos 3 años</option>
                         </select>
                         <div class="separator"></div>
-                        <div id="btnFilter" class="btnFilter" onclick="toggleFilterSection()" style="cursor: pointer;">
-                            <div class="bi bi-funnel"> Filtrar</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -99,12 +82,12 @@
     </header>
 
     <!-- Contenedor del filtro (inicialmente oculto) -->
-    <div id="filterSection" class="container-fluid p-3 filterSection">
+    <div id="filterSection" class="container-fluid p-1 filterSection">
         
         <div class="row g-3">
             <!-- Marcas -->
             <div class="col-6 col-md-4 col-xl-2">
-                <select id="brands" multiple>
+                <select id="brands" multiple class="form-select form-select-sm">
                 </select>
             </div>
 

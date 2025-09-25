@@ -11,8 +11,6 @@ const index = {
     initialize: async function () {
         index.loadingFilter(false);
         index.loadingScreen(true);
-        $("#sectionFilterDesktop").addClass("d-none");
-        $("#sectionFilterMobile").addClass("d-none");
         $("#filterSection").hide();
 
         $("#datePeriod").val(4);
@@ -60,26 +58,22 @@ const index = {
                     script.onload = () => {
                         // Verificar si la función `home.initialize()` está disponible y ejecutarla
                         if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
-                            $("#sectionFilterDesktop").addClass("d-none");
-                            $("#sectionFilterMobile").addClass("d-none");
+                            // $("#sectionFilterDesktop").addClass("d-none");
                             home.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
-                            $("#sectionFilterDesktop").removeClass("d-none");
-                            $("#sectionFilterMobile").removeClass("d-none");
+                            // $("#sectionFilterDesktop").removeClass("d-none");
                             this.loadRanking();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
-                            $("#sectionFilterDesktop").removeClass("d-none");
-                            $("#sectionFilterMobile").removeClass("d-none");
+                            // $("#sectionFilterDesktop").removeClass("d-none");
                             this.loadAnnuals();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
-                            $("#sectionFilterDesktop").removeClass("d-none");
-                            $("#sectionFilterMobile").removeClass("d-none");
+                            // $("#sectionFilterDesktop").removeClass("d-none");
                             this.loadPropulsion();
                         }
                     };
@@ -231,7 +225,6 @@ const filters = {
         document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
 
         document.getElementById("datePeriod").addEventListener("change", this.filterRegistrations);
-        document.getElementById("datePeriodMobile").addEventListener("change", this.filterRegistrations);
 
         this.populateFilters();
     },
@@ -319,7 +312,6 @@ const filters = {
 
         const newValue = $(this).val();
         if (this.id === "datePeriod") $("#datePeriodMobile").val(newValue);
-        if (this.id === "datePeriodMobile") $("#datePeriod").val(newValue);
 
         setTimeout(() => {
             const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(document.getElementById("datePeriod").value);

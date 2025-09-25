@@ -20,5 +20,6 @@
     --COLOR-TYPE-8: #4C4C4C;     /*  Gris  oscuro para  categorías  neutras o  sin  destacar */
 
     --FONT-FAMILY: "Quicksand", sans-serif;
+    --FONT-SIZE-SM: 10px;
     --FONT-SIZE-MD: 14px;
 }
