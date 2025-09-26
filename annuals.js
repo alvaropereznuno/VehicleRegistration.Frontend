@@ -18,7 +18,9 @@ const annuals = {
         ]);
 
         window.addEventListener("globalDataUpdated", async () => {
-            await Promise.all([
+            await Promise.all([                
+                annuals.customPresentation(),
+
                 ChartUtils.annuals.annualSellings.update(SharedUtils.data.registrationFilteredList),
                 ChartUtils.annuals.annualSellingsDiff.update(SharedUtils.data.registrationFilteredList),
                 ChartUtils.annuals.annualSellingsAcc.update(SharedUtils.data.registrationFilteredList),
@@ -27,7 +29,19 @@ const annuals = {
                 GridUtils.annuals.annualSellings.update(SharedUtils.data.registrationFilteredList)
             ]);
         });
+    },
+    customPresentation: async function(){
+        const datePeriod = document.getElementById("datePeriods").selectedOptions[0].value;
+
+        if (datePeriod != 4){
+            $("#annualsdiffTarjet").hide();
+            $("#annualsaccdiffTarjet").hide();
+        } else {
+            $("#annualsdiffTarjet").show();
+            $("#annualsaccdiffTarjet").show();
+        }
     }
+
 }
 
 window.annuals = annuals;

@@ -221,6 +221,12 @@ const Ranking = {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: true,
@@ -335,6 +341,12 @@ const Ranking = {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: true,

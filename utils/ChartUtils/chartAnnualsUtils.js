@@ -44,6 +44,12 @@ const Annuals = {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: true,
@@ -129,8 +135,8 @@ const Annuals = {
                     return {
                         label: year,
                         data: datasets[year].yearList,
-                        backgroundColor: Colors.getIndexColor(index % 8, alphaBg),
-                        borderColor: Colors.getIndexColor(index % 8, alphaBorder),
+                        backgroundColor: Colors.getIndexColor((Object.keys(data).length - index - 2) % 8, alphaBg),
+                        borderColor: Colors.getIndexColor((Object.keys(data).length - index - 2) % 8, alphaBorder),
                         borderWidth: 3,
                         tension: 0.2,
                     };
@@ -152,7 +158,6 @@ const Annuals = {
                         indexAxis: 'x',
                         responsive: true,
                         maintainAspectRatio: false,
-
                         plugins: {
                             legend: {
                                 display: true,
@@ -233,6 +238,12 @@ const Annuals = {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: true,

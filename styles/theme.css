@@ -10,14 +10,14 @@
 
     --BORDER-RADIUS: 4px;
 
-    --COLOR-TYPE-1: #FF4800;     /*  Naranja  principal, coherente  con  tu color  de  acento */
-    --COLOR-TYPE-2:  #FFB300;     /* Amarillo  cálido,  vibrante y  legible  sobre fondo  claro  */
-    --COLOR-TYPE-3:  #00A6ED;     /*  Azul claro,  fresco  y tecnológico  */
-    --COLOR-TYPE-4: #008C72;     /*  Verde  azulado, moderno  y  elegante */
-    --COLOR-TYPE-5:  #D94F70;     /* Rosa  coral,  cálido y  llamativo  */
-    --COLOR-TYPE-6:  #6C4D9F;     /*  Violeta medio,  sofisticado  y contrastante  */
-    --COLOR-TYPE-7: #A05F2C;     /*  Marrón  tostado, cálido  y  con carácter  */
-    --COLOR-TYPE-8: #4C4C4C;     /*  Gris  oscuro para  categorías  neutras o  sin  destacar */
+    --COLOR-TYPE-8:  #6C4D9F;
+    --COLOR-TYPE-7: #FF4800;
+    --COLOR-TYPE-6:  #00A6ED;
+    --COLOR-TYPE-5:  #FFB300;
+    --COLOR-TYPE-4:  #D94F70;
+    --COLOR-TYPE-3: #008C72;
+    --COLOR-TYPE-2: #4C4C4C;
+    --COLOR-TYPE-1: #A05F2C;
 
     --FONT-FAMILY: "Quicksand", sans-serif;
     --FONT-SIZE-SM: 10px;
