@@ -34,9 +34,10 @@ body {
 }
 
 .headerSection .navbar-toggler {
-    border-radius: var(--BORDER-RADIUS);
-    border-color: var(--COLOR-SECONDARY);
-    background-color: var(--COLOR-PRIMARY);
+    
+    border: none;       /* sin borde */
+    box-shadow: none;   /* sin sombra al hacer clic */
+    padding: 0;         /* sin padding extra */
 }
 
 .headerSection .navbar-toggler:focus {
