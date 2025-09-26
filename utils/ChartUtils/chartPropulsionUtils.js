@@ -467,7 +467,7 @@ const Propulsion = {
             const datasets = allYears.map((year, index) => {
                 let alpha = allYears.length > 1
                     ? (1 - 0.4) / (allYears.length - 1) * (allYears.length - 1 - index)
-                    : 1;
+                    : 0;
 
                 return {
                     label: year,
