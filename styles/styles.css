@@ -14,24 +14,6 @@ body {
 
 }
 
-@media (min-width: 768px) {
-  #sectionFilterDesktop {
-    display: flex; /* será flex en desktop */
-  }
-}
-
-@media (min-width: 768px) {
-  #sectionFilterDesktop {
-    display: flex; /* se muestra como flex en desktop */
-  }
-}
-/* Oculto en móvil por defecto */
-@media (max-width: 767.98px) {
-  #sectionFilterDesktop {
-    display: none;
-  }
-}
-
 .headerSection {
     background-color: var(--COLOR-ACCENT);
     --bs-navbar-padding-y: 0rem;
@@ -52,9 +34,10 @@ body {
 }
 
 .headerSection .navbar-toggler {
-    border-radius: var(--BORDER-RADIUS);
-    border-color: var(--COLOR-SECONDARY);
-    background-color: var(--COLOR-PRIMARY);
+    
+    border: none;       /* sin borde */
+    box-shadow: none;   /* sin sombra al hacer clic */
+    padding: 0;         /* sin padding extra */
 }
 
 .headerSection .navbar-toggler:focus {
@@ -176,22 +159,40 @@ body {
 }
 /* END: Chart.js styles */
 
-/* */
+.choices {
+    font-size: var(--FONT-SIZE-SM);
+}
+
+.choices .choices__input {
+    font-size: var(--FONT-SIZE-MD);
+    margin: 0px;
+    min-height: 0px;
+}
+
 .choices .choices__inner {
     background-color: transparent;
-    padding: 7.5px 7.5px 3.75px;
+    padding: 0.5px;
     border: 1px solid var(--COLOR-SEPARATOR);
     border-radius: var(--BORDER-RADIUS);
+    min-height: 35px;
+}
+
+.choices[data-type*=select-one] .choices__inner {
+    background-color: transparent;
+    padding: 0.5px;
+    border: 1px solid var(--COLOR-SEPARATOR);
+    border-radius: var(--BORDER-RADIUS);
+    min-height: 35px;
 }
 
 .choices__list--multiple .choices__item {
     display: inline-block;
     vertical-align: middle;
     border-radius: var(--BORDER-RADIUS);
-    padding: 4px 10px;
+    padding: 4px 4px;
     font-weight: 500;
-    margin-right: 3.75px;
-    margin-bottom: 3.75px;
+    margin-right: 3px;
+    margin-bottom: 3px;
     background-color: var(--COLOR-ACCENT);
     border: 1px solid var(--COLOR-ACCENT-DARK);
     color: var(--COLOR-PRIMARY);
@@ -204,8 +205,11 @@ body {
 }
 
 .filterSection {
-    background-color: var(--COLOR-PRIMARY);
     --bs-bg-opacity: 1;
+}
+
+.filterSection .choices__inner {
+    background-color: var(--COLOR-PRIMARY);
 }
 
 .filterSection .choices__input {

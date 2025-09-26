@@ -2,6 +2,14 @@
 
 const DICT = {
     // Motor types
+    DATE_PERIODS: [
+        { id: 1,    description: "Mes actual" },
+        { id: 2,    description: "Año actual" },
+        { id: 3,    description: "Últimos 12 meses" },
+        { id: 4,    description: "Últimos 3 años" }
+    ],
+
+    // Motor types
     MOTOR_TYPES: [
         { id: 1,    description: "Gasolina" },
         { id: 2,    description: "Diesel" },
