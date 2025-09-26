@@ -11,10 +11,8 @@ const index = {
     initialize: async function () {
         index.loadingFilter(false);
         index.loadingScreen(true);
-        $("#filterSection").hide();
 
-        $("#datePeriod").val(4);
-        $("#datePeriodMobile").val(4);
+        // $("#datePeriods").val(3);
 
         let isLastVersion = await SharedUtils.isLastVersion();
         await Promise.all([
@@ -40,6 +38,9 @@ const index = {
             this.currentScript.remove();
         }
 
+        if (jsFile == "home.js") $("#filters").addClass("d-none");
+        else $("#filters").removeClass("d-none");
+
         // Cargar la nueva página
         fetch(page)
             .then(response => {
@@ -57,23 +58,19 @@ const index = {
                     script.src = jsFile;
                     script.onload = () => {
                         // Verificar si la función `home.initialize()` está disponible y ejecutarla
-                        if (jsFile == "home.js" &&typeof home !== 'undefined' && typeof home.initialize === 'function') {
-                            // $("#sectionFilterDesktop").addClass("d-none");
+                        if (jsFile == "home.js" && typeof home !== 'undefined' && typeof home.initialize === 'function') {
                             home.initialize();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
-                            // $("#sectionFilterDesktop").removeClass("d-none");
                             this.loadRanking();
                         }
                         // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
-                        if (jsFile == "annuals.js" &&typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
-                            // $("#sectionFilterDesktop").removeClass("d-none");
+                        if (jsFile == "annuals.js" && typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
                             this.loadAnnuals();
                         }
                         // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
-                        if (jsFile == "propulsion.js" &&typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
-                            // $("#sectionFilterDesktop").removeClass("d-none");
+                        if (jsFile == "propulsion.js" && typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
                             this.loadPropulsion();
                         }
                     };
@@ -130,11 +127,6 @@ const index = {
         } else {
             loadingFilter.style.display = "none";
         }
-    },
-    toggleFilterSection: function() {
-        const filterSection = $("#filterSection");
-        $("#filterSection").slideToggle(300);
-
     }
 };
 
@@ -156,7 +148,7 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado marcas',
             noChoicesText: 'No hay marcas a elegir',
-            itemSelectText: 'Selecciona',
+            itemSelectText: '',
         });
         // Filtro de Modelos
         this.choiceModels = new Choices("#models", {
@@ -167,7 +159,7 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado modelos',
             noChoicesText: 'Selecciona alguna marca',
-            itemSelectText: 'Selecciona',
+            itemSelectText: '',
         });
         // Filtro de Tipos de motor
         this.choiceMotorTypes = new Choices("#motorTypes", {
@@ -178,7 +170,18 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado tipos de motor',
             noChoicesText: 'No hay tipos de motores a elegir',
-            itemSelectText: 'Selecciona',
+            itemSelectText: '',
+        });
+        // Filtro de Fechas
+        this.choiceDatePeriods = new Choices("#datePeriods", {
+            removeItemButton: false,
+            searchEnabled: false,
+            placeholder: true,
+            placeholderValue: "Rango de fechas ...",
+            loadingText: 'Cargando ...',
+            noResultsText: 'No se han encontrado rangos de fechas',
+            noChoicesText: 'No hay rangos de fechas a elegir',
+            itemSelectText: '',
         });
         // Filtro de Tipos de vehículo
         this.choiceServiceTypes = new Choices("#serviceTypes", {
@@ -189,7 +192,7 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado tipos de servicios',
             noChoicesText: 'No hay tipos de servicios a elegir',
-            itemSelectText: 'Selecciona',
+            itemSelectText: '',
         });
         // Filtro de Comunidades Autónomas
         this.choiceCommunities = new Choices("#communities", {
@@ -200,7 +203,7 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado CCAA',
             noChoicesText: 'No hay CCAA a elegir',
-            itemSelectText: 'Selecciona',
+            itemSelectText: '',
         });
         // Filtro de Provincias
         this.choiceProvinces = new Choices("#provinces", {
@@ -211,7 +214,7 @@ const filters = {
             loadingText: 'Cargando ...',
             noResultsText: 'No se han encontrado provincias',
             noChoicesText: 'No hay provincias a elegir',
-            itemSelectText: 'Selecciona'
+            itemSelectText: ''
         });
 
         document.getElementById("brands").addEventListener("change", this.updateModels);
@@ -224,7 +227,7 @@ const filters = {
         document.getElementById("communities").addEventListener("change", this.filterRegistrations);
         document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
 
-        document.getElementById("datePeriod").addEventListener("change", this.filterRegistrations);
+        document.getElementById("datePeriods").addEventListener("change", this.filterRegistrations);
 
         this.populateFilters();
     },
@@ -232,6 +235,7 @@ const filters = {
         this.populateChoice(this.choiceBrands, SharedUtils.data.brandList);
         this.populateChoice(this.choiceModels, []);
         this.populateChoice(this.choiceMotorTypes, DICT.MOTOR_TYPES);
+        this.populateChoice(this.choiceDatePeriods, DICT.DATE_PERIODS, 4);
         this.populateChoice(this.choiceServiceTypes, DICT.SERVICE_TYPES);
         this.populateChoice(this.choiceCommunities, DICT.COMMUNITIES);
         this.populateChoice(this.choiceProvinces, DICT.PROVINCES);
@@ -247,13 +251,18 @@ const filters = {
             select.appendChild(option);
         });
     },
-    populateChoice: function(choise, list){
-        // Limpiar y actualizar lista en el combobox
+    populateChoice: function(choise, list, defaultId = null){
         choise.clearChoices();
-        choise.setChoices(list.map(l => ({
-            value: l.id,
-            label: l.description
-        })), 'value', 'label', true);
+        choise.setChoices(
+            list.map(l => ({
+                value: l.id,
+                label: l.description,
+                selected: defaultId !== null && l.id === defaultId
+            })),
+            'value',
+            'label',
+            false
+        );
     },
     updateProvinces: function() {
         const selectedCommunities = Array.from(document.getElementById("communities").selectedOptions).map(option => parseInt(option.value));
@@ -310,11 +319,8 @@ const filters = {
     filterRegistrations: function() {
         index.loadingFilter(true);
 
-        const newValue = $(this).val();
-        if (this.id === "datePeriod") $("#datePeriodMobile").val(newValue);
-
         setTimeout(() => {
-            const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(document.getElementById("datePeriod").value);
+            const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(document.getElementById("datePeriods").value);
             const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
             let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
             const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
@@ -362,4 +368,3 @@ const filters = {
 }
 
 window.loadPage = index.loadPage.bind(index);
-window.toggleFilterSection = index.toggleFilterSection.bind(index);

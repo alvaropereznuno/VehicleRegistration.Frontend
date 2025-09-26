@@ -46,7 +46,10 @@
                     Metricars
                 </a>
 
-                <!-- ELIMINAR: ID: sectionFilterMobile, sectionFilterDesktop CLASS: -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 
                 <!-- Menú desplegable collapse -->
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,64 +64,62 @@
                             <a class="nav-link" href="#" onclick="loadPage('propulsion.html','propulsion.js')">Por tipos de motor</a>
                         </li>
                     </ul>
-
-                    <div id="btnFilter" class="btnFilter navbar-nav d-flex ms-auto" onclick="toggleFilterSection()" style="cursor: pointer;">
-                        <div class="bi bi-funnel"> Filtros</div>
-                    </div>
-
-                    <!-- sectionFilter versión escritorio: solo visible md y arriba -->
-                    <div id="sectionFilter" class="navbar-nav ms-auto align-items-center d-none">
-                        <select id="datePeriod" class="periodFilter">
-                            <option value="1">Último mes</option>
-                            <option value="2">Año actual</option>
-                            <option value="3">Últimos 12 meses</option>
-                            <option value="4">Últimos 3 años</option>
-                        </select>
-                        <div class="separator"></div>
-                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- Contenedor del filtro (inicialmente oculto) -->
-    <div id="filterSection" class="container-fluid p-1 filterSection">
+    <div id="filters" class="container mt-1 d-none">
+        <div class="col-12">
+            <div class="tarjet">
+                <div id="filterSection" class="filterSection">
         
-        <div class="row g-3">
-            <!-- Marcas -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="brands" multiple class="form-select form-select-sm">
-                </select>
-            </div>
+                    <div id="filterSectionA" class="row g-3">
+                        <!-- Marcas -->
+                        <div class="col-6 col-lg-3">
+                            <select id="brands" multiple>
+                            </select>
+                        </div>
 
-            <!-- Modelos -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="models" multiple>
-                </select>
-            </div>
+                        <!-- Modelos -->
+                        <div class="col-6 col-lg-3">
+                            <select id="models" multiple>
+                            </select>
+                        </div>
 
-            <!-- Tipos de Motor -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="motorTypes" multiple>
-                </select>
-            </div>
+                        <!-- Tipos de Motor -->
+                        <div class="col-6 col-lg-3">
+                            <select id="motorTypes" multiple>
+                            </select>
+                        </div>            
 
-            <!-- Tipos de Vehículos -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="serviceTypes" multiple>
-                </select>
-            </div>
+                        <!-- Fechas -->
+                        <div class="col-6 col-lg-3">
+                            <select id="datePeriods">
+                            </select>
+                        </div>
+                    </div>
 
-            <!-- Comunidades autónomas -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="communities" multiple>
-                </select>
-            </div>
+                    <div id="filterSectionB" class="row g-3 mt-1" >
+                        <!-- Tipos de Vehículos -->
+                        <div class="col-6 col-lg-3">
+                            <select id="serviceTypes" multiple>
+                            </select>
+                        </div>
 
-            <!-- Provincias -->
-            <div class="col-6 col-md-4 col-xl-2">
-                <select id="provinces" multiple>
-                </select>
+                        <!-- Comunidades autónomas -->
+                        <div class="col-6 col-lg-3">
+                            <select id="communities" multiple>
+                            </select>
+                        </div>
+
+                        <!-- Provincias -->
+                        <div class="col-6 col-lg-3">
+                            <select id="provinces" multiple>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

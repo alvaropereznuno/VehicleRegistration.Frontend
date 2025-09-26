@@ -14,24 +14,6 @@ body {
 
 }
 
-@media (min-width: 768px) {
-  #sectionFilterDesktop {
-    display: flex; /* será flex en desktop */
-  }
-}
-
-@media (min-width: 768px) {
-  #sectionFilterDesktop {
-    display: flex; /* se muestra como flex en desktop */
-  }
-}
-/* Oculto en móvil por defecto */
-@media (max-width: 767.98px) {
-  #sectionFilterDesktop {
-    display: none;
-  }
-}
-
 .headerSection {
     background-color: var(--COLOR-ACCENT);
     --bs-navbar-padding-y: 0rem;
@@ -176,8 +158,6 @@ body {
 }
 /* END: Chart.js styles */
 
-/* */
-
 .choices {
     font-size: var(--FONT-SIZE-SM);
 }
@@ -194,7 +174,14 @@ body {
     border: 1px solid var(--COLOR-SEPARATOR);
     border-radius: var(--BORDER-RADIUS);
     min-height: 35px;
+}
 
+.choices[data-type*=select-one] .choices__inner {
+    background-color: transparent;
+    padding: 0.5px;
+    border: 1px solid var(--COLOR-SEPARATOR);
+    border-radius: var(--BORDER-RADIUS);
+    min-height: 35px;
 }
 
 .choices__list--multiple .choices__item {
@@ -217,8 +204,11 @@ body {
 }
 
 .filterSection {
-    background-color: var(--COLOR-PRIMARY);
     --bs-bg-opacity: 1;
+}
+
+.filterSection .choices__inner {
+    background-color: var(--COLOR-PRIMARY);
 }
 
 .filterSection .choices__input {
