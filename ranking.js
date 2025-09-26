@@ -44,6 +44,8 @@ const ranking = {
         
         window.addEventListener("globalDataUpdated", async () => {
             await Promise.all([
+                ranking.customPresentation(),
+
                 ChartUtils.ranking.topBrands.update(SharedUtils.data.registrationFilteredList),
                 ChartUtils.ranking.topModels.update(SharedUtils.data.registrationFilteredList),
                 ChartUtils.ranking.topBrandsAcc.update(SharedUtils.data.registrationFilteredList),
@@ -53,6 +55,65 @@ const ranking = {
             ]);
         });
     },
+    customPresentation: async function(){
+        const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));
+        const modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
+
+        if (brandIdList.length == 0 || brandIdList.length > 5){
+            $("#topBrandsTarjet").show();
+            $("#topBrandsAccTarjet").show();
+            
+            $("#topModelsTarjet").addClass("col-lg-6");
+            $("#topModelsAccTarjet").addClass("col-lg-6");
+
+            $("#topBrandsTarjet").addClass("col-lg-6");
+            $("#topBrandsAccTarjet").addClass("col-lg-6");
+
+            $("#topBrandsTarjetChart").addClass("chart-container-large");
+            $("#topBrandsTarjetChart").removeClass("chart-container-small");
+        } else if (brandIdList.length == 1){
+            $("#topBrandsTarjet").hide();
+            $("#topBrandsAccTarjet").hide();
+            
+            $("#topModelsTarjet").removeClass("col-lg-6");
+            $("#topModelsAccTarjet").removeClass("col-lg-6");
+
+            $("#topBrandsTarjet").addClass("col-lg-6");
+            $("#topBrandsAccTarjet").addClass("col-lg-6");
+
+            $("#topBrandsTarjetChart").addClass("chart-container-large");
+            $("#topBrandsTarjetChart").removeClass("chart-container-small");
+        } else {
+            $("#topBrandsTarjet").show();
+            $("#topBrandsAccTarjet").show();
+            
+            $("#topModelsTarjet").removeClass("col-lg-6");
+            $("#topModelsAccTarjet").addClass("col-lg-6");
+
+            $("#topBrandsTarjet").removeClass("col-lg-6");
+            $("#topBrandsAccTarjet").addClass("col-lg-6");
+
+            $("#topBrandsTarjetChart").removeClass("chart-container-large");
+            $("#topBrandsTarjetChart").addClass("chart-container-small");
+        }
+
+        if (modelIdList.length == 1){
+            $("#topModelsTarjet").hide();
+
+            $("#topModelsTarjetChart").addClass("chart-container-large");
+            $("#topModelsTarjetChart").removeClass("chart-container-small");
+        } else if (modelIdList.length > 0 && modelIdList.length < 5) {
+            $("#topModelsTarjet").show();
+
+            $("#topModelsTarjetChart").removeClass("chart-container-large");
+            $("#topModelsTarjetChart").addClass("chart-container-small");
+        } else {
+            $("#topModelsTarjet").show();
+
+            $("#topModelsTarjetChart").addClass("chart-container-large");
+            $("#topModelsTarjetChart").removeClass("chart-container-small");
+        }
+    }
 }
 
 window.ranking = ranking;
