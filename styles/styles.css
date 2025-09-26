@@ -34,10 +34,9 @@ body {
 }
 
 .headerSection .navbar-toggler {
-    
-    border: none;       /* sin borde */
-    box-shadow: none;   /* sin sombra al hacer clic */
-    padding: 0;         /* sin padding extra */
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 .headerSection .navbar-toggler:focus {

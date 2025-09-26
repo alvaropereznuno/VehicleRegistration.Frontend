@@ -44,7 +44,9 @@ const Propulsion = {
                         maintainAspectRatio: false,
                         scales: {
                             y: {
-                                stacked: true
+                                stacked: true,
+                                beginAtZero: true,
+                                grace: '10%'
                             }
                         },
                         plugins: {
@@ -159,7 +161,9 @@ const Propulsion = {
                         maintainAspectRatio: false,
                         scales: {
                             y: {
-                                stacked: true
+                                stacked: true,
+                                beginAtZero: true,
+                                grace: '10%'
                             }
                         },
                         plugins: {
