@@ -23,26 +23,33 @@ jobs:
       # --- Nuevo paso: Minificar HTML, CSS y JS ---
       - name: Minify HTML, CSS and JS
         run: |
+          shopt -s nullglob
+      
           # HTML: quitar comentarios y espacios extra
           for f in *.html; do
             sed -e 's/<!--.*-->//g' -e ':a;N;$!ba;s/\n/ /g;s/  */ /g' "$f" > "$f.min"
             mv "$f.min" "$f"
           done
-
+      
           # CSS: quitar comentarios y espacios extra
           for f in css/*.css; do
+            [ -f "$f" ] || continue
             sed -e 's/\/\*.*\*\///g' -e ':a;N;$!ba;s/\n/ /g;s/  */ /g' "$f" > "$f.min"
             mv "$f.min" "$f"
           done
-
+      
           # JS: descargar uglify-js y minificar
-          mkdir -p tmp
-          curl -s https://cdn.jsdelivr.net/npm/uglify-js@3.17.4/bin/uglifyjs > tmp/uglifyjs
-          chmod +x tmp/uglifyjs
-          for f in js/*.js; do
-            tmp/uglifyjs "$f" -c -m -o "$f.min"
-            mv "$f.min" "$f"
-          done
+          if compgen -G "js/*.js" > /dev/null; then
+            mkdir -p tmp
+            curl -s https://cdn.jsdelivr.net/npm/uglify-js@3.17.4/bin/uglifyjs > tmp/uglifyjs
+            chmod +x tmp/uglifyjs
+            for f in js/*.js; do
+              [ -f "$f" ] || continue
+              tmp/uglifyjs "$f" -c -m -o "$f.min"
+              mv "$f.min" "$f"
+            done
+          fi
+
       # --- Fin del nuevo paso ---
 
       - name: Build And Deploy
@@ -67,3 +74,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_COAST_04F960903 }}
           action: "close"
+
