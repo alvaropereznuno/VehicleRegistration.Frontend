@@ -12,8 +12,6 @@ const index = {
         index.loadingFilter(false);
         index.loadingScreen(true);
 
-        // $("#datePeriods").val(3);
-
         let isLastVersion = await SharedUtils.isLastVersion();
         await Promise.all([
             SharedUtils.loadModels(!isLastVersion),
@@ -219,17 +217,17 @@ const filters = {
 
         document.getElementById("brands").addEventListener("change", this.updateModels);
         document.getElementById("communities").addEventListener("change", this.updateProvinces);
-        
         document.getElementById("brands").addEventListener("change", this.filterRegistrations);
         document.getElementById("models").addEventListener("change", this.filterRegistrations);
         document.getElementById("motorTypes").addEventListener("change", this.filterRegistrations);
         document.getElementById("serviceTypes").addEventListener("change", this.filterRegistrations);
         document.getElementById("communities").addEventListener("change", this.filterRegistrations);
         document.getElementById("provinces").addEventListener("change", this.filterRegistrations);
-
         document.getElementById("datePeriods").addEventListener("change", this.filterRegistrations);
 
         this.populateFilters();
+
+        document.getElementById("restoreFilters").addEventListener("click", this.filterRestore);
     },
     populateFilters(){
         this.populateChoice(this.choiceBrands, SharedUtils.data.brandList);
@@ -337,6 +335,17 @@ const filters = {
             
             index.loadingFilter(false);
         }, 0);
+    },
+    filterRestore: function() {
+        filters.choiceBrands.clearStore();
+        filters.choiceModels.clearStore();
+        filters.choiceMotorTypes.clearStore();
+        filters.choiceDatePeriods.clearStore();
+        filters.choiceServiceTypes.clearStore();
+        filters.choiceCommunities.clearStore();
+        filters.choiceProvinces.clearStore();
+        filters.populateFilters();
+        filters.filterRegistrations();
     },
     getPeriodDates: function(period) {
         const now = new Date();
