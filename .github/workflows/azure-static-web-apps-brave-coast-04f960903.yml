@@ -23,29 +23,27 @@ jobs:
       # --- Nuevo paso: Minificar HTML, CSS y JS ---
       - name: Minify HTML, CSS and JS
         run: |
-          # instalar minify temporalmente
-          curl -sL https://www.npmjs.com/install.sh | sh
+          # Instalar minify temporalmente
           npm install -g minify
-      
-          # minificar HTML
+
+          # HTML
           for f in *.html; do
-            minify "$f" > "$f.min"
-            mv "$f.min" "$f"
-          done
-      
-          # minificar CSS
-          for f in css/*.css; do
-            minify "$f" > "$f.min"
-            mv "$f.min" "$f"
-          done
-      
-          # minificar JS
-          for f in js/*.js; do
-            minify "$f" > "$f.min"
-            mv "$f.min" "$f"
+            [ -f "$f" ] || continue
+            minify "$f" > "$f.min" && mv "$f.min" "$f"
           done
 
-      # --- Fin del nuevo paso ---
+          # CSS
+          for f in css/*.css; do
+            [ -f "$f" ] || continue
+            minify "$f" > "$f.min" && mv "$f.min" "$f"
+          done
+
+          # JS
+          for f in js/*.js; do
+            [ -f "$f" ] || continue
+            minify "$f" > "$f.min" && mv "$f.min" "$f"
+          done
+      # --- Fin del paso de minificación ---
 
       - name: Build And Deploy
         id: builddeploy
@@ -69,5 +67,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_COAST_04F960903 }}
           action: "close"
-
-
