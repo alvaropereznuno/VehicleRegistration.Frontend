@@ -24,6 +24,8 @@ const ranking = {
     initialize: async function (){
         $("#topBrands").hide();
         await Promise.all([
+            ranking.customPresentation(),
+
             ChartUtils.ranking.topBrands.create(SharedUtils.data.registrationFilteredList, $('#topBrands')),
             ChartUtils.ranking.topModels.create(SharedUtils.data.registrationFilteredList, $('#topModels')),
             ChartUtils.ranking.topBrandsAcc.create(SharedUtils.data.registrationFilteredList, $('#topBrandsAcc')),

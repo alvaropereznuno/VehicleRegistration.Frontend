@@ -226,6 +226,25 @@ body {
     border: 1px solid var(--COLOR-SEPARATOR);
 }
 
+.btn {
+    font-size: var(--FONT-SIZE-MD);
+    border: 1px solid var(--COLOR-SEPARATOR);
+    border-radius: var(--BORDER-RADIUS);
+    --bs-btn-color: #6c757d;
+    --bs-btn-hover-color: var(--COLOR-PRIMARY);
+    --bs-btn-hover-bg: var(--COLOR-ACCENT);
+    --bs-btn-hover-border-color: var(--COLOR-ACCENT);
+    --bs-btn-focus-shadow-rgb: 108, 117, 125;
+    --bs-btn-active-color: var(--COLOR-PRIMARY);
+    --bs-btn-active-bg: var(--COLOR-ACCENT-DARK);
+    --bs-btn-active-border-color: var(--COLOR-ACCENT-DARK);
+    --bs-btn-active-shadow: inset 0 3px 5px var(--COLOR-ACCENT-DARK);
+    --bs-btn-disabled-color: var(--COLOR-SECONDARY);
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--COLOR-SECONDARY);
+    --bs-gradient: none;
+}
+
 .periodFilter {
     text-align: right;
     background-color: transparent;

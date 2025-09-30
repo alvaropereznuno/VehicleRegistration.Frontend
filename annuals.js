@@ -9,6 +9,8 @@ import SharedUtils from './utils/sharedUtils.js';
 const annuals = {
     initialize: async function (){
         await Promise.all([
+            annuals.customPresentation(),
+
             ChartUtils.annuals.annualSellings.create(SharedUtils.data.registrationFilteredList, $('#annuals')),
             ChartUtils.annuals.annualSellingsDiff.create(SharedUtils.data.registrationFilteredList, $('#annualsdiff')),
             ChartUtils.annuals.annualSellingsAcc.create(SharedUtils.data.registrationFilteredList, $('#annualsacc')),
