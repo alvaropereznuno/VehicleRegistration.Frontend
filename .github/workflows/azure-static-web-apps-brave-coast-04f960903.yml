@@ -20,28 +20,32 @@ jobs:
           submodules: true
           lfs: false
 
-      # --- Nuevo paso: Minificar HTML, CSS y JS ---
+      # --- Paso de minificación con Python ---
       - name: Minify HTML, CSS and JS
         run: |
-          # Instalar minify temporalmente
-          npm install -g minify
+          # Instalar minificadores de Python
+          python -m pip install --upgrade pip
+          pip install htmlmin rcssmin rjsmin
+
+          mkdir -p dist/js
+          mkdir -p dist/css
 
           # HTML
           for f in *.html; do
             [ -f "$f" ] || continue
-            minify "$f" > "$f.min" && mv "$f.min" "$f"
+            python -c "import htmlmin; print(htmlmin.minify(open('$f').read(), remove_empty_space=True))" > "dist/$f"
           done
 
           # CSS
           for f in css/*.css; do
             [ -f "$f" ] || continue
-            minify "$f" > "$f.min" && mv "$f.min" "$f"
+            python -c "import rcssmin; print(rcssmin.cssmin(open('$f').read()))" > "dist/css/$(basename $f)"
           done
 
           # JS
           for f in js/*.js; do
             [ -f "$f" ] || continue
-            minify "$f" > "$f.min" && mv "$f.min" "$f"
+            python -c "import rjsmin; print(rjsmin.jsmin(open('$f').read()))" > "dist/js/$(basename $f)"
           done
       # --- Fin del paso de minificación ---
 
@@ -52,7 +56,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_COAST_04F960903 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/" 
+          app_location: "dist" 
           api_location: "" 
           output_location: "." 
 
