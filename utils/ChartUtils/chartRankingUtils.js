@@ -40,7 +40,12 @@ const Ranking = {
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
-
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: false,
@@ -132,6 +137,12 @@ const Ranking = {
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grace: '10%'
+                            }
+                        },
                         plugins: {
                             legend: {
                                 display: false,

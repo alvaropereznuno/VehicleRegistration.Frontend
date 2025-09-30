@@ -72,7 +72,7 @@ const ranking = {
             $("#topBrandsAccTarjet").addClass("col-lg-6");
 
             $("#topBrandsTarjetChart").addClass("chart-container-large");
-            $("#topBrandsTarjetChart").removeClass("chart-container-small");
+            $("#topBrandsTarjetChart").removeClass("chart-container-xsmall");
         } else if (brandIdList.length == 1){
             $("#topBrandsTarjet").hide();
             $("#topBrandsAccTarjet").hide();
@@ -84,7 +84,7 @@ const ranking = {
             $("#topBrandsAccTarjet").addClass("col-lg-6");
 
             $("#topBrandsTarjetChart").addClass("chart-container-large");
-            $("#topBrandsTarjetChart").removeClass("chart-container-small");
+            $("#topBrandsTarjetChart").removeClass("chart-container-xsmall");
         } else {
             $("#topBrandsTarjet").show();
             $("#topBrandsAccTarjet").show();
@@ -96,24 +96,24 @@ const ranking = {
             $("#topBrandsAccTarjet").addClass("col-lg-6");
 
             $("#topBrandsTarjetChart").removeClass("chart-container-large");
-            $("#topBrandsTarjetChart").addClass("chart-container-small");
+            $("#topBrandsTarjetChart").addClass("chart-container-xsmall");
         }
 
         if (modelIdList.length == 1){
             $("#topModelsTarjet").hide();
 
             $("#topModelsTarjetChart").addClass("chart-container-large");
-            $("#topModelsTarjetChart").removeClass("chart-container-small");
+            $("#topModelsTarjetChart").removeClass("chart-container-xsmall");
         } else if (modelIdList.length > 0 && modelIdList.length < 5) {
             $("#topModelsTarjet").show();
 
             $("#topModelsTarjetChart").removeClass("chart-container-large");
-            $("#topModelsTarjetChart").addClass("chart-container-small");
+            $("#topModelsTarjetChart").addClass("chart-container-xsmall");
         } else {
             $("#topModelsTarjet").show();
 
             $("#topModelsTarjetChart").addClass("chart-container-large");
-            $("#topModelsTarjetChart").removeClass("chart-container-small");
+            $("#topModelsTarjetChart").removeClass("chart-container-xsmall");
         }
     }
 }
