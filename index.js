@@ -55,21 +55,20 @@ const index = {
                     script.type = 'module';
                     script.src = jsFile;
                     script.onload = () => {
-                        // Verificar si la función `home.initialize()` está disponible y ejecutarla
                         if (jsFile == "home.js" && typeof home !== 'undefined' && typeof home.initialize === 'function') {
                             home.initialize();
                         }
-                        // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
                             this.loadRanking();
                         }
-                        // Verificar si la función `ranking.initialize()` está disponible y ejecutarla
                         if (jsFile == "annuals.js" && typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
                             this.loadAnnuals();
                         }
-                        // Verificar si la función `propulsion.initialize()` está disponible y ejecutarla
                         if (jsFile == "propulsion.js" && typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
                             this.loadPropulsion();
+                        }
+                        if (jsFile == "trends.js" && typeof trends !== 'undefined' && typeof trends.initialize === 'function') {
+                            this.loadTrends();
                         }
                     };
                     document.body.appendChild(script);
@@ -105,6 +104,14 @@ const index = {
 
         setTimeout(() => {
             propulsion.initialize();
+            index.loadingFilter(false);
+        }, 0);
+    },
+    loadTrends: function() {
+        index.loadingFilter(true);
+
+        setTimeout(() => {
+            trends.initialize();
             index.loadingFilter(false);
         }, 0);
     },

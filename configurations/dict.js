@@ -3,7 +3,7 @@
 const DICT = {
     // Motor types
     DATE_PERIODS: [
-        { id: 1,    description: "Mes actual" },
+        { id: 1,    description: "Último mes" },
         { id: 2,    description: "Año actual" },
         { id: 3,    description: "Últimos 12 meses" },
         { id: 4,    description: "Últimos 3 años" }

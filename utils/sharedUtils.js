@@ -8,7 +8,8 @@ const SharedUtils = {
         brandList: [],
         modelList: [],
         registrationList: [],
-        registrationFilteredList: []
+        registrationFilteredList: [],
+        registrationFilteredNoDateList: []
     },
     isLastVersion: async function(){
         let version = await UsersService.getLastVersion();
@@ -59,6 +60,7 @@ const SharedUtils = {
             
             this.data.registrationList = data;
             this.data.registrationFilteredList = data;
+            this.data.registrationFilteredNoDateList = data;
         } catch (error) {
             console.error("Error fetching registrations:", error);
             return [];
@@ -107,6 +109,15 @@ const SharedUtils = {
     },
 
     filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, serviceTypeIdList = null, provinceIdList = null) {
+        this.data.registrationFilteredNoDateList = this.data.registrationList.filter(registration => {
+            return (
+                (modelIdList.length === 0 || modelIdList.includes(registration.modelId)) &&
+                (motorTypeIdList.length === 0 || motorTypeIdList.includes(registration.motorTypeId)) &&
+                (serviceTypeIdList.length === 0 || serviceTypeIdList.includes(registration.serviceTypeId)) &&
+                (provinceIdList.length === 0 || provinceIdList.includes(registration.provinceId))
+            );
+        });
+        
         this.data.registrationFilteredList = this.data.registrationList.filter(registration => {
             return (
                 (isNaN(registrationDateFrom) || registrationDateFrom === null || new Date(registration.registrationDate) >= registrationDateFrom) &&
