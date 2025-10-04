@@ -88,7 +88,7 @@ const SharedUtils = {
     },
     getBrandDescription2: function (brandId) {
         const brand = this.data.brandList.find(brand => brand.id == brandId);
-        return brand ? brand.description : null;
+        return brand ? brand.description : 'OTROS';
     },
     getProvinceDescription: function (provinceId) {
         const province = DICT.PROVINCES.find(province => province.id == provinceId);
@@ -111,6 +111,7 @@ const SharedUtils = {
     filterRegistrations: function (registrationDateFrom = null, registrationDateTo = null, brandIdList = null, modelIdList = null, motorTypeIdList = null, serviceTypeIdList = null, provinceIdList = null) {
         this.data.registrationFilteredNoDateList = this.data.registrationList.filter(registration => {
             return (
+                (isNaN(registrationDateTo) || registrationDateTo === null || new Date(registration.registrationDate) <= registrationDateTo) &&
                 (modelIdList.length === 0 || modelIdList.includes(registration.modelId)) &&
                 (motorTypeIdList.length === 0 || motorTypeIdList.includes(registration.motorTypeId)) &&
                 (serviceTypeIdList.length === 0 || serviceTypeIdList.includes(registration.serviceTypeId)) &&

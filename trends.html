@@ -20,7 +20,7 @@
 </head>
 <body>
     <div>
-        <h5 class="text-center mt-2">Cuál es la tendencia del mercado</h5>
+        <h5 class="text-center mt-2">Ganadores y perdedores en el mercado</h5>
         <h6 class="text-center">Comprueba cómo evoluciona en el mercado cada una de las marcas más populares</h6>
         
         <div class="row mt-2">
@@ -30,6 +30,7 @@
                     <h6>El crecimiento de la marca en el último mes</h6>
                     <span>Evolución de la marca respecto al mismo mes del año anterior</span>
                     <div id="brandGrowthMoMChart" class="chart-container-large">
+                        <img id="brandGrowthMoMLoading" src="images/logo_gray.svg" alt="Logo Metricars" width="100">
                         <canvas id="brandGrowthMoM"></canvas>
                     </div>
                 </div>
@@ -39,12 +40,33 @@
                     <h6>El crecimiento de la marca todo el año</h6>
                     <span>Evolución de la marca anual respecto al año anterior</span>
                     <div id="brandGrowthYoYChart" class="chart-container-large">
+                        <img id="brandGrowthYoYLoading" src="images/logo_gray.svg" alt="Logo Metricars" width="100">
                         <canvas id="brandGrowthYoY"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- Dominación de mercado -->
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h6>Qué marcas dominan el mercado actual</h6>
+                    <span>Dominio total de mercado de marcas en el año actual y anterior</span>
+                    <div id="brandDominationChart" class="chart-container-large">
+                        <img id="brandDominationLoading" src="images/logo_gray.svg" alt="Logo Metricars" width="100">
+                        <canvas id="brandDomination"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h6>Marcas que ganan y pierden mercado</h6>
+                    <span>Evolución del dominio por marcas respecto al año anterior</span>
+                    <div id="brandDominationGrowthChart" class="chart-container-large">
+                        <img id="brandDominationGrowthLoading" src="images/logo_gray.svg" alt="Logo Metricars" width="100">
+                        <canvas id="brandDominationGrowth"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -3,15 +3,36 @@ import GridUtils from './utils/gridUtils.js';
 import SharedUtils from './utils/sharedUtils.js';
 
 const trends = {
+    start: function(){
+        $("#brandGrowthMoMLoading").show();
+        $("#brandGrowthYoYLoading").show();
+        $("#brandDominationLoading").show();
+        $("#brandDominationGrowthLoading").show();
+
+        $("#brandGrowthMoM").hide();
+        $("#brandGrowthYoY").hide();
+        $("#brandDomination").hide();
+        $("#brandDominationGrowth").hide();
+    },
     initialize: async function (){
         await Promise.all([
             trends.customPresentation(),
 
-            ChartUtils.trends.brandGrowthMoM.create(SharedUtils.data.registrationFilteredList, $('#brandGrowthMoM')),
-            ChartUtils.trends.brandGrowthYoY.create(SharedUtils.data.registrationFilteredList, $('#brandGrowthYoY')),
-
-            // ChartUtils.trends.domination100.create(SharedUtils.data.registrationFilteredList, $('#domination100')),
+            ChartUtils.trends.brandGrowthMoM.create(SharedUtils.data.registrationFilteredNoDateList, $('#brandGrowthMoM')),
+            ChartUtils.trends.brandGrowthYoY.create(SharedUtils.data.registrationFilteredNoDateList, $('#brandGrowthYoY')),
+            ChartUtils.trends.brandDomination.create(SharedUtils.data.registrationFilteredList, $('#brandDomination')),
+            ChartUtils.trends.brandDominationGrowth.create(SharedUtils.data.registrationFilteredList, $('#brandDominationGrowth')),
         ]);
+
+        $("#brandGrowthMoMLoading").hide();
+        $("#brandGrowthYoYLoading").hide();
+        $("#brandDominationLoading").hide();
+        $("#brandDominationGrowthLoading").hide();
+
+        $("#brandGrowthMoM").show();
+        $("#brandGrowthYoY").show();
+        $("#brandDomination").show();
+        $("#brandDominationGrowth").show();
         
         // GridUtils.ranking.topResults.create(SharedUtils.data.registrationFilteredList, document.getElementById('topResults'));
 
@@ -19,9 +40,10 @@ const trends = {
             await Promise.all([
                 trends.customPresentation(),
 
-                ChartUtils.trends.brandGrowthMoM.update(SharedUtils.data.registrationFilteredList),
-                ChartUtils.trends.brandGrowthYoY.update(SharedUtils.data.registrationFilteredList),
-                // ChartUtils.trends.domination100.update(SharedUtils.data.registrationFilteredList),
+                ChartUtils.trends.brandGrowthMoM.update(SharedUtils.data.registrationFilteredNoDateList),
+                ChartUtils.trends.brandGrowthYoY.update(SharedUtils.data.registrationFilteredNoDateList),
+                ChartUtils.trends.brandDomination.update(SharedUtils.data.registrationFilteredNoDateList),
+                ChartUtils.trends.brandDominationGrowth.update(SharedUtils.data.registrationFilteredNoDateList),
             ]);
              
              // GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList);

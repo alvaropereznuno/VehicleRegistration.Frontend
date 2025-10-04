@@ -84,10 +84,12 @@ const index = {
     },
     loadRanking: function() {
         ranking.start();
+        index.loadingFilter(true);
 
         requestAnimationFrame(() => {
             requestAnimationFrame(async () => {
                 await ranking.initialize();
+                index.loadingFilter(false);
             });
         });
     },
@@ -108,12 +110,15 @@ const index = {
         }, 0);
     },
     loadTrends: function() {
+        trends.start();
         index.loadingFilter(true);
 
-        setTimeout(() => {
-            trends.initialize();
-            index.loadingFilter(false);
-        }, 0);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(async () => {
+                await trends.initialize();
+                index.loadingFilter(false);
+            });
+        });
     },
     events: {
     },
