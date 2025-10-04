@@ -77,6 +77,14 @@ const index = {
                     this.currentScript = script;
                 }
 
+                gtag('event', 'page_view', {
+                    event_category: 'Tabs',
+                    event_label: 'Selección de pestaña',
+                    page_title: document.title,
+                    page_path: '/' + page,
+                    page_location: window.location.origin + '/' + page
+                });
+
             })
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
@@ -345,6 +353,18 @@ const filters = {
 
             SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);
             
+            gtag('event', 'apply_filters', {
+                event_category: 'Filters',
+                event_label: 'Filtros de Usuario',
+                filter_models: modelIdList.slice(0, 5).map(id => SharedUtils.getModelDescription(id)).join(','),
+                filter_brands: brandIdList.slice(0, 5).map(id => SharedUtils.getBrandDescription2(id)).join(','),
+                filter_motorTypes: motorTypeIdList.slice(0, 5).map(id => SharedUtils.getMotorTypeDescription(id)).join(','),
+                filter_serviceTypes: serviceTypeIdList.slice(0, 5).map(id => SharedUtils.getServiceTypeDescription(id)).join(','),
+                filter_communities: communityIdList.slice(0, 5).map(id => SharedUtils.getCommunityDescription(id)).join(','),
+                filter_provinces: provinceIdList.slice(0, 5).map(id => SharedUtils.getProvinceDescription(id)).join(','),
+                filter_dateperiod: document.getElementById("datePeriods").value
+            });
+
             index.loadingFilter(false);
         }, 0);
     },
