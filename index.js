@@ -30,8 +30,40 @@ const index = {
 
         loadPage('home.html','home.js');
         this.loadingScreen(false);
+        
+        // Detectar URL directa
+        const currentPath = window.location.pathname;
+
+        switch (currentPath) {
+            case '/marcas-y-modelos':
+                this.loadPage('ranking.html', 'ranking.js', currentPath, false);
+                break;
+            case '/metricas-anuales':
+                this.loadPage('annuals.html', 'annuals.js', currentPath, false);
+                break;
+            case '/tipos-de-motor':
+                this.loadPage('propulsion.html', 'propulsion.js', currentPath, false);
+                break;
+            case '/tendencias-del-mercado':
+                this.loadPage('trends.html', 'trends.js', currentPath, false);
+                break;
+            default:
+                this.loadPage('home.html', 'home.js', '/', false);
+                break;
+        }
+
+        // Manejar navegación con el botón “atrás”
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                const { page, jsFile, urlPath } = event.state;
+                this.loadPage(page, jsFile, urlPath, false);
+            } else {
+                this.loadPage('home.html', 'home.js', '/', false);
+            }
+        });
+
     },
-    loadPage: function (page, jsFile = null) {
+    loadPage: function (page, jsFile = null, urlPath = null, addToHistory = true) {
         // Eliminar el contenido HTML actual
         const contentElement = document.getElementById('content');
         contentElement.innerHTML = '';
@@ -43,6 +75,11 @@ const index = {
 
         if (jsFile == "home.js") $("#filters").addClass("d-none");
         else $("#filters").removeClass("d-none");
+
+        // Si se ha indicado una ruta diferente de Home, actualizamos la URL sin recargar
+        if (addToHistory && urlPath) {
+            history.pushState({ page, jsFile, urlPath }, '', urlPath);
+        }
 
         // Cargar la nueva página
         fetch(page)
