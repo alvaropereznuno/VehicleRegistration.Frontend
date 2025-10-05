@@ -7,11 +7,3 @@
     ".json": "text/json"
   }
 }
-
-
-{
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/images/*", "/styles/*", "/scripts/*", "/favicon.ico"]
-  }
-}
