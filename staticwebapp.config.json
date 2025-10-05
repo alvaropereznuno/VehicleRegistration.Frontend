@@ -1,0 +1,17 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/images/*", "/favicon.ico"]
+  },
+  "mimeTypes": {
+    ".json": "text/json"
+  }
+}
+
+
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/styles/*", "/scripts/*", "/favicon.ico"]
+  }
+}

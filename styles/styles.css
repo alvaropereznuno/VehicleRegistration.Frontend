@@ -250,6 +250,11 @@ body {
     --bs-gradient: none;
 }
 
+a.text-decoration-none {
+    text-decoration: none;
+    color: inherit;
+}
+
 .periodFilter {
     text-align: right;
     background-color: transparent;
