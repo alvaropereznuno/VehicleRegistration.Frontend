@@ -26,10 +26,18 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <script src="index.js" type="module" defer></script>
 
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="d4471d89-a741-4be5-8382-995f59418eae" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+    <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+    <script type="text/javascript" charset="UTF-8">
+        document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"es","page_load_consent_levels":["tracking","targeting"],"notice_banner_reject_button_hide":true,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"www.metricars.es"});
+        });
+    </script>
+    <noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed Generator</a></noscript>
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6MM8X6NX7C"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6MM8X6NX7C" type="text/plain" data-cookie-consent="tracking"></script>
+    <script type="text/plain" data-cookie-consent="tracking">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -163,18 +171,18 @@
                 </div>
                 <div class="col-12 col-lg-3 mb-4">
                     <div class="mt-2">
-                        <a href="https://x.com/metricars_es" target="_blank" class="text-decoration-none">
+                        <a id="rrss_x" href="https://x.com/metricars_es" target="_blank" class="text-decoration-none">
                             <img src="images/rrss/rrss_x.svg" alt="X Twitter" width="20"> @metricars_es
                         </a>
                     </div>
                     
                     <div class="mt-2">
-                        <a href="https://bsky.app/profile/metricars.bsky.social" target="_blank" class="text-decoration-none">
+                        <a id="rrss_bluesky" href="https://bsky.app/profile/metricars.bsky.social" target="_blank" class="text-decoration-none">
                             <img src="images/rrss/rrss_bluesky.svg" alt="Bluesky" width="20"> @metricars
                         </a>
                     </div>
                     
-                    <div class="mt-2">
+                    <div id="rrss_email" class="mt-2">
                         <a href="mailto:contacto@metricars.es" class="text-decoration-none">
                             <img src="images/rrss/rrss_email.svg" alt="Email" width="20"> contacto@metricars.es
                         </a>

@@ -1,4 +1,5 @@
 import SharedUtils from './utils/sharedUtils.js';
+import GtagUtils from './utils/gtagUtils.js';
 import DICT from './configurations/dict.js';
 
 $(document).ready(async () => {
@@ -22,6 +23,10 @@ const index = {
         
         const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(4);
         SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, [], [], [], [], []);
+
+        document.getElementById("rrss_x").addEventListener("click", () => GtagUtils.selectedRrss("X Twitter"));
+        document.getElementById("rrss_bluesky").addEventListener("click", () => GtagUtils.selectedRrss("Bluesky"));
+        document.getElementById("rrss_email").addEventListener("click", () => GtagUtils.selectedRrss("Email"));
 
         loadPage('home.html','home.js');
         this.loadingScreen(false);
@@ -56,18 +61,23 @@ const index = {
                     script.src = jsFile;
                     script.onload = () => {
                         if (jsFile == "home.js" && typeof home !== 'undefined' && typeof home.initialize === 'function') {
+                            GtagUtils.selectedTab('Home');
                             home.initialize();
                         }
                         if (jsFile == "ranking.js" && typeof ranking !== 'undefined' && typeof ranking.initialize === 'function') {
+                            GtagUtils.selectedTab('Marcas y Modelos');
                             this.loadRanking();
                         }
                         if (jsFile == "annuals.js" && typeof annuals !== 'undefined' && typeof annuals.initialize === 'function') {
+                            GtagUtils.selectedTab('Métricas anuales');
                             this.loadAnnuals();
                         }
                         if (jsFile == "propulsion.js" && typeof propulsion !== 'undefined' && typeof propulsion.initialize === 'function') {
+                            GtagUtils.selectedTab('Por tipos de motor');
                             this.loadPropulsion();
                         }
                         if (jsFile == "trends.js" && typeof trends !== 'undefined' && typeof trends.initialize === 'function') {
+                            GtagUtils.selectedTab('Tendencias del mercado');
                             this.loadTrends();
                         }
                     };
@@ -76,15 +86,6 @@ const index = {
                     // Guardar referencia al script cargado
                     this.currentScript = script;
                 }
-
-                gtag('event', 'page_view', {
-                    event_category: 'Tabs',
-                    event_label: 'Selección de pestaña',
-                    page_title: document.title,
-                    page_path: '/' + page,
-                    page_location: window.location.origin + '/' + page
-                });
-
             })
             .catch(error => {
                 contentElement.innerHTML = `<p>Error: ${error.message}</p>`;
@@ -351,19 +352,8 @@ const filters = {
             if (provinceIdList.length === 0 && communityIdList.length > 0)
                 provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
 
-            SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);
-            
-            gtag('event', 'apply_filters', {
-                event_category: 'Filters',
-                event_label: 'Filtros de Usuario',
-                filter_models: modelIdList.slice(0, 5).map(id => SharedUtils.getModelDescription(id)).join(','),
-                filter_brands: brandIdList.slice(0, 5).map(id => SharedUtils.getBrandDescription2(id)).join(','),
-                filter_motorTypes: motorTypeIdList.slice(0, 5).map(id => SharedUtils.getMotorTypeDescription(id)).join(','),
-                filter_serviceTypes: serviceTypeIdList.slice(0, 5).map(id => SharedUtils.getServiceTypeDescription(id)).join(','),
-                filter_communities: communityIdList.slice(0, 5).map(id => SharedUtils.getCommunityDescription(id)).join(','),
-                filter_provinces: provinceIdList.slice(0, 5).map(id => SharedUtils.getProvinceDescription(id)).join(','),
-                filter_dateperiod: document.getElementById("datePeriods").value
-            });
+            SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);  
+            GtagUtils.selectedFilter({brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, communityIdList, provinceIdList});
 
             index.loadingFilter(false);
         }, 0);
