@@ -2,6 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- SEO -->
+    <title>Metricars - Datos y análisis de matriculaciones en España</title>
+    <meta name="description" content="Metricars analiza las matriculaciones de vehículos en España con gráficos interactivos basados en datos oficiales de la DGT. Descubre las marcas, modelos y tendencias del mercado.">
+
+    <meta property="og:title" content="Metricars - Análisis de matriculaciones de vehículos en España">
+    <meta property="og:description" content="Descubre las tendencias del mercado automovilístico con gráficos dinámicos y datos oficiales de la DGT. Metricars ofrece análisis por marca, modelo y tipo de motor.">
+    <meta property="og:image" content="https://www.metricars.es/images/preview.png">
+    <meta property="og:url" content="https://www.metricars.es/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Metricars - Análisis de matriculaciones de vehículos en España">
+    <meta name="twitter:description" content="Gráficos interactivos y datos oficiales de la DGT sobre matriculaciones de coches en España.">
+    <meta name="twitter:image" content="https://www.metricars.es/images/preview.png">
+    <!-- FIN SEO -->
+
+
     <link rel="icon" type="image/png" href="/images/favicon.svg">
 
     <!-- Styles -->
@@ -26,10 +43,18 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <script src="index.js" type="module" defer></script>
 
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="d4471d89-a741-4be5-8382-995f59418eae" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+    <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+    <script type="text/javascript" charset="UTF-8">
+        document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"es","page_load_consent_levels":["tracking","targeting"],"notice_banner_reject_button_hide":true,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"www.metricars.es"});
+        });
+    </script>
+    <noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed Generator</a></noscript>
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6MM8X6NX7C"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6MM8X6NX7C" type="text/plain" data-cookie-consent="tracking"></script>
+    <script type="text/plain" data-cookie-consent="tracking">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -41,8 +66,8 @@
     <header>
         <nav class="navbar navbar-expand-md headerSection">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" onclick="loadPage('home.html','home.js');">
-                    <img src="images/logo_light.svg" alt="Logo Metricars" width="80">
+                <a class="navbar-brand" href="/" onclick="loadPage('home.html','home.js','/', true); return false;">
+                    <img src="images/logo_light.svg" alt="Logo Metricars, Home" width="80">
                     Metricars
                 </a>
 
@@ -56,16 +81,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadPage('ranking.html','ranking.js')">Marcas y modelos</a>
+                            <a class="nav-link" href="/marcas-y-modelos" onclick="loadPage('ranking.html','ranking.js','/marcas-y-modelos'); return false;">Marcas y modelos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadPage('annuals.html', 'annuals.js')">Métricas anuales</a>
+                            <a class="nav-link" href="/metricas-anuales" onclick="loadPage('annuals.html','annuals.js','/metricas-anuales'); return false;">Métricas anuales</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadPage('propulsion.html','propulsion.js')">Por tipos de motor</a>
+                            <a class="nav-link" href="/tipos-de-motor" onclick="loadPage('propulsion.html','propulsion.js','/tipos-de-motor'); return false;">Por tipos de motor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadPage('trends.html','trends.js')">Tendencias del mercado</a>
+                            <a class="nav-link" href="/tendencias-del-mercado" onclick="loadPage('trends.html','trends.js','/tendencias-del-mercado'); return false;">Tendencias del mercado</a>
                         </li>
                     </ul>
                 </div>
@@ -139,8 +164,50 @@
         <p>Bienvenido a la página principal. Haz clic en los botones de navegación para ver más contenido.</p>
     </div>
 
-    <div id="footer" class="text-center p-3">
-        <span>© 2025 Metricars - Datos obtenidos de la DGT</span>
+    <div id="footer" >
+        <div class="text-center p-3">
+            <span>© 2025 Metricars - Datos obtenidos de la DGT</span>
+        </div>
+
+        <div class="container">
+            <div class="row mt-2">
+                <div class="col-12 col-lg-9">
+                    <div class="mt-2">
+                        <span>
+                            Datos de matriculaciones recogidos de fuentes públicas 
+                            (<a href="https://www.dgt.es/menusecundario/dgt-en-cifras/" target="_blank"  class="text-decoration-none">DGT</a>) 
+                            y tratados para recoger la información de la forma más clara posible.
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <span class="mt-2">
+                            Si encuentras algún dato incorrecto, información poco clara, o tienes sugerencias para mejorar Metricars, 
+                            puedes colaborar enviando tu feedback a través de las redes sociales o por email. ¡Tu ayuda es bienvenida!
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 mb-4">
+                    <div class="mt-2">
+                        <a id="rrss_x" href="https://x.com/metricars_es" target="_blank" class="text-decoration-none">
+                            <img src="images/rrss/rrss_x.svg" alt="X Twitter" width="20"> @metricars_es
+                        </a>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <a id="rrss_bluesky" href="https://bsky.app/profile/metricars.bsky.social" target="_blank" class="text-decoration-none">
+                            <img src="images/rrss/rrss_bluesky.svg" alt="Bluesky" width="20"> @metricars
+                        </a>
+                    </div>
+                    
+                    <div id="rrss_email" class="mt-2">
+                        <a href="mailto:contacto@metricars.es" class="text-decoration-none">
+                            <img src="images/rrss/rrss_email.svg" alt="Email" width="20"> contacto@metricars.es
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
     <div id=loading class="loading">

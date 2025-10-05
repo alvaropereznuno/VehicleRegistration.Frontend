@@ -1,0 +1,14 @@
+# robots.txt para metricars
+
+User-agent: *
+# Bloquear rutas técnicas o sin valor SEO
+Disallow: /api/
+Disallow: /data/
+Disallow: /scripts/
+Disallow: /css/
+Disallow: /js/
+Disallow: /admin/
+Allow: /
+
+# Indicar la ubicación del mapa del sitio
+Sitemap: https://www.metricars.es/sitemap.xml
