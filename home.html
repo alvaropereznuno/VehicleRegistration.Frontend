@@ -19,35 +19,36 @@
 </head>
 <body>
     <div>
-        <h5 class="text-center mt-2">El pulso del mercado de vehículos en España, al instante</h5>
-        <h6 class="text-center">Explora los datos de matriculaciones en España con gráficos dinámicos e interactivos</h6>
-        
         <div class="row mt-2">
-            <div class="col-12 col-lg-6 text-center">
+            <div class="col-12 text-center">
                 <div class="tarjet">
-                    <p class="mt-2"><strong>Ranking:</strong> Consulta las marcas y modelos más vendidos, de forma visual.</p>
-                    <div class="chart-container-medium">
-                        <canvas id="rankingChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6 text-center">
-                <div class="tarjet">
-                    <p class="mt-2"><strong>Anuales:</strong> Observa la evolución de matriculaciones a lo largo de los años.</p>
-                    <div class="chart-container-medium">
-                        <canvas id="annualsChart"></canvas>
+                    <h6>¿Qué marcas compiten por el liderazgo este año?</h6>
+                    <span>Un vistazo rápido a cómo crece cada marca en el competitivo mercado de los automóviles</span>
+                    <div class="grid">
+                        <div id="leadershipRanking"></div>
                     </div>
                 </div>
             </div>
 
             <div class="col-12 col-lg-6 text-center">
                 <div class="tarjet">
-                    <p class="mt-2"><strong>Tipos de motor:</strong> Visualiza cómo se distribuyen las matriculaciones por motor.</p>
-                    <div class="chart-container-medium">
-                        <canvas id="propulsionChart"></canvas>
+                    <h6>¿Quién gana o pierde en cuota de mercado?</h6>
+                    <span>Compara la cuota de mercado que cada marca ha ido ganando o perdiendo</span>
+                    <div class="grid">
+                        <div id="winnersAndLoosers"></div>
                     </div>
                 </div>
             </div>
+
+            <!--<div class="col-12 col-lg-6 text-center">
+                <div class="tarjet">
+                    <h6>¿Cómo se reparten los tipos de motor?</h6>
+                    <span>Estado actual de las diferentes opciones de motorización en el mercado</span>
+                    <div class="chart-container-large">
+                        <canvas id="propulsionChart"></canvas>
+                    </div>
+                </div>
+            </div>-->
             
         </div>
     </div>

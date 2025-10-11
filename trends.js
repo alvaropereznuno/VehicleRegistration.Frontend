@@ -18,8 +18,8 @@ const trends = {
         await Promise.all([
             trends.customPresentation(),
 
-            ChartUtils.trends.brandGrowthMoM.create(SharedUtils.data.registrationFilteredNoDateList, $('#brandGrowthMoM')),
-            ChartUtils.trends.brandGrowthYoY.create(SharedUtils.data.registrationFilteredNoDateList, $('#brandGrowthYoY')),
+            ChartUtils.trends.brandGrowthMoM.create(SharedUtils.data.registrationFilteredSimpleList, $('#brandGrowthMoM')),
+            ChartUtils.trends.brandGrowthYoY.create(SharedUtils.data.registrationFilteredSimpleList, $('#brandGrowthYoY')),
             ChartUtils.trends.brandDomination.create(SharedUtils.data.registrationFilteredList, $('#brandDomination')),
             ChartUtils.trends.brandDominationGrowth.create(SharedUtils.data.registrationFilteredList, $('#brandDominationGrowth')),
         ]);
@@ -40,10 +40,10 @@ const trends = {
             await Promise.all([
                 trends.customPresentation(),
 
-                ChartUtils.trends.brandGrowthMoM.update(SharedUtils.data.registrationFilteredNoDateList),
-                ChartUtils.trends.brandGrowthYoY.update(SharedUtils.data.registrationFilteredNoDateList),
-                ChartUtils.trends.brandDomination.update(SharedUtils.data.registrationFilteredNoDateList),
-                ChartUtils.trends.brandDominationGrowth.update(SharedUtils.data.registrationFilteredNoDateList),
+                ChartUtils.trends.brandGrowthMoM.update(SharedUtils.data.registrationFilteredSimpleList),
+                ChartUtils.trends.brandGrowthYoY.update(SharedUtils.data.registrationFilteredSimpleList),
+                ChartUtils.trends.brandDomination.update(SharedUtils.data.registrationFilteredSimpleList),
+                ChartUtils.trends.brandDominationGrowth.update(SharedUtils.data.registrationFilteredSimpleList),
             ]);
              
              // GridUtils.ranking.topResults.update(SharedUtils.data.registrationFilteredList);
