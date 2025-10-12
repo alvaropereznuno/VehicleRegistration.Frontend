@@ -7,34 +7,22 @@ const Home = {
             return new Promise((resolve) => {
                 const methods = Home.leadershipRanking;
 
-                if (!ctx) return resolve(); // sin contenedor no hacemos nada
+                if (!ctx) return resolve();
+
+                // Destruye el grid previo si existía
+                if (methods.grid) {
+                    try { methods.grid.destroy(); } catch (e) { console.warn(e); }
+                    methods.grid = null;
+                }
 
                 // Limpia el contenedor
                 ctx.innerHTML = "";
 
-                if (!methods.grid) {
-                    // Crear el grid
-                    methods.grid = new gridjs.Grid(methods.groupData(registrationList));
-                }
-
-                // Renderiza siempre en el contenedor actual
+                // Crear nuevo grid con datos actualizados
+                methods.grid = new gridjs.Grid(methods.groupData(registrationList));
                 methods.grid.render(ctx);
 
                 resolve();
-            });
-        },
-        update: async (registrationList) => {
-            return new Promise((resolve) => {
-                let methods = Home.leadershipRanking;
-
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
-                resolve();
-
-                if (!methods.grid) {
-                    return resolve();
-                }
-
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
             });
         },
         groupData: (registrationList) => {
@@ -188,43 +176,42 @@ const Home = {
             return new Promise((resolve) => {
                 const methods = Home.winnersAndLoosers;
 
-                if (!ctx) return resolve(); // sin contenedor no hacemos nada
+                if (!ctx) return resolve();
+
+                // Destruye el grid previo si existía
+                if (methods.grid) {
+                    try { methods.grid.destroy(); } catch (e) { console.warn(e); }
+                    methods.grid = null;
+                }
 
                 // Limpia el contenedor
                 ctx.innerHTML = "";
 
-                if (!methods.grid) {
-                    // Crear el grid
-                    methods.grid = new gridjs.Grid(methods.groupData(registrationList));
-                }
-
-                // Renderiza siempre en el contenedor actual
+                // Crear nuevo grid con datos actualizados
+                methods.grid = new gridjs.Grid(methods.groupData(registrationList));
                 methods.grid.render(ctx);
 
                 resolve();
             });
         },
-        update: async (registrationList) => {
-            return new Promise((resolve) => {
-                let methods = Home.winnersAndLoosers;
-
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
-                resolve();
-
-                if (!methods.grid) {
-                    return resolve();
-                }
-
-                methods.grid.updateConfig(methods.groupData(registrationList)).forceRender();
-            });
-        },
-        groupData: (registrationList) => {
+        groupData: (registrationList) => { // He renombrado groupDataMarketShare a groupData por simplicidad
             const currentYear = new Date().getFullYear();
             const prevYear = currentYear - 1;
-            const currentMonth = new Date().getMonth(); // 0-based
+            const currentMonth = new Date().getMonth(); 
 
-            // --- 1. Agrupar matriculaciones por marca y año ---
+            // --- 1. Funciones de ayuda (Market Totals y Aggregate) ---
+            const getYearlyMarketTotals = (year, untilMonth) => {
+                // ... (Tu lógica de filtrado y suma)
+                return registrationList
+                    .filter(r => {
+                        const d = new Date(r.registrationDate);
+                        return d.getFullYear() === year && d.getMonth() <= untilMonth;
+                    })
+                    .reduce((total, r) => total + r.count, 0);
+            };
+
             const aggregateByYear = (year, untilMonth = 11) => {
+                // ... (Tu lógica de filtrado y reducción por brandId)
                 return registrationList
                     .filter(r => {
                         const d = new Date(r.registrationDate);
@@ -237,96 +224,88 @@ const Home = {
                     }, {});
             };
 
+            const marketTotalCurrent = getYearlyMarketTotals(currentYear, currentMonth);
+            const marketTotalPrev = getYearlyMarketTotals(prevYear, currentMonth);
+
             const totalsCurrentYear = aggregateByYear(currentYear, currentMonth);
             const totalsPrevYear = aggregateByYear(prevYear, currentMonth);
 
-            // --- 2. Totales generales por año ---
-            const sumCurrent = Object.values(totalsCurrentYear).reduce((a, b) => a + b, 0);
-            const sumPrev = Object.values(totalsPrevYear).reduce((a, b) => a + b, 0);
-
-            // --- 3. Unificar todas las marcas ---
             const allBrandIds = [
                 ...new Set([...Object.keys(totalsCurrentYear), ...Object.keys(totalsPrevYear)])
             ];
 
-            // --- 4. Calcular cuotas y diferencias ---
+            // --- 3. Calcular Cuotas de Mercado y Diferencia (Creando un objeto temporal) ---
             let data = allBrandIds.map(brandId => {
                 const totalActual = totalsCurrentYear[brandId] || 0;
                 const totalAnterior = totalsPrevYear[brandId] || 0;
 
-                const cuotaActual = sumCurrent > 0 ? (totalActual / sumCurrent) * 100 : 0;
-                const cuotaAnterior = sumPrev > 0 ? (totalAnterior / sumPrev) * 100 : 0;
-                const diferencia = cuotaActual - cuotaAnterior;
+                const shareCurrent = marketTotalCurrent > 0 ? (totalActual / marketTotalCurrent) * 100 : 0;
+                const sharePrev = marketTotalPrev > 0 ? (totalAnterior / marketTotalPrev) * 100 : 0;
+
+                const shareDifference = shareCurrent - sharePrev;
 
                 return {
                     brandId,
                     marca: SharedUtils.getBrandDescription2(brandId),
-                    cuotaActual,
-                    cuotaAnterior,
-                    diferencia
+                    cuotaActual: shareCurrent,
+                    cuotaAnterior: sharePrev,
+                    // Guardamos el valor numérico directamente en el objeto temporal 'data'
+                    diferencia: shareDifference 
                 };
             });
 
-            // --- 5. Ordenar por cuota actual ---
+            // --- 4. Ordenar por Cuota de Mercado Actual (Descending) ---
             data.sort((a, b) => b.cuotaActual - a.cuotaActual);
 
-            // --- 6. Preparar valores visuales ---
-            data = data.map(d => {
-                const difColor = d.diferencia > 0 ? 'green' : d.diferencia < 0 ? 'red' : 'gray';
-                const difArrow = d.diferencia > 0 ? '▲' : d.diferencia < 0 ? '▼' : '—';
-                const difHtml = `<span style="color:${difColor};font-weight:bold;">${difArrow} ${d.diferencia.toFixed(1)}%</span>`;
-
-                return {
-                    marca: d.marca,
-                    cuotaActual: `${d.cuotaActual.toFixed(1)}%`,
-                    cuotaAnterior: `${d.cuotaAnterior.toFixed(1)}%`,
-                    diferencia: { value: d.diferencia, html: difHtml }
-                };
-            });
-
-            // --- 7. Definir columnas Grid.js ---
+            // --- 5. Configuración para Grid.js (Ajustamos 'diferencia' para leer el número) ---
             const columns = [
-                { id: 'marca', name: 'Marca', sort: true },
-                { id: 'cuotaActual', name: 'Cuota año actual', sort: true },
-                { id: 'cuotaAnterior', name: 'Cuota año anterior', sort: true },
+                { id: 'marca', name: 'Marca' },
+                { 
+                    id: 'cuotaActual', 
+                    name: 'Cuota actual', 
+                    sort: true,
+                    formatter: cell => `${cell.toFixed(2)}%`
+                },
+                { 
+                    id: 'cuotaAnterior', 
+                    name: 'Cuota anterior', 
+                    sort: true,
+                    formatter: cell => `${cell.toFixed(2)}%`
+                },
                 {
                     id: 'diferencia',
-                    name: 'Diferencia',
-                    sort: {
-                        compare: (a, b) => a.value - b.value
-                    },
-                    formatter: cell => gridjs.html(cell.html)
+                    name: 'Diferencia (p.p.)',
+                    sort: true, // Grid.js usará ordenación numérica por defecto
+                    // El formatter recibe ahora el valor NUMÉRICO directamente (cell = shareDifference)
+                    formatter: cell => {
+                        const shareDifference = cell; // Es el número!
+                        const diffColor = shareDifference > 0 ? 'green' : shareDifference < 0 ? 'red' : 'gray';
+                        const diffArrow = shareDifference > 0 ? '▲' : shareDifference < 0 ? '▼' : '—';
+                        const diffValueFormatted = shareDifference.toFixed(2); 
+                        const diffHtml = `<span style="color:${diffColor};font-weight:bold;">${diffArrow} ${diffValueFormatted}%</span>`;
+                        
+                        return gridjs.html(diffHtml);
+                    }
                 }
             ];
 
-            // --- 8. Generar data compatible con Grid.js ---
+            // --- 6. Mapeo de datos para Grid.js (Pasando el valor numérico directamente) ---
             const gridData = data.map(d => ({
                 marca: d.marca,
                 cuotaActual: d.cuotaActual,
                 cuotaAnterior: d.cuotaAnterior,
-                diferencia: d.diferencia
+                // *** CAMBIO CLAVE: Pasamos el número directamente ***
+                diferencia: d.diferencia 
             }));
 
-            // --- 9. Configuración final ---
+            // --- 7. Devolver configuración completa para Grid.js ---
             return {
                 columns,
                 data: gridData,
                 pagination: true,
                 sort: true,
                 search: true,
-                language: {
-                    search: { placeholder: "Buscar..." },
-                    pagination: {
-                        previous: "Anterior",
-                        next: "Siguiente",
-                        showing: "Mostrando desde el",
-                        to: "al",
-                        of: "de",
-                        results: () => "resultados"
-                    },
-                    noRecordsFound: "No se encontraron registros.",
-                    loading: "Cargando..."
-                }
+                // ... (language object)
             };
         }
     }

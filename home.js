@@ -9,9 +9,12 @@ const home = {
         await GridUtils.home.winnersAndLoosers.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('winnersAndLoosers'));
 
         window.addEventListener("globalDataUpdated", async () => {
-            // await ChartUtils.home.propulsion.update(SharedUtils.data.registrationFilteredSimpleList);
-            await GridUtils.home.leadershipRanking.update(SharedUtils.data.registrationFilteredSimpleList);
-            await GridUtils.home.winnersAndLoosers.update(SharedUtils.data.registrationFilteredSimpleList);
+            clearTimeout(window._gridUpdateTimeout);
+            
+            window._gridUpdateTimeout = setTimeout(async () => {
+                await GridUtils.home.leadershipRanking.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('leadershipRanking'));
+                await GridUtils.home.winnersAndLoosers.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('winnersAndLoosers'));
+            }, 150);
         });
     }
 }
