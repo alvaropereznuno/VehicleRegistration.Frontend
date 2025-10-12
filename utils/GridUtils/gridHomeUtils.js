@@ -116,8 +116,8 @@ const Home = {
             // --- 7. Configuración para Grid.js ---
             const columns = [
                 { id: 'marca', name: 'Marca' },
-                { id: 'totalActual', name: 'Año actual', sort: true },
-                { id: 'totalAnterior', name: 'Año anterior', sort: true },
+                { id: 'totalActual', name: 'Matriculaciones ' + currentYear, sort: true },
+                { id: 'totalAnterior', name: 'Matriculaciones ' + prevYear, sort: true },
                 {
                     id: 'crecimiento',
                     name: 'Crecimiento',
@@ -169,7 +169,6 @@ const Home = {
             };
         }
     },
-
     winnersAndLoosers: {
         grid: null,
         create: async (registrationList, ctx) => {
@@ -194,7 +193,7 @@ const Home = {
                 resolve();
             });
         },
-        groupData: (registrationList) => { // He renombrado groupDataMarketShare a groupData por simplicidad
+        groupData: (registrationList) => {
             const currentYear = new Date().getFullYear();
             const prevYear = currentYear - 1;
             const currentMonth = new Date().getMonth(); 
@@ -262,19 +261,19 @@ const Home = {
                 { id: 'marca', name: 'Marca' },
                 { 
                     id: 'cuotaActual', 
-                    name: 'Cuota actual', 
+                    name: 'Cuota ' + currentYear, 
                     sort: true,
                     formatter: cell => `${cell.toFixed(2)}%`
                 },
                 { 
                     id: 'cuotaAnterior', 
-                    name: 'Cuota anterior', 
+                    name: 'Cuota ' + prevYear, 
                     sort: true,
                     formatter: cell => `${cell.toFixed(2)}%`
                 },
                 {
                     id: 'diferencia',
-                    name: 'Diferencia (p.p.)',
+                    name: 'Diferencia',
                     sort: true, // Grid.js usará ordenación numérica por defecto
                     // El formatter recibe ahora el valor NUMÉRICO directamente (cell = shareDifference)
                     formatter: cell => {
@@ -305,7 +304,192 @@ const Home = {
                 pagination: true,
                 sort: true,
                 search: true,
-                // ... (language object)
+                language: {
+                    search: { placeholder: "Buscar..." },
+                    pagination: {
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        showing: "Mostrando desde el",
+                        to: "al",
+                        of: "de",
+                        results: () => "resultados"
+                    },
+                    noRecordsFound: "No se encontraron registros.",
+                    loading: "Cargando..."
+                }
+            };
+        }
+    },
+    newPromises: {
+        grid: null,
+        create: async (registrationList, ctx) => {
+            return new Promise((resolve) => {
+                const methods = Home.newPromises;
+
+                if (!ctx) return resolve();
+
+                // Destruye el grid previo si existía
+                if (methods.grid) {
+                    try { methods.grid.destroy(); } catch (e) { console.warn(e); }
+                    methods.grid = null;
+                }
+
+                // Limpia el contenedor
+                ctx.innerHTML = "";
+
+                // Crear nuevo grid con datos actualizados
+                methods.grid = new gridjs.Grid(methods.groupData(registrationList));
+                methods.grid.render(ctx);
+
+                resolve();
+            });
+        },
+        groupData: (registrationList) => {
+            const currentYear = new Date().getFullYear();
+            const prevYear = currentYear - 1;
+            const currentMonth = new Date().getMonth(); 
+            
+            // --- Criterios de filtro (Flexibilizados ligeramente para evitar problemas de float) ---
+            // Criterio de 'Irrupción' (menos del 0.1% a más del 1.0%)
+            const MIN_PREV_SHARE_THRESHOLD = 0.1;
+            const MIN_CURRENT_SHARE_THRESHOLD = 1.0;
+            // Criterio de 'Crecimiento Explosivo' (1.0 punto porcentual de ganancia)
+            const MIN_SHARE_GAIN_THRESHOLD = 1.0; 
+
+            // --- 1. Funciones de ayuda y cálculos de agregación ---
+            const getYearlyMarketTotals = (year, untilMonth) => {
+                return registrationList
+                    .filter(r => {
+                        const d = new Date(r.registrationDate);
+                        // Filtra por año y mes (YTD)
+                        return d.getFullYear() === year && d.getMonth() <= untilMonth;
+                    })
+                    .reduce((total, r) => total + r.count, 0);
+            };
+
+            const aggregateByYear = (year, untilMonth = 11) => {
+                return registrationList
+                    .filter(r => {
+                        const d = new Date(r.registrationDate);
+                        // Filtra por año y mes (YTD)
+                        return d.getFullYear() === year && d.getMonth() <= untilMonth;
+                    })
+                    .reduce((acc, r) => {
+                        const brandId = r.brandId;
+                        acc[brandId] = (acc[brandId] || 0) + r.count;
+                        return acc;
+                    }, {});
+            };
+
+            const marketTotalCurrent = getYearlyMarketTotals(currentYear, currentMonth);
+            const marketTotalPrev = getYearlyMarketTotals(prevYear, currentMonth);
+            const totalsCurrentYear = aggregateByYear(currentYear, currentMonth);
+            const totalsPrevYear = aggregateByYear(prevYear, currentMonth);
+
+            // --- Recogida de TODAS las Brand IDs (Recuperado) ---
+            const allBrandIds = [
+                ...new Set([...Object.keys(totalsCurrentYear), ...Object.keys(totalsPrevYear)])
+            ];
+
+            // --- 2. Calcular Cuotas de Mercado y Aplicar Filtro ---
+            let data = allBrandIds.map(brandId => {
+                const totalActual = totalsCurrentYear[brandId] || 0;
+                const totalAnterior = totalsPrevYear[brandId] || 0;
+                
+                // Cálculo de cuotas (porcentaje)
+                const shareCurrent = marketTotalCurrent > 0 ? (totalActual / marketTotalCurrent) * 100 : 0;
+                const sharePrev = marketTotalPrev > 0 ? (totalAnterior / marketTotalPrev) * 100 : 0;
+                
+                // Diferencia de cuota (puntos porcentuales)
+                const shareDifference = shareCurrent - sharePrev; 
+
+                // --- Crecimiento cuota visual ---
+                const diffColor = shareDifference > 0 ? 'green' : shareDifference < 0 ? 'red' : 'gray';
+                const diffArrow = shareDifference > 0 ? '▲' : shareDifference < 0 ? '▼' : '—';
+                const diffValueFormatted = shareDifference.toFixed(2); 
+                const diffHtml = `<span style="color:${diffColor};font-weight:bold;">${diffArrow} ${diffValueFormatted}%</span>`;
+
+                return {
+                    brandId,
+                    marca: SharedUtils.getBrandDescription2(brandId),
+                    matriculaciones: totalActual,
+                    cuotaActual: shareCurrent,
+                    crecimientoCuota: shareDifference,
+                    crecimientoCuotaHtml: diffHtml,
+                    cuotaAnterior: sharePrev, 
+                };
+            }).filter(d => {
+                // Criterio 1: Irrupción de mercado
+                const isNewMarketEntry = (d.cuotaAnterior < MIN_PREV_SHARE_THRESHOLD && d.cuotaActual >= MIN_CURRENT_SHARE_THRESHOLD);
+                
+                // Criterio 2: Crecimiento explosivo (ganancia >= 1.0 p.p.)
+                const hasExplosiveGrowth = (d.crecimientoCuota >= MIN_SHARE_GAIN_THRESHOLD);
+                
+                // Retornar solo si cumple AL MENOS UN criterio
+                return isNewMarketEntry || hasExplosiveGrowth;
+            });
+
+            // --- 3. Manejo de resultados y ordenación inicial ---
+            // Si no hay resultados, devolvemos una configuración vacía y un mensaje de advertencia
+            if (data.length === 0) {
+                console.warn("groupDataEmergingBrands: No se encontraron marcas emergentes con los criterios de filtro.");
+                return { columns: [], data: [], pagination: true, sort: true, search: true, language: { /* ... */ } };
+            }
+            
+            // Ordenar por defecto por 'Crecimiento cuota' (descendente)
+            data.sort((a, b) => b.crecimientoCuota - a.crecimientoCuota);
+
+            // --- 4. Definición de Columnas para Grid.js ---
+            const columns = [
+                { id: 'marca', name: 'Marca' },                   // Índice 0
+                { id: 'matriculaciones', name: 'Matriculaciones ' + currentYear, sort: true }, // Índice 1
+                { id: 'cuotaActual', name: 'Cuota ' + currentYear, sort: true, formatter: cell => `${cell.toFixed(2)}%` }, // Índice 2
+                {
+                    id: 'crecimientoCuota',
+                    name: 'Crecimiento cuota',
+                    sort: true, 
+                    formatter: (cell, row) => {
+                        // *** ACCESO POR ÍNDICE CORREGIDO Y SEGURO (Índice 4) ***
+                        // row.cells es un array que contiene la data en el orden de 'columns'
+                        const htmlData = row.cells[4] ? row.cells[4].data : null; 
+                        
+                        // Retorna el HTML si existe, o el valor formateado si falla
+                        return htmlData ? gridjs.html(htmlData) : cell.toFixed(2) + '%'; 
+                    }
+                },
+                // Columna auxiliar OCULTA (Índice 4) para el HTML de las flechas.
+                { id: 'crecimientoCuotaHtml', name: '', hidden: true } 
+            ];
+
+            // --- 5. Mapeo de datos para Grid.js (Incluye ambos campos para el sorting y el formatter) ---
+            const gridData = data.map(d => ({
+                marca: d.marca,
+                matriculaciones: d.matriculaciones,
+                cuotaActual: d.cuotaActual,
+                crecimientoCuota: d.crecimientoCuota,
+                crecimientoCuotaHtml: d.crecimientoCuotaHtml 
+            }));
+
+            // --- 6. Devolver configuración completa para Grid.js ---
+            return {
+                columns,
+                data: gridData,
+                pagination: true,
+                sort: true,
+                search: true,
+                language: {
+                    search: { placeholder: "Buscar..." },
+                    pagination: {
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        showing: "Mostrando desde el",
+                        to: "al",
+                        of: "de",
+                        results: () => "resultados"
+                    },
+                    noRecordsFound: "No se encontraron registros.",
+                    loading: "Cargando..."
+                }
             };
         }
     }
