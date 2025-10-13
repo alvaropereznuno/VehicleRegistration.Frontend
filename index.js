@@ -73,8 +73,8 @@ const index = {
             this.currentScript.remove();
         }
 
-        if (jsFile == "home.js") $("#filters").addClass("d-none");
-        else $("#filters").removeClass("d-none");
+        // if (jsFile == "home.js") $("#filters").addClass("d-none");
+        // else $("#filters").removeClass("d-none");
 
         // Si se ha indicado una ruta diferente de Home, actualizamos la URL sin recargar
         if (addToHistory && urlPath) {

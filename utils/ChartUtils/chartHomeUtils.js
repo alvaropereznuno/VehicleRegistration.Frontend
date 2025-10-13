@@ -45,6 +45,20 @@ const Home = {
                 resolve();
             });
         },
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Home.ranking;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+            
+        },
         groupData: (registrationList, tops = 5) => {
             // 1. Agrupar RegistrationList por Modelo y obtener sumatorios y se ordenan de mayor a menor cantidad.
             const groupedData = Object.entries(
@@ -119,6 +133,20 @@ const Home = {
                 resolve();
             });
         },
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Home.annuals;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+            
+        },
         groupData: (registrationList, tops = 5) => {
             // 1. Agrupar RegistrationList por año y sumar matriculaciones
             const groupedData = registrationList.reduce((acc, curr) => {
@@ -190,6 +218,20 @@ const Home = {
                 methods.chart = new Chart(ctx, config);
                 resolve();
             });
+        },
+        update: async (registrationList) => {
+            return new Promise((resolve) => {
+                let methods = Home.propulsion;
+                if (methods.chart) {
+                    // Actualiza la data del Chart usando el método update
+                    methods.chart.data = methods.groupData(registrationList);
+                    methods.chart.update();
+                } else {
+                    console.error('El gráfico no ha sido creado aún. Llame primero a create().');
+                }
+                resolve();
+            });
+            
         },
         groupData: (registrationList) => {
             // 1. Agrupa los registros por tipo de motor y suma las matriculaciones
