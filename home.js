@@ -1,13 +1,21 @@
-import ChartUtils from './utils/chartUtils.js';
+import GridUtils from './utils/gridUtils.js';
 import SharedUtils from './utils/sharedUtils.js';
 
 const home = {
     initialize: async function (){
-        await Promise.all([
-            ChartUtils.home.ranking.create(SharedUtils.data.registrationList, $('#rankingChart')),
-            ChartUtils.home.annuals.create(SharedUtils.data.registrationList, $('#annualsChart')),
-            ChartUtils.home.propulsion.create(SharedUtils.data.registrationList, $('#propulsionChart'))
-        ]);
+        await GridUtils.home.leadershipRanking.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('leadershipRanking'));
+        await GridUtils.home.winnersAndLoosers.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('winnersAndLoosers'));
+        await GridUtils.home.newPromises.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('newPromises'));
+
+        window.addEventListener("globalDataUpdated", async () => {
+            clearTimeout(window._gridUpdateTimeout);
+
+            window._gridUpdateTimeout = setTimeout(async () => {
+                await GridUtils.home.leadershipRanking.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('leadershipRanking'));
+                await GridUtils.home.winnersAndLoosers.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('winnersAndLoosers'));
+                await GridUtils.home.newPromises.create(SharedUtils.data.registrationFilteredSimpleList, document.getElementById('newPromises'));
+            }, 200);
+        });
     }
 }
 
