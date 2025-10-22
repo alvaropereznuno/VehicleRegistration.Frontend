@@ -17,7 +17,8 @@ const index = {
         await Promise.all([
             SharedUtils.loadModels(!isLastVersion),
             SharedUtils.loadBrands(!isLastVersion),
-            SharedUtils.loadRegistrations('2020-01-01', null, !isLastVersion)
+            SharedUtils.loadRegistrations('2020-01-01', null, !isLastVersion),
+            SharedUtils.loadRegistrationsList('2020-01-01', null, !isLastVersion)
         ]);
         filters.initializeFilters();
         

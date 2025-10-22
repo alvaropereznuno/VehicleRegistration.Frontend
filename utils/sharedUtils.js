@@ -7,6 +7,7 @@ const SharedUtils = {
     data: {
         brandList: [],
         modelList: [],
+        registrationListC: null,
         registrationList: [],
         registrationFilteredList: [],
         registrationFilteredSimpleList: []
@@ -63,6 +64,21 @@ const SharedUtils = {
             this.data.registrationFilteredSimpleList = data;
         } catch (error) {
             console.error("Error fetching registrations:", error);
+            return [];
+        }
+    },
+    loadRegistrationsList: async function (registrationDateFrom, registrationDateTo = null, force = false) {
+        try {
+            let data = await getIndexedData('registrationListC');
+
+            if (force || data == null) {
+                data = await VehiclesService.getRegistrationsList(registrationDateFrom);
+                setIndexedData('registrationListC', data);
+            }
+            
+            this.data.registrationListC = data;
+        } catch (error) {
+            console.error("Error fetching registrationsList:", error);
             return [];
         }
     },
