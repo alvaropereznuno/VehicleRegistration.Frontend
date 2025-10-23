@@ -2,6 +2,8 @@ import DICT from '../configurations/dict.js';
 import VehiclesService from '../services/vehiclesService.js';
 import UsersService from '../services/usersService.js';
 import { getIndexedData, setIndexedData } from '../utils/indexedUtils.js';
+import DataUtils from './dataUtils.js';
+import RegistrationFilter from '../models/registrationFilter.js'
 
 const SharedUtils = {
     data: {
@@ -77,6 +79,17 @@ const SharedUtils = {
             }
             
             this.data.registrationListC = data;
+
+            // PRUEBAS DATA-FRAME
+            DataUtils.createDataFrame(data);
+
+            let dataFilter = new RegistrationFilter();
+            dataFilter.brandIdList = [176];
+            let filter = DataUtils.filterData(dataFilter);
+            const groupedDf = DataUtils.groupData(['B', 'M']);
+            const cosa = groupedDf.toArray();
+            // FIN DATA-FRAME
+
         } catch (error) {
             console.error("Error fetching registrationsList:", error);
             return [];
