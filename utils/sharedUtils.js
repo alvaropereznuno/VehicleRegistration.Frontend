@@ -86,7 +86,7 @@ const SharedUtils = {
             let dataFilter = new RegistrationFilter();
             dataFilter.brandIdList = [176];
             let filter = DataUtils.filterData(dataFilter);
-            const groupedDf = DataUtils.groupData(['B', 'M']);
+            const groupedDf = DataUtils.groupData(['DT', 'B', 'M'], true);
             const cosa = groupedDf.toArray();
             // FIN DATA-FRAME
 

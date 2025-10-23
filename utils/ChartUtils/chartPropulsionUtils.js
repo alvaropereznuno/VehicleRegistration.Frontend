@@ -1,5 +1,6 @@
 import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
+import Commons from './chartCommonsUtils.js';
 
 const Propulsion = {
     watermark: function(maxWidth, marginRight, marginTop){
@@ -39,30 +40,7 @@ const Propulsion = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                stacked: true,
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: false
-                            },
-                            tooltip: {
-                                mode: 'index'
-                            }
-                        },
-                        interaction: {
-                            mode: 'nearest',
-                            axis: 'x',
-                            intersect: false
-                        }
-                    },
+                    options: Commons.line.options(true),
                     plugins: [Propulsion.watermark(80, 100, 120)]
                 };
 
@@ -156,38 +134,17 @@ const Propulsion = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                stacked: true,
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: false
-                            },
-                            tooltip: {
-                                mode: 'index',
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.dataset.label || '';
-                                        const value = context.raw !== undefined ? context.raw : context.parsed.y;
-                                        return `${label}: ${value.toFixed(2)}%`;
-                                    }
-                                }
-                            }
-                        },
-                        interaction: {
-                            mode: 'nearest',
-                            axis: 'x',
-                            intersect: false
-                        }
-                    }
+                    options: Commons.line.options(true),
                 };
+
+                // Custom.
+                config.options.plugins.tooltip.callbacks = {
+                    label: function(context) {
+                        const label = context.dataset.label || '';
+                        const value = context.raw !== undefined ? context.raw : context.parsed.y;
+                        return `${label}: ${value.toFixed(2)}%`;
+                    }
+                }
 
                 methods.chart = new Chart(ctx, config);
                 resolve();
@@ -252,32 +209,7 @@ const Propulsion = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'x',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                // formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.bar.options(),
                     plugins: [ChartDataLabels] // Registra el plugin
                 };
             
@@ -366,42 +298,17 @@ const Propulsion = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'x',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                // formatter: (value) => value.toLocaleString()
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        const label = context.chart.data.labels[context.dataIndex];
-                                        const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
-                                        return `${label}: ${value.toFixed(2)}%`;
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    options: Commons.bar.options(),
                     plugins: [ChartDataLabels] // Registra el plugin
+                };
+
+                // Custom.
+                config.options.plugins.tooltip.callbacks = {
+                    label: function(context) {
+                        const label = context.dataset.label || '';
+                        const value = context.raw !== undefined ? context.raw : context.parsed.y;
+                        return `${label}: ${value.toFixed(2)}%`;
+                    }
                 };
             
                 methods.chart = new Chart(ctx, config);

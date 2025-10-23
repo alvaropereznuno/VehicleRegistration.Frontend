@@ -1,4 +1,5 @@
 import Colors from '../colorsUtils.js';
+import Commons from './chartCommonsUtils.js';
 import SharedUtils from '../sharedUtils.js';
 
 const Trends = {
@@ -35,46 +36,22 @@ const Trends = {
         create: async (registrationList, ctx) => {
             return new Promise((resolve) => {
                 let methods = Trends.brandGrowthMoM;
-
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Top Modelos por matriculaciones'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => `${value.toFixed(2)}%`
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const value = context.raw;
-                                        return `${value.toFixed(2)}%`;
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    options: Commons.bar.options('y', false),
                     plugins: [ChartDataLabels, Trends.watermark(80, 50, 50)] // Registra el plugin
+                };
+                
+                // Custom.
+                config.options.plugins.datalabels.formatter = function (value) {
+                    return `${value.toFixed(2)}%`;
+                }
+                config.options.plugins.tooltip.callbacks = {
+                    label: function(context) {
+                        const value = context.raw;
+                        return `${value.toFixed(2)}%`;
+                    }
                 };
             
                 methods.chart = new Chart(ctx, config);
@@ -179,43 +156,20 @@ const Trends = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Top Modelos por matriculaciones'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => `${value.toFixed(2)}%`
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const value = context.raw;
-                                        return `${value.toFixed(2)}%`;
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    options: Commons.bar.options('y', false),
                     plugins: [ChartDataLabels, Trends.watermark(80, 50, 50)] // Registra el plugin
                 };
+                
+                // Custom.
+                config.options.plugins.datalabels.formatter = function (value) {
+                    return `${value.toFixed(2)}%`;
+                }
+                config.options.plugins.tooltip.callbacks = {
+                    label: function(context) {
+                        const value = context.raw;
+                        return `${value.toFixed(2)}%`;
+                    }
+                }
             
                 methods.chart = new Chart(ctx, config);
                 resolve();
@@ -317,33 +271,7 @@ const Trends = {
                 const config = {
                     type: 'doughnut',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false,
-                                position: 'top',
-                            },
-                            title: {
-                                display: false,
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const value = context.raw;
-                                        return `${value.toFixed(2)}%`;
-                                    }
-                                }
-                            },
-                            datalabels: {
-                                formatter: (value, context) => {
-                                    return context.chart.data.labels[context.dataIndex]; 
-                                },
-                                color: Colors.primary(),
-                                font: { size: 10 },
-                            }
-                        }
-                    },
+                    options: Commons.doughnut.options(),
                     plugins: [ChartDataLabels, Trends.watermark(80, 20, 20)] // Registra el plugin
                 };
             
@@ -471,43 +399,20 @@ const Trends = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Top Modelos por matriculaciones'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => `${value.toFixed(2)}%`
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const value = context.raw;
-                                        return `${value.toFixed(2)}%`;
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    options: Commons.bar.options('y', false),
                     plugins: [ChartDataLabels, Trends.watermark(80, 50, 80)] // Registra el plugin
                 };
+                
+                // Custom.
+                config.options.plugins.datalabels.formatter = function (value) {
+                    return `${value.toFixed(2)}%`;
+                }
+                config.options.plugins.tooltip.callbacks = {
+                    label: function(context) {
+                        const value = context.raw;
+                        return `${value.toFixed(2)}%`;
+                    }
+                }
             
                 methods.chart = new Chart(ctx, config);
                 resolve();

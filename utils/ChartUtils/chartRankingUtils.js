@@ -1,5 +1,6 @@
 import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
+import Commons from './chartCommonsUtils.js';
 
 const Ranking = {
     watermark: function(maxWidth, marginLeft, marginRight){
@@ -36,33 +37,7 @@ const Ranking = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Top Matriculaciones por Marca'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.bar.options('y'),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
                 };
             
@@ -133,33 +108,7 @@ const Ranking = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Top Modelos por matriculaciones'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.bar.options('y'),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
                 };
             
@@ -229,40 +178,17 @@ const Ranking = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Ventas anuales'
-                            },
-                            datalabels: {
-                                display: (ctx) => {
-                                    const index = ctx.dataIndex;
-                                    const total = ctx.dataset.data.length;
-                                    // Mostrar cada 4, o el último siempre
-                                    return index % 4 === 0 || index === total - 1;
-                                },
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.line.options(),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 40, 80)]
                 };
+                
+                // Custom.
+                config.options.plugins.datalabels.display = function (ctx) {
+                    const index = ctx.dataIndex;
+                    const total = ctx.dataset.data.length;
+                    // Mostrar cada 4, o el último siempre
+                    return index % 4 === 0 || index === total - 1;
+                }
 
                 methods.chart = new Chart(ctx, config);
                 resolve();
@@ -349,41 +275,18 @@ const Ranking = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Ventas anuales'
-                            },
-                            datalabels: {
-                                display: (ctx) => {
-                                    const index = ctx.dataIndex;
-                                    const total = ctx.dataset.data.length;
-                                    // Mostrar cada 4, o el último siempre
-                                    return index % 4 === 0 || index === total - 1;
-                                },
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.line.options(),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 40, 80)]
                 };
-
+                
+                // Custom.
+                config.options.plugins.datalabels.display = function (ctx) {
+                    const index = ctx.dataIndex;
+                    const total = ctx.dataset.data.length;
+                    // Mostrar cada 4, o el último siempre
+                    return index % 4 === 0 || index === total - 1;
+                }
+                
                 methods.chart = new Chart(ctx, config);
                 resolve();
             });

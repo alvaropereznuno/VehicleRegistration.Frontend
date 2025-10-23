@@ -1,4 +1,5 @@
 import Colors from '../colorsUtils.js';
+import Commons from './chartCommonsUtils.js';
 
 const Annuals = {
     watermark: function(maxWidth, marginLeft, marginRight){
@@ -41,32 +42,7 @@ const Annuals = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Ventas anuales'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.line.options(),
                     plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)]
                 };
 
@@ -154,32 +130,7 @@ const Annuals = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'x',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                // formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.bar.options(),
                     plugins: [ChartDataLabels] // Registra el plugin
                 };
             
@@ -241,32 +192,7 @@ const Annuals = {
                 const config = {
                     type: 'line',
                     data: methods.groupData(registrationList),
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                                text: 'Ventas anuales'
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.line.options(),
                     plugins: [ChartDataLabels, Annuals.watermark(80, 30, 70)] // Registra el plugin
                 };
             
@@ -324,32 +250,7 @@ const Annuals = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: {
-                        indexAxis: 'x',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '10%'
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            title: {
-                                display: false,
-                            },
-                            datalabels: {
-                                anchor: 'end',
-                                align: 'end',
-                                color: Colors.black(0.6),
-                                font: { size: 12 },
-                                // formatter: (value) => value.toLocaleString()
-                            }
-                        }
-                    },
+                    options: Commons.bar.options(),
                     plugins: [ChartDataLabels] // Registra el plugin
                 };
             

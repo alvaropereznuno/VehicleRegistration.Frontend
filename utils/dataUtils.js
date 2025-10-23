@@ -108,7 +108,7 @@ const DataUtils = {
             return result;
         });
     
-    return aggregatedData;
+        return aggregatedData;
     }
 }
 
