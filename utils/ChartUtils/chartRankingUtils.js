@@ -1,5 +1,6 @@
 import Colors from '../colorsUtils.js';
 import SharedUtils from '../sharedUtils.js';
+import DataUtils from '../dataUtils.js';
 import Commons from './chartCommonsUtils.js';
 
 const Ranking = {
@@ -37,7 +38,7 @@ const Ranking = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: Commons.bar.options('y'),
+                    options: Commons.bar.options('y', false),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
                 };
             
@@ -59,45 +60,18 @@ const Ranking = {
             });
         },
         groupData: (registrationList, tops = 25) => {
-            // 1. Agrupar RegistrationList por Marca y obtener sumatorios y se ordenan de mayor a menor cantidad.
-            const groupedData = Object.entries(
-                registrationList.reduce((acc, curr) => {
-                    acc[curr.brandId] = (acc[curr.brandId] || 0) + curr.count;
-                    return acc;
-                }, {})
-            ).sort((a, b) => b[1] - a[1]);
+            // 1. Agrupar por Marca y quedarse con los top ordenados de mayor a menor.
+            const groupedData = DataUtils.registrations.group(["B"], "C", true, 25);
 
-            // 2. Obtener los top resultados. El resto se agrupan en una única entrada.
-            const topBrands = groupedData.slice(0, tops);
-
-            // 3. Crear el objeto de datos para el gráfico.
-            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
-
-            const labels = topBrands.map(item => SharedUtils.getBrandDescription2(item[0])); 
-            const data = topBrands.map(item => item[1]);
-
-            const backgroundColor = Array.from({ length: tops }, (_, index) => {
-                const alpha = 1 - alphaIncremental * index;
-                return Colors.getIndexColor(index % 8, alpha);
-            });
-
-            const borderColor = Array.from({ length: tops }, (_, index) => {
-                const alpha = 0.7 - alphaIncremental * index;
-                return Colors.getIndexColor(index % 8, alpha);
-            });
-
-            // 4. Retorna el objeto de datos para el gráfico.
+            // 2. Retorna el objeto de datos para el gráfico.
             return {
-                labels: labels,
+                labels: groupedData.map(item => item.B),
                 datasets: [{
-                    data: data,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    borderWidth: 1,
+                    data: groupedData.map(item => item.C),
+                    backgroundColor: Colors.getRainbowColors(tops, true, true, 1, 0.4)
                 }]
             };
         }
-
     },
     topModels: {
         chart: null,
@@ -108,7 +82,7 @@ const Ranking = {
                 const config = {
                     type: 'bar',
                     data: methods.groupData(registrationList),
-                    options: Commons.bar.options('y'),
+                    options: Commons.bar.options('y', false),
                     plugins: [ChartDataLabels, Ranking.watermark(80, 50, 50)] // Registra el plugin
                 };
             
@@ -130,42 +104,15 @@ const Ranking = {
             });
         },
         groupData: (registrationList, tops = 25) => {
-            // 1. Agrupar RegistrationList por Modelo y obtener sumatorios y se ordenan de mayor a menor cantidad.
-            const groupedData = Object.entries(
-                registrationList.reduce((acc, curr) => {
-                    const modelId = curr.modelId;
-                    acc[modelId] = (acc[modelId] || 0) + curr.count;
-                    return acc;
-                }, {})
-            ).sort((a, b) => b[1] - a[1]);
+            // 1. Agrupar por Modelo y quedarse con los top ordenados de mayor a menor.
+            const groupedData = DataUtils.registrations.group(["M"], "C", true, 25);
 
-            // 2. Obtener los top resultados. El resto se agrupan en una única entrada.
-            const topModels = groupedData.slice(0, tops);
-
-            // 3. Crear el objeto de datos para el gráfico.
-            const alphaIncremental = tops > 1 ? (1 - 0.4) / (tops - 1) : 1;
-
-            const labels = topModels.map(item => SharedUtils.getModelDescription(item[0], true)); 
-            const data = topModels.map(item => item[1]);
-
-            const backgroundColor = Array.from({ length: tops }, (_, index) => {
-                const alpha = 1 - alphaIncremental * index;
-                return Colors.getIndexColor(index % 8, alpha);
-            });
-
-            const borderColor = Array.from({ length: tops }, (_, index) => {
-                const alpha = 0.7 - alphaIncremental * index;
-                return Colors.getIndexColor(index % 8, alpha);
-            });
-
-            // 4. Retorna el objeto de datos para el gráfico.
+            // 2. Retorna el objeto de datos para el gráfico.
             return {
-                labels: labels,
+                labels: groupedData.map(item => item.M),
                 datasets: [{
-                    data: data,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    borderWidth: 1,
+                    data: groupedData.map(item => item.C),
+                    backgroundColor: Colors.getRainbowColors(tops, true, true, 1, 0.4)
                 }]
             };
         }
@@ -238,6 +185,9 @@ const Ranking = {
             const topBrands = Object.entries(datasetsByBrand)
                 .sort(([, a], [, b]) => b.total - a.total) // ordenar por total descendente
                 .slice(0, top);
+
+            // 1. Agrupar por Marca y fecha y quedarse con los top.
+            var groupedData = DataUtils.registrations.group(["B", "DT"], "DT", false, 5); 
 
             // 4. Construir datasets acumulados solo para las TOP marcas
             const datasets = topBrands.map(([brandId, brandData], index) => {

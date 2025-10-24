@@ -80,15 +80,15 @@ const SharedUtils = {
             
             this.data.registrationListC = data;
 
-            DataUtils.createDataFrame(data);
+            // DataUtils.createDataFrame(data);
             
-            // PRUEBAS DATA-FRAME
+            /* // PRUEBAS DATA-FRAME
             let dataFilter = new RegistrationFilter();
             dataFilter.brandIdList = [176];
             let filter = DataUtils.filterData(dataFilter);
             const groupedDf = DataUtils.groupData(['DT', 'B', 'M'], true);
             const cosa = groupedDf.toArray();
-            // FIN DATA-FRAME
+            // FIN DATA-FRAME */
 
         } catch (error) {
             console.error("Error fetching registrationsList:", error);

@@ -109,6 +109,14 @@ const Colors = {
             default:
                 return this.primary(alpha); // Default color if type is not recognized
         }
+    },
+
+    getRainbowColors: function (length, rainbow = true, degradation = true, topAlpha = 1, baseAlpha = 0.4){
+        const alphaDiff = (topAlpha - baseAlpha) / (length - 1);
+
+        const colors = Array.from({ length: length }, (v, i) => Colors.getIndexColor(i%8, topAlpha - alphaDiff*i));
+
+        return colors;
     }
 }
 

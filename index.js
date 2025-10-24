@@ -20,12 +20,19 @@ const index = {
             SharedUtils.loadModels(!isLastVersion),
             SharedUtils.loadBrands(!isLastVersion),
             SharedUtils.loadRegistrations('2020-01-01', null, !isLastVersion),
-            SharedUtils.loadRegistrationsList('2020-01-01', null, !isLastVersion)
+            
+            DataUtils.brands.load(!isLastVersion),
+            DataUtils.models.load(!isLastVersion),
+            DataUtils.registrations.load('2020-01-01', null, !isLastVersion)
         ]);
         filters.initializeFilters();
         
         const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(4);
         SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, [], [], [], [], []);
+
+        let dataFilter = new RegistrationFilter();
+        [dataFilter.dateFrom, dataFilter.dateTo] = filters.getPeriodDates(4);
+        DataUtils.registrations.filter(dataFilter);
 
         document.getElementById("rrss_x").addEventListener("click", () => GtagUtils.selectedRrss("X Twitter"));
         document.getElementById("rrss_bluesky").addEventListener("click", () => GtagUtils.selectedRrss("Bluesky"));
