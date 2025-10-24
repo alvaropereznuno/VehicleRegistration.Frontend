@@ -80,9 +80,9 @@ const SharedUtils = {
             
             this.data.registrationListC = data;
 
-            // PRUEBAS DATA-FRAME
             DataUtils.createDataFrame(data);
-
+            
+            // PRUEBAS DATA-FRAME
             let dataFilter = new RegistrationFilter();
             dataFilter.brandIdList = [176];
             let filter = DataUtils.filterData(dataFilter);

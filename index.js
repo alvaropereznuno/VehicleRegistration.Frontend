@@ -1,6 +1,8 @@
 import SharedUtils from './utils/sharedUtils.js';
+import DataUtils from './utils/dataUtils.js';
 import GtagUtils from './utils/gtagUtils.js';
 import DICT from './configurations/dict.js';
+import RegistrationFilter from './models/registrationFilter.js';
 
 $(document).ready(async () => {
     await index.initialize();
@@ -376,8 +378,17 @@ const filters = {
     filterRegistrations: function() {
         index.loadingFilter(true);
 
+        let dataFilter = new RegistrationFilter();
+        dataFilter.brandIdList = $("#brands").val().map(value => parseInt(value));
+        dataFilter.modelIdList = $("#models").val().map(value => parseInt(value));
+        dataFilter.motorTypeIdList = $("#motorTypes").val().map(value => parseInt(value));
+        dataFilter.serviceTypeIdList = $("#serviceTypes").val().map(value => parseInt(value));
+        dataFilter.communityIdList = $("#communities").val().map(value => parseInt(value));
+        [dataFilter.dateFrom, dataFilter.dateTo] = filters.getPeriodDates($("datePeriods").val());
+        
         setTimeout(() => {
-            const [registrationDateFrom, registrationDateTo] = filters.getPeriodDates(document.getElementById("datePeriods").value);
+            // Deprecar
+            const [registrationDateFrom, registrationDateTo] = filters.getPeriodDatesOld(document.getElementById("datePeriods").value);
             const brandIdList = Array.from(document.getElementById("brands").selectedOptions).map(option => parseInt(option.value));;
             let modelIdList = Array.from(document.getElementById("models").selectedOptions).map(option => parseInt(option.value));
             const motorTypeIdList = Array.from(document.getElementById("motorTypes").selectedOptions).map(option => parseInt(option.value));
@@ -391,6 +402,9 @@ const filters = {
                 provinceIdList = Array.from(DICT.PROVINCES).filter(province => communityIdList.includes(province.communityId)).map(m => m.id);
 
             SharedUtils.filterRegistrations(registrationDateFrom, registrationDateTo, brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, provinceIdList);  
+            // Fin Deprecar
+            
+            DataUtils.filterData(dataFilter);
             GtagUtils.selectedFilter({brandIdList, modelIdList, motorTypeIdList, serviceTypeIdList, communityIdList, provinceIdList});
 
             index.loadingFilter(false);
@@ -407,7 +421,7 @@ const filters = {
         filters.populateFilters();
         filters.filterRegistrations();
     },
-    getPeriodDates: function(period) {
+    getPeriodDatesOld: function(period) {
         const now = new Date();
         let startDate, endDate;
         switch (period) {
@@ -431,6 +445,31 @@ const filters = {
                 startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 endDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
         }
+
+        return [startDate, endDate];
+    },
+    getPeriodDates: function(period) {
+        const now = new Date();
+        let startDate, endDate;
+        switch (period) {
+            case '1': case 1: // Último mes
+                startDate = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() - 1, 1));
+                break;
+            case '2': case 3: // Año actual
+                startDate = new Date(Date.UTC(new Date().getFullYear(), 0, 1));
+                break;
+            case '3': case 2: // Últimos 12 meses
+                startDate = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() - 12, 1));
+                break;
+            case '4': case 4: // Últimos 3 años
+                startDate = new Date(Date.UTC(new Date().getFullYear() - 3, 0, 1));
+                break;
+            default:
+                startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                startDate = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() - 1, 1));
+        }
+
+        endDate = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() - 1, 1));
 
         return [startDate, endDate];
     }
